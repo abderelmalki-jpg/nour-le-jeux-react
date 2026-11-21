@@ -1,0 +1,33 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Android build artifacts and signing keys
+*.apk
+*.aab
+*.keystore
+*.jks
+android/app/build/
+android/.gradle/
+android/build/
+
+# Local Firebase & Media Archives
+.firebase/
+_media_archive/
+
+# Scripts de patch ponctuels
+/fix_*.py
+
+# iOS : clés et artefacts de signature
+*.p8
+*.p12
+*.mobileprovision
+*.xcarchive
+*.ipa
+ios/App/Pods/
+ios/DerivedData/

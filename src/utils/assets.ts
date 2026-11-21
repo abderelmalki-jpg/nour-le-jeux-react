@@ -1,0 +1,236 @@
+import avatarHero from '../assets/images/pixel_othman_child_portrait.png';
+import avatarNoura from '../assets/images/pixel_noura_maternal_guide.png';
+import avatarNouraFull from '../assets/images/pixel_noura_maternal_guide.png';
+import avatarWaswas from '../assets/images/pixel_waswas_mist_vortex.png';
+import avatarGrandWaswas from '../assets/images/pixel_waswas_mist_vortex.png';
+import avatarJeune from '../assets/images/pixel_enfant_village_portrait.png';
+import avatarMarchand from '../assets/images/pixel_marchand_portrait.png';
+import avatarSavant from '../assets/images/pixel_savant_father_portrait.png';
+import avatarNarrateur from '../assets/images/pixel_narrateur_sage_transparent.png';
+import avatarApothicaire from '../assets/images/pixel_apothicaire_portrait.png';
+import avatarAttelle from '../assets/images/pixel_compagnon_attelle_portrait.png';
+import avatarArtisan from '../assets/images/pixel_artisan_sculpteur_portrait.png';
+import avatarVillageoise from '../assets/images/pixel_villageoise_douceur_portrait.png';
+import avatarSavantLivre from '../assets/images/pixel_savant_livre_portrait.png';
+import avatarMarchandLivre from '../assets/images/pixel_marchand_livre_portrait.png';
+import avatarPere from '../assets/images/pixel_pere_bienveillant_portrait.png';
+import avatarGrandPere from '../assets/images/pixel_grand_pere_sage_portrait.png';
+import bgHalteThe from '../assets/images/bg_halte_the_apaisement.jpg';
+import bgCourParents from '../assets/images/bg_cour_familiale_parents.jpg';
+import bgArbreRacines from '../assets/images/bg_arbre_racines_anciennes.jpg';
+import bgChambre from '../assets/images/bg_chambre_1788128574397.jpg';
+import bgChambreDefait from '../assets/images/bg_chambre_lit_defait.jpg';
+import bgCarrefour from '../assets/images/bg_carrefour_poteau_1788269918837.jpg';
+import bgCarrefourSacPose from '../assets/images/bg_carrefour_sac_pose.jpg';
+import bgWaswas from '../assets/images/bg_scene_waswas_pure_mist_1788273203805.jpg';
+import bgWaswasClair from '../assets/images/bg_scene_waswas_clair.jpg';
+import bgVillage from '../assets/images/bg_village_accueillant.jpg';
+import bgVillageMefiant from '../assets/images/bg_village_mefiant.jpg';
+import bgVallee from '../assets/images/bg_vallee_village_approach_1788270427768.jpg';
+import bgRefus from '../assets/images/bg_scene_refus_ruelle_1788270843346.jpg';
+import bgRefusJeuneCorde from '../assets/images/bg_scene_refus_jeune_corde.jpg';
+import bgGesteRenverse from '../assets/images/bg_scene_geste_oliviers_1788271406874.jpg';
+import bgGesteRanges from '../assets/images/bg_scene_geste_paniers_ranges.jpg';
+import bgJardin from '../assets/images/bg_scene_jardin_abandonne_1788271802094.jpg';
+import bgJardinEncombre from '../assets/images/bg_scene_jardin_encombre.jpg';
+import bgClimax from '../assets/images/bg_climax_pure_mist_1788273223875.jpg';
+import bgClimaxApaise from '../assets/images/bg_climax_apaise.jpg';
+import bgFin from '../assets/images/bg_chapter_end_dawn_1788280400414.jpg';
+import bgMosqueeMarches from '../assets/images/bg_mosquee_marches_attelle.jpg';
+import bgMosqueePatio from '../assets/images/bg_mosquee_patio_vigne.jpg';
+import bgMaisonSoins from '../assets/images/bg_maison_soins_apothicaire.jpg';
+import bgVergerFleur from '../assets/images/bg_verger_fleur_lanterne.jpg';
+import bgMontagneClimax from '../assets/images/bg_montagne_interieure_climax.jpg';
+import bgMarcheFruitsRenverses from '../assets/images/bg_marche_fruits_renverses.jpg';
+import bgMarcheFruitsReconcilie from '../assets/images/bg_marche_fruits_reconcilie.jpg';
+import bgCuisineBouillon from '../assets/images/bg_cuisine_bouillon.jpg';
+import bgVergerAmandiers from '../assets/images/bg_verger_amandiers.jpg';
+import bgAtelierSculpture from '../assets/images/bg_atelier_sculpture_sac.jpg';
+import bgEpilogue from '../assets/images/bg_epilogue_coucher_soleil.jpg';
+
+
+// Pixel Art Assets
+import pixelHeroRoom from '../assets/images/pixel_hero_room_1788184496067.jpg';
+import pixelChapterMap from '../assets/images/pixel_chapter_map_1788184511829.jpg';
+
+export const PIXEL_ASSETS = {
+  room: pixelHeroRoom,
+  map: pixelChapterMap,
+  dialogueScene: bgVillage,
+  aldwin: avatarNoura,
+  traveler: avatarHero,
+  clockTower: bgVillage,
+  waswasAvatar: avatarGrandWaswas,
+  nouraFull: avatarNouraFull,
+  savant: avatarSavant,
+  narrateur: avatarNarrateur,
+  mosqueeMarches: bgMosqueeMarches,
+  mosqueePatio: bgMosqueePatio,
+  maisonSoins: bgMaisonSoins,
+  vergerFleur: bgVergerFleur,
+  montagneClimax: bgMontagneClimax,
+  atelierSculpture: bgAtelierSculpture,
+  epilogue: bgEpilogue
+};
+
+
+// Asset management for custom character sprites and scene backgrounds
+export interface CustomAssetsConfig {
+  characters: {
+    personnage?: string;
+    noura?: string;
+    waswas?: string;
+    grand_waswas?: string;
+    jeune?: string;
+    marchand?: string;
+    enfant?: string;
+    narrateur?: string;
+    apothicaire?: string;
+    attelle?: string;
+    artisan?: string;
+    villageoise?: string;
+    savant?: string;
+    pere?: string;
+    grand_pere?: string;
+  };
+  backgrounds: {
+    chambre?: string;
+    chambre_defait?: string;
+    carrefour?: string;
+    carrefour_sac_pose?: string;
+    waswas?: string;
+    waswas_clair?: string;
+    vallee?: string;
+    village?: string;
+    village_mefiant?: string;
+    refus?: string;
+    refus_jeune_corde?: string;
+    geste?: string;
+    geste_renverse?: string;
+    jardin?: string;
+    jardin_encombre?: string;
+    climax?: string;
+    climax_apaise?: string;
+    fin?: string;
+    mosquee_marches?: string;
+    mosquee_patio?: string;
+    maison_soins?: string;
+    verger_fleur?: string;
+    montagne_climax?: string;
+    marche_renverse?: string;
+    marche_reconcilie?: string;
+    cuisine_bouillon?: string;
+    verger_amandiers?: string;
+    atelier_sculpture?: string;
+    cour_parents?: string;
+    arbre_racines?: string;
+    halte_the?: string;
+    epilogue?: string;
+  };
+}
+
+export const DEFAULT_ASSETS: CustomAssetsConfig = {
+  characters: {
+    personnage: avatarHero,
+    noura: avatarNoura,
+    waswas: avatarWaswas,
+    grand_waswas: avatarGrandWaswas,
+    jeune: avatarJeune,
+    marchand: avatarMarchand,
+    enfant: avatarJeune,
+    narrateur: avatarNarrateur,
+    apothicaire: avatarApothicaire,
+    attelle: avatarAttelle,
+    artisan: avatarArtisan,
+    villageoise: avatarVillageoise,
+    savant: avatarSavantLivre,
+    pere: avatarPere,
+    grand_pere: avatarGrandPere
+  },
+  backgrounds: {
+    chambre: bgChambre,
+    chambre_defait: bgChambreDefait,
+    carrefour: bgCarrefour,
+    carrefour_sac_pose: bgCarrefourSacPose,
+    waswas: bgWaswas,
+    waswas_clair: bgWaswasClair,
+    vallee: bgVallee,
+    village: bgVillage,
+    village_mefiant: bgVillageMefiant,
+    refus: bgRefus,
+    refus_jeune_corde: bgRefusJeuneCorde,
+    geste: bgGesteRanges,
+    geste_renverse: bgGesteRenverse,
+    jardin: bgJardin,
+    jardin_encombre: bgJardinEncombre,
+    climax: bgClimax,
+    climax_apaise: bgClimaxApaise,
+    fin: bgFin,
+    mosquee_marches: bgMosqueeMarches,
+    mosquee_patio: bgMosqueePatio,
+    maison_soins: bgMaisonSoins,
+    verger_fleur: bgVergerFleur,
+    montagne_climax: bgMontagneClimax,
+    marche_renverse: bgMarcheFruitsRenverses,
+    marche_reconcilie: bgMarcheFruitsReconcilie,
+    cuisine_bouillon: bgCuisineBouillon,
+    verger_amandiers: bgVergerAmandiers,
+    atelier_sculpture: bgAtelierSculpture,
+    cour_parents: bgCourParents,
+    arbre_racines: bgArbreRacines,
+    halte_the: bgHalteThe,
+    epilogue: bgEpilogue
+  }
+};
+
+const STORAGE_KEY = 'nour_custom_assets_config';
+
+export const loadCustomAssets = (): CustomAssetsConfig => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const sanitizeAsset = (userVal: any, defaultVal?: string): string => {
+          if (typeof userVal !== 'string') return defaultVal || '';
+          // Only preserve genuine user-uploaded assets (base64 data URIs or blob URLs)
+          if (userVal.startsWith('data:image/') || userVal.startsWith('blob:')) {
+            return userVal;
+          }
+          // Never use stale build hash paths from previous deployments
+          return defaultVal || '';
+        };
+
+        const characters: CustomAssetsConfig['characters'] = {
+          personnage: sanitizeAsset(parsed?.characters?.personnage, DEFAULT_ASSETS.characters.personnage),
+          noura: sanitizeAsset(parsed?.characters?.noura, DEFAULT_ASSETS.characters.noura),
+          jeune: sanitizeAsset(parsed?.characters?.jeune, DEFAULT_ASSETS.characters.jeune),
+          waswas: sanitizeAsset(parsed?.characters?.waswas, DEFAULT_ASSETS.characters.waswas),
+          grand_waswas: sanitizeAsset(parsed?.characters?.grand_waswas, DEFAULT_ASSETS.characters.grand_waswas),
+          narrateur: sanitizeAsset(parsed?.characters?.narrateur, DEFAULT_ASSETS.characters.narrateur)
+        };
+
+        const backgrounds: CustomAssetsConfig['backgrounds'] = {};
+        for (const key of Object.keys(DEFAULT_ASSETS.backgrounds) as (keyof typeof DEFAULT_ASSETS.backgrounds)[]) {
+          backgrounds[key] = sanitizeAsset(parsed?.backgrounds?.[key], DEFAULT_ASSETS.backgrounds[key]);
+        }
+
+        return { characters, backgrounds };
+      }
+    } catch (e) {
+      console.error('Failed to load custom assets config', e);
+    }
+  }
+  return DEFAULT_ASSETS;
+};
+
+export const saveCustomAssets = (config: CustomAssetsConfig): void => {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    } catch (e) {
+      console.error('Failed to save custom assets config', e);
+    }
+  }
+};
+

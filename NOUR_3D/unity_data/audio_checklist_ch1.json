@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-11-15T21:25:56.353Z",
+  "audioFolder": "public/audio/ch1",
+  "expectedVoiceBeats": 138,
+  "filesPresent": 183,
+  "missing": [
+    {
+      "beatId": "s1_noura_intro",
+      "file": "s1_noura_intro.mp3"
+    },
+    {
+      "beatId": "s1_othman_reply1",
+      "file": "s1_othman_reply1.mp3"
+    },
+    {
+      "beatId": "s1_noura_reply1",
+      "file": "s1_noura_reply1.mp3"
+    },
+    {
+      "beatId": "s1_othman_reply2",
+      "file": "s1_othman_reply2.mp3"
+    },
+    {
+      "beatId": "s1_noura_reply2",
+      "file": "s1_noura_reply2.mp3"
+    },
+    {
+      "beatId": "s1_waswas_comfort",
+      "file": "s1_waswas_comfort.mp3"
+    },
+    {
+      "beatId": "s1_door_waswas",
+      "file": "s1_door_waswas.mp3"
+    },
+    {
+      "beatId": "s9_b8",
+      "file": "s9_b8.mp3"
+    }
+  ],
+  "orphanedFiles": [
+    "s1_b1.mp3",
+    "s1_b10.mp3",
+    "s1_b13.mp3",
+    "s1_b14.mp3",
+    "s1_b15.mp3",
+    "s1_b16.mp3",
+    "s1_b19.mp3",
+    "s1_b2.mp3",
+    "s1_b3.mp3",
+    "s1_b4.mp3",
+    "s1_b5.mp3",
+    "s1_b6.mp3",
+    "s1_b7.mp3",
+    "s1_door_hesitation.mp3",
+    "s1_door_open.mp3",
+    "s1_hook_3.mp3",
+    "s1_hook_4.mp3",
+    "s1_hook_5.mp3",
+    "s1_hook_6.mp3",
+    "s1_hook_7.mp3",
+    "s1_intro_1.mp3",
+    "s1_intro_2.mp3",
+    "s1_intro_3.mp3",
+    "s1_noura_hear.mp3",
+    "s1_noura_wisdom.mp3",
+    "s1_othman_hear.mp3",
+    "s1_pont_eau.mp3",
+    "s1_pont_lit.mp3",
+    "s1_sandals_noura_ask.mp3",
+    "s1_sandals_othman_recite.mp3",
+    "s1_waswas_whisper.mp3",
+    "s1_water_1.mp3",
+    "s1_water_2.mp3",
+    "s1_water_3.mp3",
+    "s1_water_4.mp3",
+    "s1_water_noura_ask.mp3",
+    "s2_b2.mp3",
+    "s2_b3.mp3",
+    "s2_b4.mp3",
+    "s2_b5.mp3",
+    "s2_b7.mp3",
+    "s2_b9.mp3",
+    "s2_cliffhanger_heart.mp3",
+    "s2_cliffhanger_mist.mp3",
+    "s2_cliffhanger_noura.mp3",
+    "s2_cliffhanger_view.mp3",
+    "s2_dua_1.mp3",
+    "s2_dua_2.mp3",
+    "s2_dua_3.mp3",
+    "s2_dua_4.mp3",
+    "s2_dua_6.mp3",
+    "s2_pont_depart.mp3",
+    "s9_b5.mp3"
+  ],
+  "note": "missing = beats parlés sans fichier audio ; orphanedFiles = fichiers audio sans beat correspondant (anciens ids ou variantes)."
+}
