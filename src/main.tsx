@@ -4,6 +4,7 @@ import { PostHogProvider } from '@posthog/react';
 import './firebase.ts';
 import './utils/analytics.ts';
 import App from './App.tsx';
+import './fonts.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
