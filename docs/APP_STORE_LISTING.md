@@ -74,7 +74,7 @@ Les longueurs respectent les limites d'Apple (vérifiées).
 ## Captures d'écran (obligatoires)
 
 - iPhone **6,9"** : 1320 × 2868 (ou 1290 × 2796). Minimum 3, idéal 5–6 : écran-titre, dialogue, carte du voyage, quiz, quêtes, fin de chapitre.
-- iPad **13"** : 2064 × 2752 (seulement si l'app est proposée sur iPad ; sinon retirer iPad dans Xcode).
+- iPad : **non requis** — la v1 est limitée à l'iPhone (`TARGETED_DEVICE_FAMILY = 1`). Pour ajouter l'iPad plus tard, remettre `"1,2"` dans le projet Xcode et fournir des captures 2064 × 2752.
 - Les captures se prennent depuis un iPhone via TestFlight (puis recadrage), ou depuis le simulateur Xcode d'un Mac.
 
 ## À faire une fois le premier build sur TestFlight
