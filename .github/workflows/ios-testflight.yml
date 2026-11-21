@@ -4,6 +4,7 @@ name: iOS → TestFlight
 on:
   workflow_dispatch:
   push:
+    branches: [nour-ios]
     tags: ['v*']
 
 concurrency:
@@ -17,16 +18,18 @@ jobs:
     env:
       APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
       APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      # Team ID "Said Mada" (pas un secret). Peut être surchargé par le secret APPLE_TEAM_ID.
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || 'K5UVR8V6H7' }}
+      # Clé .p8 : PEM brut (secret APP_STORE_CONNECT_PRIVATE_KEY) ou base64 (APP_STORE_CONNECT_KEY_P8)
+      ASC_KEY: ${{ secrets.APP_STORE_CONNECT_KEY_P8 || secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Vérifier les secrets
         run: |
-          for v in APP_STORE_CONNECT_KEY_ID APP_STORE_CONNECT_ISSUER_ID APPLE_TEAM_ID; do
+          for v in APP_STORE_CONNECT_KEY_ID APP_STORE_CONNECT_ISSUER_ID APPLE_TEAM_ID ASC_KEY; do
             if [ -z "${!v}" ]; then echo "::error::Secret manquant : $v"; exit 1; fi
           done
-          if [ -z "${{ secrets.APP_STORE_CONNECT_KEY_P8 }}" ]; then echo "::error::Secret manquant : APP_STORE_CONNECT_KEY_P8"; exit 1; fi
 
       - uses: actions/setup-node@v4
         with:
@@ -47,14 +50,22 @@ jobs:
 
       - name: Choisir Xcode
         run: |
-          ls /Applications | grep -i xcode || true
-          sudo xcode-select -s /Applications/Xcode_16.4.app || true
+          # Apple exige un build avec le SDK iOS récent : on prend le Xcode le plus récent du runner
+          ls -d /Applications/Xcode_*.app
+          XC=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XC/Contents/Developer"
           xcodebuild -version
 
       - name: Clé App Store Connect (API)
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
-          echo "${{ secrets.APP_STORE_CONNECT_KEY_P8 }}" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+          KEYFILE=~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+          if printf '%s' "$ASC_KEY" | grep -q "BEGIN PRIVATE KEY"; then
+            printf '%s\n' "$ASC_KEY" > "$KEYFILE"
+          else
+            printf '%s' "$ASC_KEY" | base64 --decode > "$KEYFILE"
+          fi
+          head -1 "$KEYFILE" | grep -q "BEGIN PRIVATE KEY" || { echo "::error::Clé .p8 illisible"; exit 1; }
 
       - name: Numéro de build + version
         id: ver
