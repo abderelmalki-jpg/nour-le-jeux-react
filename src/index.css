@@ -1,13 +1,7 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'UthmanicHafs';
-  src: url('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/uthmanic_hafs.woff2') format('woff2'),
-       url('https://cdn.jsdelivr.net/npm/quran-uthmanic-font@1.0.0/dist/UthmanicHafs.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Police coranique : Amiri Quran (embarquée dans fonts.css). L'ancienne police UthmanicHafs était
+   chargée depuis un CDN dont les deux adresses renvoient 404 (vérifié le 21/11/2026) : retirée. */
 
 @theme {
   --color-background: #0f131d;
