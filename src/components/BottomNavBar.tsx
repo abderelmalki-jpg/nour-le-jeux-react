@@ -64,7 +64,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
                 soundManager.playSelect();
                 onSelectTab(tab.id);
               }}
-              className={`flex flex-col items-center justify-center py-1 px-1 sm:px-3 rounded-xl transition-all relative cursor-pointer min-w-[48px] xs:min-w-[54px] sm:min-w-[64px] flex-1 max-w-[85px] ${
+              className={`flex flex-col items-center justify-center py-1 px-1 sm:px-3 min-h-[44px] rounded-xl transition-all relative cursor-pointer min-w-[48px] xs:min-w-[54px] sm:min-w-[64px] flex-1 max-w-[85px] ${
                 isActive
                   ? 'bg-[#ebdfc8] text-[#3a2312] border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] -translate-y-0.5'
                   : 'text-[#8c6b4e] hover:text-[#3a2312] hover:bg-[#ebdcc4]/50'
@@ -79,7 +79,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
                 ) : null}
               </div>
               <span
-                className={`text-[9.5px] sm:text-[11px] font-bold mt-0.5 font-cinzel tracking-tight sm:tracking-normal ${
+                className={`text-[10.5px] sm:text-[11px] font-bold mt-0.5 font-cinzel tracking-tight sm:tracking-normal ${
                   isActive ? 'text-[#3a2312]' : 'text-[#8c6b4e]'
                 }`}
               >

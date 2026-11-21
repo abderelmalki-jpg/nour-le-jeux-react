@@ -1010,3 +1010,29 @@ html.theme-parchment select,
 }
 
 
+
+
+/* Zones tactiles >= 44 pt (recommandation Apple) sans changer l'apparence */
+.header-actions > button,
+.header-actions > div > button:first-of-type,
+.tap-target {
+  position: relative;
+}
+.header-actions > button::after,
+.header-actions > div > button:first-of-type::after,
+.tap-target::after {
+  content: '';
+  position: absolute;
+  inset: -9px -3px;
+}
+
+/* Lisibilité mobile : aucun texte sous 10 px sur téléphone (Apple recommande >= 11 pt pour le corps,
+   10 px est le minimum acceptable pour les petites étiquettes d'interface). */
+@media (max-width: 639px) {
+  [class*="text-[7.5px]"],
+  [class*="text-[8px]"],
+  [class*="text-[9px]"],
+  [class*="text-[9.5px]"] {
+    font-size: 10px;
+  }
+}

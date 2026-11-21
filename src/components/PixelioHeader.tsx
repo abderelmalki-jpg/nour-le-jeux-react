@@ -152,7 +152,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
       {/* Left: Avatar & Dual Gauges (Othmân Nour & Waswâs Ombre) */}
       <div className="flex items-center gap-1 sm:gap-3 shrink-0">
         {/* Avatar badge */}
-        <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-950/70 border-2 border-amber-400/60 overflow-hidden p-0.5 relative shadow-md shrink-0">
+        <div className="hidden sm:block w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-950/70 border-2 border-amber-400/60 overflow-hidden p-0.5 relative shadow-md shrink-0">
           <img
             src={heroAvatar}
             alt="Le Voyageur"
@@ -163,7 +163,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
         {/* Streak badge (Série de jours) — always visible to encourage coming back */}
         <div
           title={`Série de ${streakDays} jour${streakDays > 1 ? 's' : ''} — reviens chaque jour pour la faire grandir !`}
-          className={`flex items-center gap-0.5 px-1 sm:px-1.5 py-0.5 rounded-lg border font-black text-[8px] sm:text-[10px] font-mono shadow-xs shrink-0 transition-all ${
+          className={`flex items-center gap-0.5 px-1 sm:px-1.5 py-0.5 rounded-lg border font-black text-[10px] font-mono shadow-xs shrink-0 transition-all ${
             streakDays >= 3
               ? 'bg-gradient-to-r from-orange-600 to-amber-500 text-amber-50 border-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.55)]'
               : isParchment
@@ -183,11 +183,11 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
           }`}
         >
           <div className="flex items-center gap-1 sm:gap-1.5 relative">
-            <span className="text-[8px] sm:text-[10px] font-black text-amber-950 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-300 px-1 sm:px-1.5 py-0.2 rounded-md border border-yellow-200 font-mono shadow-xs uppercase">
+            <span className="text-[10px] font-black text-amber-950 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-300 px-1 sm:px-1.5 py-0.2 rounded-md border border-yellow-200 font-mono shadow-xs uppercase">
               {t.level.slice(0, 4)}. {level}
             </span>
             <span
-              className={`text-[8px] sm:text-[10px] font-bold font-mono transition-colors duration-200 ${
+              className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
                 isGaining ? 'text-yellow-300 font-black scale-105' : 'text-amber-100/90'
               }`}
             >
@@ -231,12 +231,12 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
           }`}
         >
           <div className="flex items-center gap-1 sm:gap-1.5 relative">
-            <span className="text-[7.5px] sm:text-[9.5px] font-black text-fuchsia-200 bg-purple-950/90 px-1 sm:px-1.5 py-0.2 rounded-md border border-purple-400/60 font-mono shadow-xs flex items-center gap-0.5 sm:gap-1">
+            <span className="text-[10px] font-black text-fuchsia-200 bg-purple-950/90 px-1 sm:px-1.5 py-0.2 rounded-md border border-purple-400/60 font-mono shadow-xs flex items-center gap-0.5 sm:gap-1">
               <span>🌑</span>
-              <span className="tracking-wide">{t.waswasGauge.slice(0, 7)}</span>
+              <span className="tracking-wide hidden sm:inline">{t.waswasGauge.slice(0, 7)}</span>
             </span>
             <span
-              className={`text-[8px] sm:text-[10px] font-bold font-mono transition-colors duration-200 ${
+              className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
                 isWaswasGaining
                   ? 'text-fuchsia-300 font-black scale-105'
                   : isWaswasDecreasing
@@ -287,7 +287,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
       </div>
 
       {/* Right: Actions (Theme Switcher, Language Switcher, Carte, Quiz, Savoir) */}
-      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+      <div className="header-actions flex items-center gap-1 sm:gap-1.5 shrink-0">
         {/* Theme Toggle Button (☀️ Parchemin / 🌙 Nuit) */}
         <button
           onClick={() => {
@@ -327,7 +327,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             }`}
           >
             <RealFlag lang={language} className="w-4 h-3 rounded-[2px]" />
-            <span className="font-bold uppercase font-mono text-[9px] sm:text-[11px]">{language}</span>
+            <span className="font-bold uppercase font-mono text-[10px] sm:text-[11px]">{language}</span>
           </button>
 
           {showLangMenu && (
@@ -439,7 +439,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               onOpenLanding();
             }}
             title="Questionnaire Bêta-Testeur"
-            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-[#ebdfc8] hover:bg-[#ebdcc4] border-2 border-[#3a2312] text-[#3a2312] font-black transition-all cursor-pointer shadow-xs flex items-center gap-1 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0"
+            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-[#ebdfc8] hover:bg-[#ebdcc4] border-2 border-[#3a2312] text-[#3a2312] font-black transition-all cursor-pointer shadow-xs hidden min-[400px]:flex items-center gap-1 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#d97c27] fill-[#d97c27] shrink-0" />
             <span className="hidden xs:inline">{language === 'ar' ? 'رأي' : language === 'en' ? 'Feedback' : 'Avis'}</span>

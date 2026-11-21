@@ -357,7 +357,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             )}
           </div>
 
-          {/* Supporter / Patron Banner */}
+          {/* Supporter / Patron Banner (web uniquement : jamais dans l'app native) */}
+          {onOpenSupport && (
           <div className="p-3.5 bg-gradient-to-br from-[#fffbeb] via-[#fef3c7] to-[#fde68a] border-2 border-[#d97c27] rounded-3xl flex items-center justify-between shadow-[0_3px_0_#3a2312] relative overflow-hidden">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#d97c27] border-2 border-[#3a2312] flex items-center justify-center text-white text-lg shadow-sm shrink-0">
@@ -389,6 +390,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
               </button>
             )}
           </div>
+          )}
 
           {/* Next Rank Goal Banner */}
           {nextRank && (

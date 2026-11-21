@@ -1288,10 +1288,10 @@ export default function App() {
             soundEnabled={progress.soundEnabled}
             onToggleSound={toggleSound}
             onOpenAssetManager={() => setShowAssetManager(true)}
-            onOpenSupport={() => {
+            onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
               setSupportModalReason('profile');
               setShowSupportModal(true);
-            }}
+            } : undefined}
             onUpdateAppearance={handleUpdateAppearance}
             onResetProgress={handleResetGame}
             onHarvestXp={handleHarvestXp}
@@ -1351,10 +1351,10 @@ export default function App() {
                   narrativeFlags={progress.narrativeFlags}
                   showSkipSeen={canSkipSeen}
                   onSkipSeen={handleSkipSeen}
-                  onOpenSupport={() => {
+                  onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
                     setSupportModalReason('chapter_end');
                     setShowSupportModal(true);
-                  }}
+                  } : undefined}
                 />
               )}
 
@@ -1497,10 +1497,10 @@ export default function App() {
                   }}
                   onOpenKnowledge={() => setShowKnowledge(true)}
                   onOpenFeedback={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
-                  onOpenSupport={() => {
+                  onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
                     setSupportModalReason('chapter_end');
                     setShowSupportModal(true);
-                  }}
+                  } : undefined}
                   customAssets={customAssets}
                 />
               )}
