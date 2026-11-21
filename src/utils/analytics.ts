@@ -59,7 +59,7 @@ export async function trackEvent(eventName: string, params: Record<string, any> 
     if (typeof window !== 'undefined') {
       getPostHog().capture(eventName, {
         ...params,
-        platform: Capacitor.isNativePlatform() ? 'android_apk' : 'web_browser',
+        platform: Capacitor.isNativePlatform() ? `${Capacitor.getPlatform()}_app` : 'web_browser',
         timestamp: new Date().toISOString()
       });
       if (import.meta.env.DEV) {

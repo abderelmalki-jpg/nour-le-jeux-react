@@ -56,6 +56,13 @@ export const STRIPE_CONFIG = {
 const SUPPORTER_STORAGE_KEY = 'nour_supporter_status';
 export const SUPPORTER_EVENT_NAME = 'nour_supporter_status_changed';
 
+/** Sur iOS/Android natif : aucun paiement externe, tout est débloqué (Guideline 3.1.1). */
+const IS_NATIVE_SHELL =
+  typeof window !== 'undefined' &&
+  (window.location.protocol === 'capacitor:' ||
+    window.location.protocol === 'ionic:' ||
+    Boolean((window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.()));
+
 export function getSupporterStatus(): boolean {
   // Tout est débloqué gratuitement par défaut (mode accès complet)
   return true;
@@ -72,6 +79,7 @@ export function setSupporterStatus(isSupporter: boolean) {
 }
 
 export function openStripeCheckout(url: string) {
+  if (IS_NATIVE_SHELL) return; // jamais de paiement externe dans l'app native
   if (typeof window !== 'undefined') {
     // Open in a new tab/window for Stripe Checkout
     window.open(url, '_blank', 'noopener,noreferrer');

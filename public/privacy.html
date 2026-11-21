@@ -183,7 +183,7 @@
       </div>
       <h1>Politique de Confidentialité</h1>
       <div class="subtitle">Nour : Jeu Islamique & Adab (playnour.online)</div>
-      <div class="last-update">Dernière mise à jour : 12 Septembre 2026</div>
+      <div class="last-update">Dernière mise à jour : 21 Novembre 2026</div>
     </header>
 
     <div class="highlight-box">
@@ -194,7 +194,7 @@
     <div class="card">
       <h2>1. Présentation de l'Application</h2>
       <p>
-        L'application et plateforme web <strong>Nour : Jeu Islamique & Adab</strong> (accessible via <code>https://playnour.online</code> et sur l'application Android sous l'identifiant <code>com.lavoie.sagesse</code>) est une expérience narrative, ludo-éducative et morale visant à transmettre des valeurs de sagesse, d'éthique et d'Adab à travers le jeu de rôle en pixel art.
+        L'application et plateforme web <strong>Nour : Jeu Islamique & Adab</strong> (accessible via <code>https://playnour.online</code> et sur les applications iOS et Android sous l'identifiant <code>com.lavoie.sagesse</code>) est une expérience narrative, ludo-éducative et morale visant à transmettre des valeurs de sagesse, d'éthique et d'Adab à travers le jeu de rôle en pixel art.
       </p>
       <p>
         <strong>Éditeur / Contact :</strong> Projet NOUR — <a href="mailto:contact@playnour.online" style="color: var(--amber-main);">contact@playnour.online</a>
@@ -215,27 +215,24 @@
 
     <!-- Section 3 -->
     <div class="card">
-      <h2>3. Données Analytiques Anonymes (Firebase Analytics)</h2>
+      <h2>3. Données Analytiques Anonymes</h2>
       <p>
-        Pour surveiller la stabilité technique, prévenir les bugs et mesurer l'intérêt pédagogique des différentes scènes, l'application utilise <strong>Google Analytics for Firebase</strong>.
-      </p>
-      <p>
-        Ces données sont strictement agrégées et anonymisées. Elles incluent notamment :
+        Pour mesurer l'intérêt pédagogique des différentes scènes et corriger les bugs, nous mesurons un usage minimal et anonyme du jeu :
       </p>
       <ul>
-        <li>Le type d'appareil et la version du système d'exploitation.</li>
-        <li>Les événements de complétion de scènes, de quiz et de validation de quêtes.</li>
-        <li>Le pays d'origine de la session (au niveau macro).</li>
-        <li>Les rapports techniques de plantages éventuels (Crashlytics).</li>
+        <li><strong>Applications iOS et Android :</strong> uniquement des événements anonymes d'usage (par exemple « scène terminée », « quiz terminé ») envoyés à <strong>PostHog</strong> (hébergé dans l'Union européenne). Aucun enregistrement d'écran, aucun profil de personne, aucun identifiant publicitaire, aucun suivi entre applications ou sites tiers.</li>
+        <li><strong>Site web :</strong> en plus, Google Analytics for Firebase et PostHog (mesure d'audience et enregistrement de session anonymisé pour améliorer l'ergonomie).</li>
       </ul>
-      <p>Ces données ne permettent en aucun cas de vous identifier personnellement.</p>
+      <p>
+        Ces données incluent le type d'appareil, la version du système, la langue, le pays (niveau macro) et les événements de progression. Elles ne permettent pas de vous identifier personnellement et ne sont jamais revendues.
+      </p>
     </div>
 
     <!-- Section 4 -->
     <div class="card">
       <h2>4. Protection des Enfants et Politique Famille (COPPA / RGPD)</h2>
       <p>
-        L'application s'adresse à un public familial et peut être utilisée par des enfants. Conformément aux exigences du programme Google Play Famille et aux réglementations internationales (COPPA, RGPD-Mineurs) :
+        L'application s'adresse à un public familial et peut être utilisée par des enfants. Conformément aux réglementations internationales (COPPA, RGPD-Mineurs) et aux règles des boutiques d'applications :
       </p>
       <ul>
         <li>Nous ne collectons aucune donnée personnelle identifiable auprès des mineurs (aucun nom réel, adresse postale, numéro de téléphone ou photo).</li>
@@ -246,9 +243,12 @@
 
     <!-- Section 5 -->
     <div class="card">
-      <h2>5. Paiements et Mécénat Sécurisé (Stripe)</h2>
+      <h2>5. Paiements</h2>
       <p>
-        Les contributions de soutien volontaire (mécénat et déblocage de chapitres) sont traitées directement par notre prestataire de paiement certifié <strong>Stripe Inc.</strong> (norme bancaire PCI-DSS Niveau 1).
+        <strong>Les applications iOS et Android ne proposent aucun achat ni paiement :</strong> tout le contenu du jeu est accessible gratuitement.
+      </p>
+      <p>
+        Sur le site web uniquement, d'éventuelles contributions volontaires de soutien sont traitées directement par notre prestataire de paiement certifié <strong>Stripe Inc.</strong> (norme bancaire PCI-DSS Niveau 1).
       </p>
       <p>
         Aucune donnée bancaire (numéro de carte, cryptogramme) ne transite ni n'est enregistrée sur nos serveurs.
@@ -257,12 +257,14 @@
 
     <!-- Section 6 -->
     <div class="card">
-      <h2>6. Permissions de l'Application Android</h2>
-      <p>L'application mobile demande uniquement les permissions strictement nécessaires à son bon fonctionnement :</p>
+      <h2>6. Permissions des Applications Mobiles</h2>
+      <p>Les applications mobiles demandent uniquement les permissions strictement nécessaires à leur bon fonctionnement :</p>
       <ul>
-        <li><strong>INTERNET :</strong> Pour charger les mises à jour de contenu et synchroniser les métriques anonymes de stabilité.</li>
-        <li><strong>AUDIO / ACCÈS MULTIMÉDIA :</strong> Pour restituer les bruitages, ambiances sonores et voix des personnages.</li>
+        <li><strong>Réseau :</strong> pour envoyer les statistiques anonymes d'usage décrites ci-dessus.</li>
+        <li><strong>Audio :</strong> pour restituer les bruitages, ambiances sonores et voix des personnages.</li>
+        <li><strong>Notifications (facultatif) :</strong> un rappel quotidien local, programmé sur votre appareil, que vous pouvez refuser ou désactiver à tout moment dans les réglages. Aucune donnée n'est envoyée à un serveur pour cela.</li>
       </ul>
+      <p>L'application n'accède ni à votre position, ni à vos contacts, ni à vos photos, ni à l'appareil photo ou au micro.</p>
     </div>
 
     <!-- Section 7 -->
@@ -272,7 +274,7 @@
         Puisque l'ensemble de votre progression est enregistré localement sur votre téléphone ou navigateur, vous pouvez à tout moment supprimer l'intégralité de vos données :
       </p>
       <ul>
-        <li>En effaçant les données de l'application dans les paramètres de votre smartphone Android.</li>
+        <li>En désinstallant l'application (iPhone/iPad) ou en effaçant ses données dans les paramètres de votre smartphone Android.</li>
         <li>En vidant les cookies et le stockage local de votre navigateur web.</li>
         <li>Via l'option de réinitialisation présente dans l'interface du jeu.</li>
       </ul>

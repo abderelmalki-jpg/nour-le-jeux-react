@@ -26,7 +26,11 @@ const isBot = typeof window !== "undefined" && (
 );
 
 // Initialize Analytics conditionally (safely for Capacitor / SSR / web, and excluding bots)
-export const analyticsPromise = typeof window !== "undefined" && !isBot
+// Désactivé dans l'app native : les analytics passent uniquement par PostHog (anonyme).
+const isNativeShell = typeof window !== "undefined" &&
+  (window.location.protocol === "capacitor:" || window.location.protocol === "ionic:");
+
+export const analyticsPromise = typeof window !== "undefined" && !isBot && !isNativeShell
   ? isSupported().then((supported) => (supported ? getAnalytics(app) : null))
   : Promise.resolve(null);
 

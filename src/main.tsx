@@ -7,18 +7,30 @@ import App from './App.tsx';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { isNativeApp } from './utils/platform';
 
 const posthogApiKey = import.meta.env.VITE_POSTHOG_PROJECT_TOKEN || 'phc_si9wAvbE35sJQojXKyZy4EKcSfEdYwYN4V2rJqbfr3iu';
 const posthogHost = import.meta.env.VITE_POSTHOG_HOST || 'https://eu.i.posthog.com';
 
-const posthogOptions = {
-  api_host: posthogHost,
-  person_profiles: 'always' as const,
-  capture_pageview: true,
-  capture_pageleave: true,
-  autocapture: true,
-  disable_session_recording: false,
-};
+// App native (iOS/Android) : analytics minimaux et anonymes, sans enregistrement de session,
+// sans autocapture ni profil de personne (public familial, App Store Privacy).
+const posthogOptions = isNativeApp
+  ? {
+      api_host: posthogHost,
+      person_profiles: 'identified_only' as const,
+      capture_pageview: false,
+      capture_pageleave: false,
+      autocapture: false,
+      disable_session_recording: true,
+    }
+  : {
+      api_host: posthogHost,
+      person_profiles: 'always' as const,
+      capture_pageview: true,
+      capture_pageleave: true,
+      autocapture: true,
+      disable_session_recording: false,
+    };
 
 interface Props {
   children: ReactNode;

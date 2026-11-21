@@ -53,6 +53,7 @@ import {
   trackEvent
 } from './utils/analytics';
 import { Capacitor } from '@capacitor/core';
+import { WEB_ONLY_FEATURES_ENABLED } from './utils/platform';
 
 const STORAGE_KEY = 'nour_pixelio_rpg_progress_v2';
 
@@ -1148,7 +1149,7 @@ export default function App() {
         onOpenMap={() => setActiveTab('travel')}
         onOpenKnowledge={() => setShowKnowledge(true)}
         onOpenQuiz={() => setShowQuiz(true)}
-        onOpenLanding={() => handleOpenLanding(true)}
+        onOpenLanding={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
         customAssets={customAssets}
         hasSpiritualGatePending={hasSpiritualGatePending}
       />
@@ -1495,7 +1496,7 @@ export default function App() {
                     setActiveTab('travel');
                   }}
                   onOpenKnowledge={() => setShowKnowledge(true)}
-                  onOpenFeedback={() => handleOpenLanding(true)}
+                  onOpenFeedback={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
                   onOpenSupport={() => {
                     setSupportModalReason('chapter_end');
                     setShowSupportModal(true);
@@ -1635,7 +1636,7 @@ export default function App() {
             setShowSplash(false);
             setActiveTab('adventure');
           }}
-          onOpenLanding={() => handleOpenLanding(true)}
+          onOpenLanding={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
         />
       )}
 
@@ -1651,7 +1652,7 @@ export default function App() {
       )}
 
       {/* Support & Mécénat / Founder Unlock Modal (Stripe Web) */}
-      {showSupportModal && (
+      {showSupportModal && WEB_ONLY_FEATURES_ENABLED && (
         <SupportModal
           reason={supportModalReason}
           onClose={() => setShowSupportModal(false)}
