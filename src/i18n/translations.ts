@@ -464,7 +464,7 @@ export const translations: Record<Language, Translations> = {
     hero: {
       badge: "L'Alliance du Jeu Vidéo RPG & de l'Éducation Islamique",
       titleLine1: "Le jeu où votre enfant apprend l'Adab en jouant",
-      titleLine2: 'RPG gratuit en français, sans violence. Quiz de sagesse, hadiths sûrs, aucune inscription.',
+      titleLine2: 'RPG gratuit en français, sans violence. Quiz de sagesse, références citées, aucune inscription.',
       heroSubtitleDirect: "L'épopée du cœur — De la solitude à la fraternité",
       combatQuizPillTitle: "⚔️ Ni violence, ni magie :",
       combatQuizPillDesc: "Dans NOUR, les défis se relèvent par des Quiz. Votre enfant gagne en sagesse et en confiance, loin des jeux toxiques.",
@@ -810,7 +810,7 @@ export const translations: Record<Language, Translations> = {
       hadithMeaning: '« Ton sourire à ton frère est pour toi une aumône (Sadaqah). » (Rapporté par at-Tirmidhi)',
       hadithRef: 'Jami` at-Tirmidhi (1956)',
       valueTitle: 'Pédagogie & Éthique',
-      valueDesc: 'Toutes les leçons morales sont soigneusement vérifiées et présentées avec douceur et pédagogie.',
+      valueDesc: 'Chaque leçon morale cite ses sources et est présentée avec douceur et pédagogie.',
       cards: [
         {
           id: 'adab_parole',
@@ -1027,7 +1027,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: 'Quelles sont les sources religieuses utilisées ?',
-          a: "Tous les récits, rappels et quiz s'appuient scrupuleusement sur le Noble Coran et les recueils de Hadiths prophétiques authentiques (Sahîh al-Bukhâri et Sahîh Muslim). Les références précises sont consultables dans le Livre du Savoir du jeu."
+          a: "Les récits, rappels et quiz s'appuient sur le Noble Coran et sur des hadiths tirés des recueils prophétiques (notamment Sahîh al-Bukhâri et Sahîh Muslim). Chaque référence est citée dans le Livre du Savoir ; nous ne sommes pas savants et invitons les familles à vérifier auprès d'une personne de science."
         },
         {
           q: 'Existe-t-il une version Android installable ?',
@@ -1082,7 +1082,7 @@ export const translations: Record<Language, Translations> = {
       navChapters: 'Les 5 Chapitres',
       navWisdom: 'Le Livre du Savoir',
       infoTitle: 'Informations',
-      pegi: 'Classification : PEGI 3+ (Tout public)',
+      pegi: 'Recommandé dès 8 ans',
       format: 'Format : Web App (PWA) & APK Android',
       apkDrive: "Télécharger l'APK Android (Drive) ↗",
       languages: 'Langues : Français (avec calligraphies arabes)',
@@ -1466,7 +1466,7 @@ export const translations: Record<Language, Translations> = {
       hadithMeaning: '“Your smile for your brother is a charity (Sadaqah).” (Narrated by at-Tirmidhi)',
       hadithRef: 'Jami` at-Tirmidhi (1956)',
       valueTitle: 'Pedagogy & Ethics',
-      valueDesc: 'Every moral concept is thoroughly researched, verified, and delivered with warmth and clarity.',
+      valueDesc: 'Every moral lesson cites its sources and is delivered with warmth and clarity.',
       cards: [
         {
           id: 'adab_parole',
@@ -1683,7 +1683,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: 'What religious and ethical sources are used?',
-          a: "All stories, reminders, and quizzes are faithfully based on the Noble Qur'an and authentic prophetic hadith collections (Sahih al-Bukhari and Sahih Muslim). Precise references are viewable in the in-game Book of Knowledge."
+          a: "Stories, reminders and quizzes draw on the Noble Qur'an and on hadiths from the prophetic collections (notably Sahih al-Bukhari and Sahih Muslim). Each reference is cited in the in-game Book of Knowledge; we are not scholars and invite families to check with a person of knowledge."
         },
         {
           q: 'Is there an installable Android version available?',
@@ -1738,7 +1738,7 @@ export const translations: Record<Language, Translations> = {
       navChapters: 'The 5 Chapters',
       navWisdom: 'The Book of Knowledge',
       infoTitle: 'Information',
-      pegi: 'Classification: PEGI 3+ (General Audiences)',
+      pegi: 'Recommended from age 8',
       format: 'Format : Web App (PWA) & APK Android',
       apkDrive: 'Download the Android APK (Drive) ↗',
       languages: 'Languages: French (with Arabic calligraphy)',
@@ -2122,7 +2122,7 @@ export const translations: Record<Language, Translations> = {
       hadithMeaning: '« تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ » (رواه الترمذي وقال حديث حسن غريب)',
       hadithRef: 'جامع الترمذي (١٩٥٦)',
       valueTitle: 'تربية وقيم رفيعة',
-      valueDesc: 'تمت مراجعة كل معنى بدقة تربوية ليكون نافعاً للناشئة والكبار على حد سواء.',
+      valueDesc: 'كُلُّ دَرْسٍ أَخْلَاقِيٍّ يَذْكُرُ مَصْدَرَهُ وَيُقَدَّمُ بِلُطْفٍ وَوُضُوحٍ.',
       cards: [
         {
           id: 'adab_parole',
@@ -2339,7 +2339,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: 'ما هي المصادر الدينية والأخلاقية المعتمدة في اللعبة ؟',
-          a: 'تستند جميع القصص والفوائد والأسئلة بدقة إلى القرآن الكريم وكتب السنة النبوية الصحيحة (صحيحي البخاري ومسلم). وتُذكر المراجع بوضوح داخل كتاب الحكمة في اللعبة.'
+          a: 'تَسْتَنِدُ الْقِصَصُ وَالْفَوَائِدُ وَالْأَسْئِلَةُ إِلَى الْقُرْآنِ الْكَرِيمِ وَإِلَى أَحَادِيثَ مِنْ كُتُبِ السُّنَّةِ (وَمِنْهَا صَحِيحُ الْبُخَارِيِّ وَصَحِيحُ مُسْلِمٍ). وَيُذْكَرُ كُلُّ مَرْجِعٍ فِي كِتَابِ الْحِكْمَةِ فِي اللُّعْبَةِ؛ وَلَسْنَا عُلَمَاءَ، وَنَدْعُو الْأُسَرَ إِلَى التَّحَقُّقِ مِنْ أَهْلِ الْعِلْمِ.'
         },
         {
           q: 'هل تتوفر نسخة تطبيق أندرويد قابلة للتثبيت ؟',
@@ -2394,7 +2394,7 @@ export const translations: Record<Language, Translations> = {
       navChapters: 'الفصول الخمسة',
       navWisdom: 'كتاب الحكمة',
       infoTitle: 'معلومات تقنية',
-      pegi: 'التصنيف : مناسب لجميع الفئات العمرية',
+      pegi: 'يُنْصَحُ بِهَا مِنْ عُمْرِ ٨ سَنَوَاتٍ',
       format: 'الصيغة : تطبيق ويب وتطبيق أندرويد APK',
       apkDrive: 'تحميل تطبيق الأندرويد (درايف) ↗',
       languages: 'اللغات : الفرنسية والإنجليزية مع خطوط عربية أصيلة',

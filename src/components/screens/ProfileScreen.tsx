@@ -4,6 +4,8 @@ import { PlayerProgress, TravelerAppearance, BadgeItem, PLAYER_RANKS, getPlayerR
 import { PIXEL_ASSETS } from '../../utils/assets';
 import { soundManager } from '../../utils/audio';
 import { getPersonalityProfile, TRAIT_CONFIG, INITIAL_CHARACTER_TRAITS } from '../../utils/characterTraits';
+import { useLanguage } from '../../context/LanguageContext';
+import { UI_EXTRAS } from '../../i18n/uiExtras';
 
 interface ProfileScreenProps {
   progress: PlayerProgress;
@@ -29,6 +31,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   const [profileSubTab, setProfileSubTab] = useState<'progression' | 'badges' | 'rangs'>('progression');
   const [badgeFilter, setBadgeFilter] = useState<'tous' | 'progression' | 'habitudes' | 'histoire'>('tous');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const { language } = useLanguage();
+  const ux = UI_EXTRAS[language] ?? UI_EXTRAS.fr;
 
   const currentRank = getPlayerRank(progress.xp);
   const nextRank = getNextPlayerRank(progress.xp);
@@ -721,23 +725,23 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             {/* Header Title & Badge */}
             <div>
               <span className="text-xs font-black uppercase tracking-wider text-[#8c5a2b] font-cinzel bg-[#ebdfc8] px-4 py-1.5 rounded-full border-2 border-[#3a2312] shadow-xs">
-                ⚠️ Recommencer
+                {ux.resetBadge}
               </span>
               <h3 className="text-lg sm:text-xl font-black text-[#3a2312] font-cinzel mt-2 tracking-wide">
-                Recommencer à zéro ?
+                {ux.resetTitle}
               </h3>
             </div>
 
             {/* Child-Friendly Clear Warning Box */}
             <div className="w-full bg-[#f3ebd9] border-2 border-[#3a2312] p-4 rounded-2xl flex flex-col gap-2.5 shadow-inner text-center">
               <p className="text-sm sm:text-base font-bold text-[#3a2312] leading-snug">
-                Attention ! Tu vas effacer toute ton aventure et repartir du tout début.
+                {ux.resetWarning}
               </p>
               
               <div className="flex items-center justify-center gap-2 bg-[#ebdfc8] py-2 px-3 rounded-xl border border-[#3a2312] text-xs sm:text-sm font-bold text-[#5c4028]">
-                <span>Niveau {progress.level || 1}</span>
+                <span>{ux.levelShort} {progress.level || 1}</span>
                 <span>•</span>
-                <span className="text-[#d97c27] font-black">{progress.xp || 0} XP acquis</span>
+                <span className="text-[#d97c27] font-black">{progress.xp || 0} {ux.resetXp}</span>
               </div>
             </div>
 
@@ -751,7 +755,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                 }}
                 className="w-full py-3.5 px-4 rounded-2xl bg-[#2d6a4f] hover:bg-[#1b4332] text-[#fbf7ee] font-black text-sm sm:text-base font-cinzel border-2 border-[#1b4332] shadow-[0_4px_0_#1b4332] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2 uppercase tracking-wide"
               >
-                <span>Garder ma partie</span>
+                <span>{ux.resetKeep}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -765,7 +769,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                 className="w-full py-3 px-4 rounded-2xl bg-[#ebdfc8] hover:bg-[#e0cfb4] text-[#8c2b2b] font-bold text-xs sm:text-sm font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>Oui, tout recommencer</span>
+                <span>{ux.resetConfirm}</span>
               </button>
             </div>
           </div>

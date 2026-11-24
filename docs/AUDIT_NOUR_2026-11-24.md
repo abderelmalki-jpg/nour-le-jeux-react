@@ -520,3 +520,21 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Il reste en français en mode EN/AR : la vignette « La Proclamation de Foi & d'Action », la fenêtre de confirmation « Nouvelle partie » et le titre de l'onglet du navigateur.
 - Voix : l'anglais n'a toujours aucune voix (silence) ; l'arabe n'existe que pour la scène 1.
 
+
+## Quatrième vague (2026-11-24)
+
+**Corrigé**
+- Quiz en double : la scène 7 du chapitre 1 reprenait `quiz_niyyah` (déjà posé à la scène 1). Nouveau quiz `quiz_niyyah_discretion` (FR/EN/AR).
+- `quiz_hilm_afw` (pardon) était orphelin : branché en fin de scène 14 (chapitre 2).
+- Mauvaises réponses du chapitre 1 réécrites (plausibles, FR/EN/AR) : istiʿādhah, du'ā de sortie, taʿāruf, adab de boire, adab de la parole, sabr, niyyah, shukr.
+- Anciennes traductions EN/AR du chapitre 1 : un quiz absent de ces fichiers retombait sur `quiz_istiadhah` ; `getChapter1Quizzes` fusionne désormais avec le français.
+- Combat final du chapitre 2 : duels sur la colère et le pardon (avant : doute/solitude et désespoir du chapitre 1).
+- Textes restés français en EN/AR : vignettes de victoire, fenêtre « Recommencer à zéro », titre de l'onglet.
+
+**Vérifié, non reproduit**
+- « Menu de la scène 10 inachevé » : c'est le menu de choix de chapitre, il fonctionne.
+- « Titres du chapitre 3 en double » : aucun doublon trouvé dans `chapter3.ts`.
+- Quiz libre (`islamicQuizzes.ts`) : questions factuelles à 3 propositions déjà plausibles, laissées telles quelles ; il reste **uniquement en français**.
+
+**Préparé (pas de contenu de jeu écrit)** : `docs/CHAPITRES_4_5_ET_STYLE.md`, `docs/seo/*`.
+**Signalé, non modifié** : note 4,9/148 avis dans le JSON-LD de `index.html` (aucune preuve dans le dépôt) et promesses (« hadiths sûrs », « PEGI 3+ », « doublage intégral ») à aligner.

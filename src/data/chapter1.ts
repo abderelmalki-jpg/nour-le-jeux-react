@@ -5,12 +5,12 @@ export const QUIZZES: Record<string, Quiz> = {
     id: 'quiz_istiadhah',
     topic: 'Istiʿādhah',
     promptSpeaker: 'noura',
-    question: 'Que peut-on dire lorsqu\'on cherche refuge auprès d\'Allah contre Shayṭān ?',
+    question: 'Quelle formule enseignée permet de chercher refuge auprès d’Allah contre Shayṭān ?',
     options: [
-      { id: 'A', text: 'Il n\'y a rien à dire, il faut juste ignorer.', isCorrect: false },
+      { id: 'A', text: 'Bismillāh ar-raḥmān ar-raḥīm.', isCorrect: false },
       { id: 'B', text: 'Aʿūdhu billāhi mina sh-shayṭāni r-rajīm.', isCorrect: true },
-      { id: 'C', text: 'Une formule que chacun invente.', isCorrect: false },
-      { id: 'D', text: 'Il faut être savant pour avoir le droit de le dire.', isCorrect: false },
+      { id: 'C', text: 'Al-ḥamdu lillāh.', isCorrect: false },
+      { id: 'D', text: 'Astaghfirullāh.', isCorrect: false },
     ],
     correctOptionId: 'B',
     explanation: 'L’istiʿādhah est explicitement mentionnée dans le Coran : lorsqu’on cherche protection ou récitation, on demande refuge auprès d’Allah contre le Shayṭān.',
@@ -29,10 +29,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Quelle invocation le Prophète ﷺ nous a-t-il enseigné de réciter en franchissant le seuil de sa maison ?',
     options: [
-      { id: 'A', text: 'On ne dit rien, il suffit de courir vite.', isCorrect: false },
+      { id: 'A', text: 'L’invocation que l’on récite avant de s’endormir.', isCorrect: false },
       { id: 'B', text: '« Bismillâh, tawakkaltu ʿalâ Allâh, wa lâ hawla wa lâ quwwata illâ billâh ».', isCorrect: true },
-      { id: 'C', text: 'Une formule réservée uniquement aux longs voyages.', isCorrect: false },
-      { id: 'D', text: 'On la récite seulement s\'il fait nuit dehors.', isCorrect: false },
+      { id: 'C', text: 'L’invocation que l’on dit en sortant des toilettes.', isCorrect: false },
+      { id: 'D', text: 'L’invocation du voyageur, réservée aux longs trajets.', isCorrect: false },
     ],
     correctOptionId: 'B',
     explanation: 'Le Prophète ﷺ a enseigné que lorsqu\'un croyant sort en disant cette duʿāʾ, il lui est répondu : « Tu es guidé, préservé et protégé », et le diable s\'écarte de lui.',
@@ -52,10 +52,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Pourquoi Allah a-t-Il créé les peuples et les tribus ?',
     options: [
-      { id: 'A', text: 'Pour qu\'ils se comparent.', isCorrect: false },
+      { id: 'A', text: 'Pour qu’ils se fassent concurrence et se classent.', isCorrect: false },
       { id: 'B', text: 'Pour que les gens puissent se connaître.', isCorrect: true },
-      { id: 'C', text: 'Pour que chacun reste de son côté.', isCorrect: false },
-      { id: 'D', text: 'Pour déterminer qui est supérieur.', isCorrect: false },
+      { id: 'C', text: 'Pour que chacun vive à l’écart des autres.', isCorrect: false },
+      { id: 'D', text: 'Pour que les plus nombreux dominent les autres.', isCorrect: false },
     ],
     correctOptionId: 'B',
     explanation: 'Coran 49:13 indique que les peuples et tribus ont été créés « pour que vous vous entreconnaissiez » (Taʿāruf). Le verset précise que le plus noble auprès d’Allah est le plus pieux, non celui du groupe le plus fort.',
@@ -73,10 +73,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Selon la noble Sunnah, quelle bienséance le Prophète ﷺ nous a-t-il enseignée avant et pendant que l\'on boit ?',
     options: [
-      { id: 'A', text: 'Boire debout d\'un seul trait sans respirer.', isCorrect: false },
-      { id: 'B', text: 'Boire avec la main gauche en marchant vite.', isCorrect: false },
+      { id: 'A', text: 'Boire debout, d’un seul trait, pour gagner du temps.', isCorrect: false },
+      { id: 'B', text: 'Boire de la main la plus pratique, sans rien dire.', isCorrect: false },
       { id: 'C', text: 'S\'asseoir, dire Bismillâh, boire de la main droite en 3 gorgées et dire Al-Hamdulillâh.', isCorrect: true },
-      { id: 'D', text: 'Souffler plusieurs fois à l\'intérieur du récipient.', isCorrect: false },
+      { id: 'D', text: 'Souffler dans le récipient pour refroidir la boisson.', isCorrect: false },
     ],
     correctOptionId: 'C',
     explanation: 'Le Prophète ﷺ a enseigné de boire assis, avec la main droite, en prononçant Bismillâh, en respirant à l\'extérieur du récipient par trois fois, et en concluant par Al-Hamdulillâh.',
@@ -94,10 +94,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Que faire lorsqu\'on n\'a rien de bon à dire ?',
     options: [
-      { id: 'A', text: 'Parler quand même.', isCorrect: false },
-      { id: 'B', text: 'Répondre sur le même ton.', isCorrect: false },
+      { id: 'A', text: 'Parler quand même, pour ne pas paraître distant.', isCorrect: false },
+      { id: 'B', text: 'Répondre sur le même ton pour se défendre.', isCorrect: false },
       { id: 'C', text: 'Garder le silence.', isCorrect: true },
-      { id: 'D', text: 'Se moquer.', isCorrect: false },
+      { id: 'D', text: 'Plaisanter aux dépens de l’autre pour détendre l’atmosphère.', isCorrect: false },
     ],
     correctOptionId: 'C',
     explanation: 'Le Prophète ﷺ a enseigné de parler en bien ou de garder le silence. Savoir se taire lorsqu’on n’a rien de constructif est une preuve de sagesse et de foi.',
@@ -115,10 +115,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Quel comportement correspond le mieux au sabr ?',
     options: [
-      { id: 'A', text: 'Insister jusqu\'à ce que l\'autre accepte.', isCorrect: false },
-      { id: 'B', text: 'Persévérer avec patience face à la difficulté.', isCorrect: true },
-      { id: 'C', text: 'Abandonner immédiatement.', isCorrect: false },
-      { id: 'D', text: 'Faire semblant que ça ne fait pas mal.', isCorrect: false },
+      { id: 'A', text: 'Insister de plus en plus fort jusqu’à ce que l’autre cède.', isCorrect: false },
+      { id: 'B', text: 'Persévérer avec calme et dignité face à la difficulté.', isCorrect: true },
+      { id: 'C', text: 'Renoncer dès que la difficulté apparaît.', isCorrect: false },
+      { id: 'D', text: 'Taire sa peine en gardant de la rancune.', isCorrect: false },
     ],
     correctOptionId: 'B',
     explanation: 'Le Sabr est une endurance constructive : on accepte la réalité d’un refus ou d’une épreuve sans s’emporter, sans s’obstiner avec force, et sans se résigner au désespoir.',
@@ -136,10 +136,10 @@ export const QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Dans une bonne action, quelle chose compte notamment auprès d\'Allah ?',
     options: [
-      { id: 'A', text: 'Être applaudi.', isCorrect: false },
-      { id: 'B', text: 'Être impressionnant.', isCorrect: false },
+      { id: 'A', text: 'Être applaudi par les gens.', isCorrect: false },
+      { id: 'B', text: 'Accomplir beaucoup d’actions visibles.', isCorrect: false },
       { id: 'C', text: 'L\'intention avec laquelle on agit.', isCorrect: true },
-      { id: 'D', text: 'Recevoir quelque chose en retour.', isCorrect: false },
+      { id: 'D', text: 'Être remercié ou récompensé en retour.', isCorrect: false },
     ],
     correctOptionId: 'C',
     explanation: 'Le hadith célèbre de l’Imam Bukhari établit que la valeur spirituelle de chaque action dépend de la pureté de l’intention (la Niyyah).',
@@ -151,6 +151,28 @@ export const QUIZZES: Record<string, Quiz> = {
       hadithCollection: 'Sahih al-Bukhari (Hadith 1)'
     }
   },
+  quiz_niyyah_discretion: {
+    id: 'quiz_niyyah_discretion',
+    topic: 'Ikhlāṣ',
+    promptSpeaker: 'noura',
+    question: 'Comment protéger son intention quand on fait le bien ?',
+    options: [
+      { id: 'A', text: 'En le racontant autour de soi pour rester motivé.', isCorrect: false },
+      { id: 'B', text: 'En agissant avec discrétion, pour Allah seul, sans chercher à être vu.', isCorrect: true },
+      { id: 'C', text: 'En attendant qu’on le remarque pour être sûr qu’il compte.', isCorrect: false },
+      { id: 'D', text: 'En ne faisant le bien que lorsque personne n’a besoin de nous.', isCorrect: false },
+    ],
+    correctOptionId: 'B',
+    explanation: 'Parmi les sept que l’ombre d’Allah abritera, le Prophète ﷺ cite celui qui fait l’aumône en secret, au point que sa main gauche ignore ce que dépense sa droite. La discrétion protège l’intention de l’ostentation.',
+    reference: {
+      concept: 'Ikhlāṣ (La sincérité dans le secret)',
+      reference: 'Sahih al-Bukhari 1423 · Sahih Muslim 1031',
+      citationText: '« … un homme qui fait l’aumône en cachette, au point que sa main gauche ignore ce que dépense sa droite. »',
+      sourceType: 'Hadith',
+      hadithCollection: 'Sahih al-Bukhari (Hadith 1423)',
+      arabic: 'وَرَجُلٌ تَصَدَّقَ بِصَدَقَةٍ فَأَخْفَاهَا حَتَّى لَا تَعْلَمَ شِمَالُهُ مَا تُنْفِقُ يَمِينُهُ'
+    }
+  },
   quiz_shukr: {
     id: 'quiz_shukr',
     topic: 'Shukr',
@@ -158,7 +180,7 @@ export const QUIZZES: Record<string, Quiz> = {
     question: 'Comment appelle-t-on la gratitude envers Allah pour Ses bienfaits ?',
     options: [
       { id: 'A', text: 'Le sabr.', isCorrect: false },
-      { id: 'B', text: 'L\'adab.', isCorrect: false },
+      { id: 'B', text: 'Le tawakkul.', isCorrect: false },
       { id: 'C', text: 'Le shukr.', isCorrect: true },
       { id: 'D', text: 'La niyyah.', isCorrect: false },
     ],
@@ -1611,7 +1633,7 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's7_b9',
         type: 'quiz',
-        quizId: 'quiz_niyyah',
+        quizId: 'quiz_niyyah_discretion',
         unlockedConceptId: 'niyyah'
       },
       {
@@ -2181,8 +2203,10 @@ export const getChapter1Scenes = (lang: Language): Scene[] => {
 };
 
 export const getChapter1Quizzes = (lang: Language): Record<string, Quiz> => {
-  if (lang === 'en') return QUIZZES_EN;
-  if (lang === 'ar') return QUIZZES_AR;
+  // Le français est la source de vérité : un quiz absent des anciens fichiers EN/AR reste disponible
+  // (le dictionnaire de narrativeI18n en fournit alors la traduction).
+  if (lang === 'en') return { ...QUIZZES, ...QUIZZES_EN };
+  if (lang === 'ar') return { ...QUIZZES, ...QUIZZES_AR };
   return QUIZZES;
 };
 

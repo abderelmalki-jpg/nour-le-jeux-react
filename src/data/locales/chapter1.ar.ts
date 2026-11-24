@@ -1629,7 +1629,7 @@ export const CHAPTER_1_SCENES_AR: Scene[] = [
       {
         id: 's7_b9',
         type: 'quiz',
-        quizId: 'quiz_niyyah',
+        quizId: 'quiz_niyyah_discretion',
         unlockedConceptId: 'niyyah'
       },
       {

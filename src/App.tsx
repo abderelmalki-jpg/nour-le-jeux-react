@@ -41,6 +41,7 @@ import { refreshDailyReminder } from './utils/notifications';
 import { loadCustomAssets, CustomAssetsConfig, PIXEL_ASSETS, DEFAULT_ASSETS } from './utils/assets';
 import { getSupporterStatus, setSupporterStatus, SUPPORTER_EVENT_NAME, SUPPORT_ENABLED } from './utils/stripe';
 import { Sparkles, Play, Compass, Shield, ChevronLeft, ChevronRight, BookOpen, ScrollText, MessageSquareQuote, FastForward, Flame } from 'lucide-react';
+import { DOCUMENT_TITLES } from './i18n/uiExtras';
 import {
   trackScreenView,
   trackSceneView,
@@ -238,6 +239,10 @@ export default function App() {
   };
 
   const { language, isRtl } = useLanguage();
+
+  useEffect(() => {
+    document.title = DOCUMENT_TITLES[language] ?? DOCUMENT_TITLES.fr;
+  }, [language]);
 
   const currentCh1Scenes = getChapter1Scenes(language);
   const currentCh1Quizzes = getChapter1Quizzes(language);

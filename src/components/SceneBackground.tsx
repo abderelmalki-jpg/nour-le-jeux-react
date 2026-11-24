@@ -335,16 +335,14 @@ export const SceneBackground: React.FC<SceneBackgroundProps> = ({
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center bg-[#181422]">
         <div className="absolute inset-0 flex items-center justify-center">
           <img src={bgDepart} className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl transform scale-110 pointer-events-none" alt="" referrerPolicy="no-referrer" />
-          <SafeVideo
-            src="/game-assets/carrefour_poteau.mp4"
-            poster={bgDepart}
-            autoPlay
-            loop
-            muted
-            playsInline
+          {/* Image fixe sans texte : l'ancienne vidéo (carrefour_poteau.mp4) avait les noms de chapitres incrustés, dont certains faux. */}
+          <img
+            src={bgDepart}
+            alt="Le grand poteau aux chemins, au coucher du soleil"
             className={`relative w-full h-full object-contain object-center transition-transform duration-[4000ms] ease-out pointer-events-none ${
               isContemplating ? 'scale-105' : 'scale-100'
             }`}
+            referrerPolicy="no-referrer"
           />
         </div>
 

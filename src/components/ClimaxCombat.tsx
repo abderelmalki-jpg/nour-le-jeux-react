@@ -497,6 +497,83 @@ const CHAPTER_3_DUEL_ROUNDS: DuelRound[] = [
   }
 ];
 
+// Chapitre 2 (Hilm) : les duels portent sur la colère et le pardon (le premier et le dernier encadrent
+// la riposte adaptative au trait dominant du joueur).
+const CHAPTER_2_DUEL_ROUNDS: Record<'fr' | 'en' | 'ar', DuelRound[]> = {
+  fr: [
+    {
+      id: 'round_c2_etincelle',
+      whisper: '« Ce marchand t’a humilié devant tout le marché ! Réponds-lui, élève la voix, sinon personne ne te respectera ! »',
+      whisperSubtitle: 'Attaque de l’orgueil blessé et de l’emportement',
+      arabic: 'وَإِمَّا يَنزَغَنَّكَ مِنَ الشَّيْطَانِ نَزْغٌ فَاسْتَعِذْ بِاللَّهِ',
+      options: [
+        { id: 'A', text: '« Aʿūdhu billāh ! Je m’assieds, je respire, et je ne réponds pas sous le coup de la colère. »', concept: 'Istiʿādhah & retenue', isCorrect: true, feedback: 'Chercher refuge auprès d’Allah éteint l’étincelle avant qu’elle ne devienne incendie !' },
+        { id: 'B', text: '« Il a raison de me craindre : je vais lui rendre la pareille, mot pour mot. »', concept: 'Riposte par vengeance', isCorrect: false, feedback: 'Rendre le mal par le mal attise le feu du Waswâs.' },
+        { id: 'C', text: '« Je ne ressens rien du tout. Cette histoire ne me touche pas. »', concept: 'Colère refoulée', isCorrect: false, feedback: 'Nier sa colère ne l’éteint pas : elle couve et revient plus forte.' }
+      ]
+    },
+    {
+      id: 'round_c2_pardon',
+      whisper: '« Pardonner ? Ce serait te laisser écraser. Celui qui pardonne est faible et sera encore humilié ! »',
+      whisperSubtitle: 'Tentative de faire passer le pardon pour une faiblesse',
+      arabic: 'وَلْيَعْفُوا وَلْيَصْفَحُوا ۗ أَلَا تُحِبُّونَ أَنْ يَغْفِرَ اللَّهُ لَكُمْ',
+      options: [
+        { id: 'A', text: '« ʿAfw : pardonner alors qu’on pourrait riposter, c’est la noblesse. Allah élève celui qui pardonne ! »', concept: 'ʿAfw (Noblesse du pardon)', isCorrect: true, feedback: 'Le pardon n’abaisse personne : il libère le cœur et l’élève auprès d’Allah !' },
+        { id: 'B', text: '« Tu as raison : je pardonnerai quand il m’aura présenté ses excuses à genoux. »', concept: 'Pardon conditionné par l’orgueil', isCorrect: false, feedback: 'Poser des conditions humiliantes garde le cœur prisonnier de la rancœur.' },
+        { id: 'C', text: '« Je ne me vengerai pas, mais je ne lui adresserai plus jamais la parole. »', concept: 'Rancœur silencieuse', isCorrect: false, feedback: 'Éviter l’autre en gardant sa rancune n’est pas un pardon.' }
+      ]
+    }
+  ],
+  en: [
+    {
+      id: 'round_c2_etincelle',
+      whisper: '« That merchant humiliated you in front of the whole market! Answer back, raise your voice, or nobody will ever respect you! »',
+      whisperSubtitle: 'Attack of wounded pride and outbursts',
+      arabic: 'وَإِمَّا يَنزَغَنَّكَ مِنَ الشَّيْطَانِ نَزْغٌ فَاسْتَعِذْ بِاللَّهِ',
+      options: [
+        { id: 'A', text: '« Aʿūdhu billāh! I sit down, I breathe, and I do not answer in the heat of anger. »', concept: 'Istiʿādhah & restraint', isCorrect: true, feedback: 'Seeking refuge in Allah puts out the spark before it becomes a blaze!' },
+        { id: 'B', text: '« He is right to fear me: I will pay him back, word for word. »', concept: 'Revenge as a reply', isCorrect: false, feedback: 'Answering evil with evil feeds the fire of the Waswas.' },
+        { id: 'C', text: '« I feel nothing at all. This business does not touch me. »', concept: 'Suppressed anger', isCorrect: false, feedback: 'Denying anger does not put it out: it smoulders and returns stronger.' }
+      ]
+    },
+    {
+      id: 'round_c2_pardon',
+      whisper: '« Forgive? That would be letting yourself be crushed. The one who forgives is weak and will be humiliated again! »',
+      whisperSubtitle: 'Attempt to pass forgiveness off as weakness',
+      arabic: 'وَلْيَعْفُوا وَلْيَصْفَحُوا ۗ أَلَا تُحِبُّونَ أَنْ يَغْفِرَ اللَّهُ لَكُمْ',
+      options: [
+        { id: 'A', text: '« ʿAfw: to forgive when you could retaliate is nobility. Allah raises the one who forgives! »', concept: 'ʿAfw (The nobility of forgiveness)', isCorrect: true, feedback: 'Forgiveness lowers no one: it frees the heart and raises it before Allah!' },
+        { id: 'B', text: '« You are right: I will forgive once he has apologised on his knees. »', concept: 'Forgiveness conditioned by pride', isCorrect: false, feedback: 'Setting humiliating conditions keeps the heart prisoner of resentment.' },
+        { id: 'C', text: '« I will not take revenge, but I will never speak to him again. »', concept: 'Silent resentment', isCorrect: false, feedback: 'Avoiding someone while keeping the grudge is not forgiveness.' }
+      ]
+    }
+  ],
+  ar: [
+    {
+      id: 'round_c2_etincelle',
+      whisper: '« ذَلِكَ التَّاجِرُ أَهَانَكَ أَمَامَ السُّوقِ كُلِّهِ! رُدَّ عَلَيْهِ وَارْفَعْ صَوْتَكَ وَإِلَّا لَنْ يَحْتَرِمَكَ أَحَدٌ! »',
+      whisperSubtitle: 'هُجُومُ الْكِبْرِيَاءِ الْجَرِيحِ وَالِانْفِعَالِ',
+      arabic: 'وَإِمَّا يَنزَغَنَّكَ مِنَ الشَّيْطَانِ نَزْغٌ فَاسْتَعِذْ بِاللَّهِ',
+      options: [
+        { id: 'A', text: '« أَعُوذُ بِاللَّهِ! أَجْلِسُ وَأَتَنَفَّسُ وَلَا أَرُدُّ تَحْتَ وَطْأَةِ الْغَضَبِ. »', concept: 'الِاسْتِعَاذَةُ وَضَبْطُ النَّفْسِ', isCorrect: true, feedback: 'الِاسْتِعَاذَةُ بِاللَّهِ تُطْفِئُ الشَّرَارَةَ قَبْلَ أَنْ تُصْبِحَ حَرِيقًا!' },
+        { id: 'B', text: '« لَهُ الْحَقُّ أَنْ يَخَافَنِي: سَأَرُدُّ عَلَيْهِ كَلِمَةً بِكَلِمَةٍ. »', concept: 'الرَّدُّ بِالِانْتِقَامِ', isCorrect: false, feedback: 'مُقَابَلَةُ السُّوءِ بِالسُّوءِ تُؤَجِّجُ نَارَ الْوَسْوَاسِ.' },
+        { id: 'C', text: '« لَا أَشْعُرُ بِشَيْءٍ. هَذَا الْأَمْرُ لَا يَعْنِينِي. »', concept: 'غَضَبٌ مَكْبُوتٌ', isCorrect: false, feedback: 'إِنْكَارُ الْغَضَبِ لَا يُطْفِئُهُ: يَظَلُّ تَحْتَ الرَّمَادِ وَيَعُودُ أَقْوَى.' }
+      ]
+    },
+    {
+      id: 'round_c2_pardon',
+      whisper: '« تَعْفُو؟ هَذَا يَعْنِي أَنْ تَدَعَ نَفْسَكَ تُسْحَقُ. مَنْ يَعْفُو ضَعِيفٌ وَسَيُهَانُ مِنْ جَدِيدٍ! »',
+      whisperSubtitle: 'مُحَاوَلَةُ تَصْوِيرِ الْعَفْوِ ضَعْفًا',
+      arabic: 'وَلْيَعْفُوا وَلْيَصْفَحُوا ۗ أَلَا تُحِبُّونَ أَنْ يَغْفِرَ اللَّهُ لَكُمْ',
+      options: [
+        { id: 'A', text: '« الْعَفْوُ : أَنْ تَعْفُوَ وَأَنْتَ قَادِرٌ عَلَى الرَّدِّ نُبْلٌ. وَاللَّهُ يَرْفَعُ مَنْ عَفَا! »', concept: 'الْعَفْوُ وَنُبْلُهُ', isCorrect: true, feedback: 'الْعَفْوُ لَا يَضَعُ أَحَدًا: يُحَرِّرُ الْقَلْبَ وَيَرْفَعُهُ عِنْدَ اللَّهِ!' },
+        { id: 'B', text: '« مَعَكَ حَقٌّ: سَأَعْفُو بَعْدَ أَنْ يَعْتَذِرَ لِي جَاثِيًا عَلَى رُكْبَتَيْهِ. »', concept: 'عَفْوٌ مَشْرُوطٌ بِالْكِبْرِيَاءِ', isCorrect: false, feedback: 'اشْتِرَاطُ شُرُوطٍ مُذِلَّةٍ يُبْقِي الْقَلْبَ أَسِيرَ الضَّغِينَةِ.' },
+        { id: 'C', text: '« لَنْ أَنْتَقِمَ، لَكِنِّي لَنْ أُكَلِّمَهُ أَبَدًا. »', concept: 'ضَغِينَةٌ صَامِتَةٌ', isCorrect: false, feedback: 'تَجَنُّبُ الْآخَرِ مَعَ بَقَاءِ الضَّغِينَةِ لَيْسَ عَفْوًا.' }
+      ]
+    }
+  ]
+};
+
 interface ClimaxCombatProps {
   waswasXp?: number;
   traits?: CharacterTraits;
@@ -520,7 +597,11 @@ export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
   const t = gameTranslations[language]?.climax || gameTranslations.fr.climax;
 
   const ch1Rounds = language === 'ar' ? DUEL_ROUNDS_AR : language === 'en' ? DUEL_ROUNDS_EN : DUEL_ROUNDS;
-  const baseRounds = chapterNumber === 3 ? CHAPTER_3_DUEL_ROUNDS : ch1Rounds;
+  const baseRounds = chapterNumber === 3
+    ? CHAPTER_3_DUEL_ROUNDS
+    : chapterNumber === 2
+    ? CHAPTER_2_DUEL_ROUNDS[language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr']
+    : ch1Rounds;
 
   // Build the dynamic duel round that specifically targets the player's dominant built trait!
   const adaptiveAttack = getWaswasAdaptiveAttack(traits);

@@ -549,80 +549,93 @@ export const CHAPTER_1_TRANSLATIONS: Record<Language, Chapter1TranslationSet> = 
     },
     quizzes: {
       quiz_istiadhah: {
-        question: 'What can we say when seeking refuge in Allah from Satan (Shayṭān)?',
+        question: 'Which taught formula do we say to seek refuge in Allah from Satan (Shayṭān)?',
         options: {
-          A: 'There is nothing to say, you just have to ignore it.',
+          A: 'Bismillāh ar-raḥmān ar-raḥīm.',
           B: 'Aʿūdhu billāhi mina sh-shayṭāni r-rajīm.',
-          C: 'A formula that each person invents on their own.',
-          D: 'You must be a certified scholar to be allowed to say it.'
+          C: 'Al-ḥamdu lillāh.',
+          D: 'Astaghfirullāh.'
         },
         explanation: 'The Istiʿādhah is explicitly mentioned in the Quran: when seeking protection or recitation, we ask refuge with Allah from the outcast devil.'
       },
       quiz_doua_maison: {
         question: 'Which supplication did the Prophet ﷺ teach us to recite when crossing the threshold of our home?',
         options: {
-          A: 'We say nothing, running fast is enough.',
+          A: 'The supplication recited before going to sleep.',
           B: '« Bismillāh, tawakkaltu ʿalā Allāh, wa lâ hawla wa lâ quwwata illā billāh ».',
-          C: 'A formula reserved only for long caravan journeys.',
-          D: 'We recite it only if it is completely dark outside.'
+          C: 'The supplication said when leaving the restroom.',
+          D: 'The traveller’s supplication, reserved for long journeys.'
         },
         explanation: 'The Prophet ﷺ taught that when a believer leaves home reciting this duʿāʾ, it is said to him: « You are guided, defended, and protected ».'
       },
       quiz_taaruf: {
         question: 'Why did Allah create nations and tribes according to Surah Al-Hujurat?',
         options: {
-          A: 'So that they compare and brag with pride.',
+          A: 'So that they compete and rank themselves.',
           B: 'So that people may get to know one another.',
-          C: 'So that everyone stays isolated in their corner.',
-          D: 'To determine which group is superior to others.'
+          C: 'So that everyone lives apart from the others.',
+          D: 'So that the most numerous may dominate the others.'
         },
         explanation: 'Quran 49:13 indicates that nations and tribes were created « that you may know one another » (Taʿāruf).'
       },
       quiz_adab_boire: {
         question: 'According to the noble Sunnah, what mindful etiquette did the Prophet ﷺ teach us when drinking?',
         options: {
-          A: 'Drinking while standing in one single gulp without breathing.',
-          B: 'Drinking with the left hand while walking briskly.',
+          A: 'Drinking standing, in a single gulp, to save time.',
+          B: 'Drinking with whichever hand is handier, saying nothing.',
           C: 'Sitting down, saying Bismillāh, drinking with the right hand in 3 sips, and concluding with Al-Hamdulillāh.',
-          D: 'Blowing repeatedly into the cup to cool it down.'
+          D: 'Blowing into the cup to cool the drink.'
         },
         explanation: 'The Prophet ﷺ taught to drink while seated, with the right hand, reciting Bismillāh, breathing outside the cup three times, and praising Allah with Al-Hamdulillāh.'
       },
       quiz_adab: {
         question: 'What should one do when having nothing good to say?',
         options: {
-          A: 'Speak anyway just to be heard.',
-          B: 'Respond with the same harsh tone.',
+          A: 'Speak anyway, so as not to seem distant.',
+          B: 'Answer in the same tone to defend oneself.',
           C: 'Remain silent.',
-          D: 'Mock the situation.'
+          D: 'Joke at the other’s expense to lighten the mood.'
         },
         explanation: 'The Prophet ﷺ taught: « Whoever believes in Allah and the Last Day, let him speak good or remain silent ».'
       },
       quiz_sabr: {
         question: 'Which attitude best reflects true Sabr (noble patience)?',
         options: {
-          A: 'Insisting until the other person gives in by force.',
+          A: 'Pushing harder and harder until the other gives in.',
           B: 'Persevering with calm and dignity in the face of difficulty.',
-          C: 'Giving up immediately with bitter resentment.',
-          D: 'Pretending that nothing hurts while harboring grudges.'
+          C: 'Giving up as soon as the difficulty appears.',
+          D: 'Hiding the pain while holding a grudge.'
         },
         explanation: 'Sabr is constructive moral endurance: accepting trials without losing temper and continuing to move forward with noble poise.'
       },
       quiz_niyyah: {
         question: 'In any righteous deed, what matters most in the sight of Allah?',
         options: {
-          A: 'Being loudly applauded by the crowd.',
-          B: 'Looking impressive in the eyes of others.',
+          A: 'Being applauded by people.',
+          B: 'Doing many visible deeds.',
           C: 'The sincere intention in the heart for Allah alone.',
-          D: 'Receiving an immediate material reward in return.'
+          D: 'Being thanked or rewarded in return.'
         },
         explanation: 'The hadith states: « Actions are judged only by intentions ». An action is accepted only when motivated by sincere devotion to the Creator.'
+      },
+      quiz_niyyah_discretion: {
+        topic: 'Ikhlāṣ',
+        question: 'How can we protect our intention when doing good?',
+        options: {
+          A: 'By telling everyone about it, to stay motivated.',
+          B: 'By acting discreetly, for Allah alone, without seeking to be seen.',
+          C: 'By waiting to be noticed, to be sure the deed counts.',
+          D: 'By doing good only when nobody really needs us.'
+        },
+        explanation: 'Among the seven whom Allah will shade on the Day of Resurrection, the Prophet ﷺ names a man who gives charity so secretly that his left hand does not know what his right hand spends. Discretion shields the intention from showing off.',
+        citationText: '« … a man who gives charity so secretly that his left hand does not know what his right hand spends. »',
+        concept: 'Ikhlāṣ (Sincerity in secret)'
       },
       quiz_shukr: {
         question: 'What do we call genuine gratitude to Allah for His boundless blessings?',
         options: {
           A: 'Sabr.',
-          B: 'Adab.',
+          B: 'Tawakkul.',
           C: 'Shukr.',
           D: 'Niyyah.'
         },
@@ -901,80 +914,93 @@ export const CHAPTER_1_TRANSLATIONS: Record<Language, Chapter1TranslationSet> = 
     },
     quizzes: {
       quiz_istiadhah: {
-        question: 'مَاذَا يَقُولُ الْمُسْلِمُ حِينَ يَسْتَعِيذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ؟',
+        question: 'أَيُّ هَذِهِ الصِّيَغِ نَقُولُهَا لِنَسْتَعِيذَ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ؟',
         options: {
-          A: 'لَا شَيْءَ، فَقَطْ يَتَجَاهَلُ الْأَمْرَ.',
+          A: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ.',
           B: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.',
-          C: 'عِبَارَةٌ يَخْتَرِعُهَا كُلُّ شَخْصٍ مِنْ عِنْدِهِ.',
-          D: 'لَا يَجُوزُ قَوْلُهَا إِلَّا لِلْعُلَمَاءِ.'
+          C: 'الْحَمْدُ لِلَّهِ.',
+          D: 'أَسْتَغْفِرُ اللَّهَ.'
         },
         explanation: 'الِاسْتِعَاذَةُ مَذْكُورَةٌ صَرَاحَةً فِي الْقُرْآنِ الْكَرِيمِ : حِينَ يَطْلُبُ الْمُسْلِمُ الْحِمَايَةَ أَوْ يَقْرَأُ الْقُرْآنَ، يَسْتَعِيذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.'
       },
       quiz_doua_maison: {
         question: 'مَا هُوَ الدُّعَاءُ الَّذِي عَلَّمَنَا إِيَّاهُ النَّبِيُّ ﷺ عِنْدَ مُغَادَرَةِ الْبَيْتِ؟',
         options: {
-          A: 'لَا شَيْءَ، يَكْفِي الْإِسْرَاعُ فِي الْخُرُوجِ.',
+          A: 'دُعَاءُ النَّوْمِ الَّذِي يُقَالُ قَبْلَ النَّوْمِ.',
           B: '« بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ ».',
-          C: 'دُعَاءٌ خَاصٌّ بِالسَّفَرِ الطَّوِيلِ فَقَطْ.',
-          D: 'يُقَالُ فَقَطْ إِذَا كَانَ الْوَقْتُ لَيْلًا مُظْلِمًا.'
+          C: 'دُعَاءُ الْخُرُوجِ مِنَ الْخَلَاءِ.',
+          D: 'دُعَاءُ الْمُسَافِرِ، خَاصٌّ بِالرِّحْلَاتِ الطَّوِيلَةِ.'
         },
         explanation: 'عَلَّمَنَا النَّبِيُّ ﷺ أَنَّ الْمُؤْمِنَ إِذَا خَرَجَ مِنْ بَيْتِهِ فَقَالَ هَذَا الدُّعَاءَ، يُقَالُ لَهُ : « هُدِيتَ وَكُفِيتَ وَوُقِيتَ ».'
       },
       quiz_taaruf: {
         question: 'لِمَاذَا جَعَلَ اللَّهُ النَّاسَ شُعُوبًا وَقَبَائِلَ فِي سُورَةِ الْحُجُرَاتِ؟',
         options: {
-          A: 'لِيَتَبَاهَوْا بِالْأَنْسَابِ وَيَتَفَاخَرُوا.',
+          A: 'لِيَتَنَافَسُوا وَيُصَنِّفُوا أَنْفُسَهُمْ.',
           B: 'لِيَتَعَارَفُوا وَيَتَآلَفُوا عَلَى الْبِرِّ وَالتَّقْوَى.',
-          C: 'لِيَعِيشَ كُلُّ فَرْدٍ بِمَعْزِلٍ فِي رُكْنِهِ.',
-          D: 'لِيَتَنَازَعُوا أَيُّهُمْ أَقْوَى وَأَعْلَى شَأْنًا.'
+          C: 'لِيَعِيشَ كُلُّ فَرِيقٍ بِمَعْزِلٍ عَنِ الْآخَرِينَ.',
+          D: 'لِيَتَسَلَّطَ الْأَكْثَرُ عَدَدًا عَلَى غَيْرِهِمْ.'
         },
         explanation: 'تُبَيِّنُ الْآيَةُ الْكَرِيمَةُ (الحجرات : ١٣) أَنَّ اللَّهَ خَلَقَ النَّاسَ شُعُوبًا وَقَبَائِلَ « لِتَعَارَفُوا ».'
       },
       quiz_adab_boire: {
         question: 'مَا هُوَ الْأَدَبُ النَّبَوِيُّ الْكَرِيمُ الَّذِي عَلَّمَنَا إِيَّاهُ النَّبِيُّ ﷺ عِنْدَ شُرْبِ الْمَاءِ؟',
         options: {
-          A: 'الشُّرْبُ وَاقِفًا جَرْعَةً وَاحِدَةً دُونَ تَنَفُّسٍ.',
-          B: 'الشُّرْبُ بِالْيَدِ الْيُسْرَى مَعَ الْمَشْيِ السَّرِيعِ.',
+          A: 'الشُّرْبُ وَاقِفًا جَرْعَةً وَاحِدَةً تَوْفِيرًا لِلْوَقْتِ.',
+          B: 'الشُّرْبُ بِأَيِّ يَدٍ أَيْسَرَ، دُونَ ذِكْرِ اللَّهِ.',
           C: 'الْجُلُوسُ، وَالتَّسْمِيَةُ، وَالشُّرْبُ بِالْيَدِ الْيُمْنَى عَلَى ثَلَاثِ دَفَعَاتٍ، وَحَمْدُ اللَّهِ.',
-          D: 'النَّفْخُ مَرَّاتٍ عَدِيدَةً دَاخِلَ الْإِنَاءِ.'
+          D: 'النَّفْخُ فِي الْإِنَاءِ لِتَبْرِيدِ الشَّرَابِ.'
         },
         explanation: 'عَلَّمَنَا النَّبِيُّ ﷺ أَنْ نَشْرَبَ جُلُوسًا، بِالْيَدِ الْيُمْنَى، مُسَمِّينَ اللَّهَ، وَأَنْ نَتَنَفَّسَ خَارِجَ الْإِنَاءِ ثَلَاثًا.'
       },
       quiz_adab: {
         question: 'مَاذَا يَفْعَلُ الْمُؤْمِنُ حِينَ لَا يَجِدُ كَلَامًا طَيِّبًا نَافِعًا يَقُولُهُ؟',
         options: {
-          A: 'يَتَكَلَّمُ بِأَيِّ شَيْءٍ لِيَلْفِتَ الِانْتِبَاهَ.',
-          B: 'يَرُدُّ بِنَفْسِ النَّبْرَةِ الْغَلِيظَةِ.',
+          A: 'يَتَكَلَّمُ عَلَى أَيِّ حَالٍ كَيْ لَا يَبْدُوَ بَعِيدًا.',
+          B: 'يَرُدُّ بِنَفْسِ النَّبْرَةِ دِفَاعًا عَنْ نَفْسِهِ.',
           C: 'يَلْزَمُ الصَّمْتَ وَيَحْفَظُ لِسَانَهُ.',
-          D: 'يَسْخَرُ مِنَ الْمَوْقِفِ.'
+          D: 'يَمْزَحُ عَلَى حِسَابِ الْآخَرِ لِيُخَفِّفَ التَّوَتُّرَ.'
         },
         explanation: 'عَلَّمَنَا النَّبِيُّ ﷺ : « مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ ».'
       },
       quiz_sabr: {
         question: 'أَيُّ هَذِهِ التَّصَرُّفَاتِ يُعَبِّرُ عَنِ الصَّبْرِ الْجَمِيلِ عِنْدَ مُوَاجَهَةِ الرَّفْضِ أَوْ الصُّعُوبَةِ؟',
         options: {
-          A: 'الْإِلْحَاحُ بِغَضَبٍ حَتَّى يَرْضَخَ الطَّرَفُ الْآخَرُ.',
+          A: 'الْإِلْحَاحُ بِشِدَّةٍ مُتَزَايِدَةٍ حَتَّى يَرْضَخَ الْآخَرُ.',
           B: 'الثَّبَاتُ بِوَقَارٍ وَمُوَاصَلَةُ السَّعْيِ دُونَ جَزَعٍ أَوْ ضَغِينَةٍ.',
-          C: 'الِاسْتِسْلَامُ الْفَوْرِيُّ مَعَ الشُّعُورِ بِالْمَرَارَةِ.',
-          D: 'التَّظَاهُرُ بِعَدَمِ التَّأَثُّرِ مَعَ إِضْمَارِ الْغَيْظِ.'
+          C: 'الِاسْتِسْلَامُ حَالَمَا تَظْهَرُ الصُّعُوبَةُ.',
+          D: 'كَتْمُ الْأَلَمِ مَعَ إِضْمَارِ الضَّغِينَةِ.'
         },
         explanation: 'الصَّبْرُ طَاقَةٌ إِيمَانِيَّةٌ شُجَاعَةٌ : نَتَقَبَّلُ الْمَوَاقِفَ بِرِضًا، دُونَ أَنْ نَفْقِدَ أَدَبَنَا.'
       },
       quiz_niyyah: {
         question: 'مَا الَّذِي يَمْنَحُ الْعَمَلَ الصَّالِحَ قِيمَتَهُ الْحَقِيقِيَّةَ عِنْدَ اللَّهِ تَعَالَى؟',
         options: {
-          A: 'تَصْفِيقُ النَّاسِ وَثَنَاؤُهُمْ.',
-          B: 'مَظْهَرُ الْعَمَلِ الْخَارِجِيُّ فَقَطْ.',
+          A: 'أَنْ يُصَفِّقَ لَهُ النَّاسُ وَيُثْنُوا عَلَيْهِ.',
+          B: 'كَثْرَةُ الْأَعْمَالِ الظَّاهِرَةِ.',
           C: 'إِخْلَاصُ النِّيَّةِ لِلَّهِ وَحْدَهُ دُونَ رِيَاءٍ.',
-          D: 'الْحُصُولُ عَلَى مُقَابِلٍ مَادِّيٍّ سَرِيعٍ.'
+          D: 'أَنْ يُشْكَرَ أَوْ يُكَافَأَ فِي الْمُقَابِلِ.'
         },
         explanation: 'يُقَرِّرُ الْحَدِيثُ الشَّرِيفُ : « إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ ». لَا يُقْبَلُ الْعَمَلُ إِلَّا إِذَا كَانَ خَالِصًا لِوَجْهِ اللَّهِ.'
+      },
+      quiz_niyyah_discretion: {
+        topic: 'الْإِخْلَاصُ',
+        question: 'كَيْفَ نَحْفَظُ نِيَّتَنَا حِينَ نَفْعَلُ الْخَيْرَ؟',
+        options: {
+          A: 'بِأَنْ نَرْوِيَهُ لِلنَّاسِ كَيْ نَبْقَى مُتَحَمِّسِينَ.',
+          B: 'بِأَنْ نَفْعَلَهُ بِخُفْيَةٍ لِلَّهِ وَحْدَهُ دُونَ طَلَبِ الظُّهُورِ.',
+          C: 'بِأَنْ نَنْتَظِرَ أَنْ يَلْحَظَنَا النَّاسُ لِنَتَيَقَّنَ أَنَّهُ مَقْبُولٌ.',
+          D: 'بِأَنْ لَا نَفْعَلَ الْخَيْرَ إِلَّا إِذَا لَمْ يَحْتَجْ إِلَيْنَا أَحَدٌ.'
+        },
+        explanation: 'مِنَ السَّبْعَةِ الَّذِينَ يُظِلُّهُمُ اللَّهُ فِي ظِلِّهِ يَوْمَ الْقِيَامَةِ : رَجُلٌ تَصَدَّقَ بِصَدَقَةٍ فَأَخْفَاهَا حَتَّى لَا تَعْلَمَ شِمَالُهُ مَا تُنْفِقُ يَمِينُهُ. فَالْخُفْيَةُ تَصُونُ النِّيَّةَ مِنَ الرِّيَاءِ.',
+        citationText: '« … وَرَجُلٌ تَصَدَّقَ بِصَدَقَةٍ فَأَخْفَاهَا حَتَّى لَا تَعْلَمَ شِمَالُهُ مَا تُنْفِقُ يَمِينُهُ. »',
+        concept: 'الْإِخْلَاصُ فِي السِّرِّ'
       },
       quiz_shukr: {
         question: 'مَاذَا نُسَمِّي اعْتِرَافَ الْقَلْبِ بِنِعَمِ اللَّهِ وَالثَّنَاءَ عَلَيْهِ بِهَا؟',
         options: {
           A: 'الصَّبْرَ.',
-          B: 'الْأَدَبَ.',
+          B: 'التَّوَكُّلَ.',
           C: 'الشُّكْرَ.',
           D: 'النِّيَّةَ.'
         },

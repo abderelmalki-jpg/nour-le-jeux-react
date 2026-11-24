@@ -658,6 +658,11 @@ export const CHAPTER_2_SCENES: Scene[] = [
         speaker: 'marchand',
         text: 'Qu\'Allah te bénisse, jeune homme... J\'ai agi sous le coup de la colère et j\'ai eu tort. Tiens, prends ces deux grenades dorées, elles sont pour toi avec toute ma gratitude.',
         emotion: 'smiling'
+      },
+      {
+        id: 's14_b10',
+        type: 'quiz',
+        quizId: 'quiz_hilm_afw'
       }
     ]
   },

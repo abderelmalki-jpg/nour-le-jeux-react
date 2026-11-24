@@ -13,6 +13,12 @@ export interface UiExtras {
   voiceOn: string;
   next: string;
   levelShort: string;
+  resetBadge: string;
+  resetTitle: string;
+  resetWarning: string;
+  resetXp: string;
+  resetKeep: string;
+  resetConfirm: string;
 }
 
 export const UI_EXTRAS: Record<Language, UiExtras> = {
@@ -26,7 +32,13 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     soon: 'BIENTÔT',
     voiceOn: 'Voix Active',
     next: 'Continuer',
-    levelShort: 'Niv.'
+    levelShort: 'Niv.',
+    resetBadge: '⚠️ Recommencer',
+    resetTitle: 'Recommencer à zéro ?',
+    resetWarning: 'Attention ! Tu vas effacer toute ton aventure et repartir du tout début.',
+    resetXp: 'XP acquis',
+    resetKeep: 'Garder ma partie',
+    resetConfirm: 'Oui, tout recommencer'
   },
   en: {
     play: 'PLAY',
@@ -38,7 +50,13 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     soon: 'SOON',
     voiceOn: 'Voice On',
     next: 'Continue',
-    levelShort: 'Lv.'
+    levelShort: 'Lv.',
+    resetBadge: '⚠️ Start over',
+    resetTitle: 'Start from scratch?',
+    resetWarning: 'Careful! You are about to erase your whole adventure and start again from the very beginning.',
+    resetXp: 'XP earned',
+    resetKeep: 'Keep my game',
+    resetConfirm: 'Yes, start over'
   },
   ar: {
     play: 'ابْدَأْ',
@@ -50,7 +68,13 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     soon: 'قَرِيبًا',
     voiceOn: 'الصَّوْتُ مُفَعَّلٌ',
     next: 'مُتَابَعَةٌ',
-    levelShort: 'م.'
+    levelShort: 'م.',
+    resetBadge: '⚠️ إِعَادَةُ الْبَدْءِ',
+    resetTitle: 'الْبَدْءُ مِنَ الصِّفْرِ؟',
+    resetWarning: 'انْتَبِهْ! سَتَمْحُو مُغَامَرَتَكَ كُلَّهَا وَتَبْدَأُ مِنَ الْبِدَايَةِ.',
+    resetXp: 'نِقَاطُ خِبْرَةٍ مُكْتَسَبَةٌ',
+    resetKeep: 'الِاحْتِفَاظُ بِلُعْبَتِي',
+    resetConfirm: 'نَعَمْ، أَبْدَأُ مِنْ جَدِيدٍ'
   }
 };
 
@@ -85,5 +109,36 @@ export const CHAPTER_LABELS: Record<Language, { chapter: string; items: Record<n
       4: { title: 'مَا زَالَ بَيْنَ يَدَيْكَ', subtitle: 'الْإِحْسَانُ إِلَى الْوَالِدَيْنِ' },
       5: { title: 'قِمَّةُ الْمُثَابَرَةِ', subtitle: 'الصَّبْرُ' }
     }
+  }
+};
+
+// Titre de l'onglet du navigateur (le français reste celui d'index.html, pensé pour le référencement).
+export const DOCUMENT_TITLES: Record<Language, string> = {
+  fr: "Le jeu où votre enfant apprend l'Adab en jouant | NOUR RPG",
+  en: 'The game where your child learns Adab through play | NOUR RPG',
+  ar: 'لُعْبَةٌ يَتَعَلَّمُ فِيهَا طِفْلُكَ الْأَدَبَ بِالْمَرَحِ | نُور'
+};
+
+// Vignettes d'action (victoire du chapitre 1), clés = titre français.
+export const VIGNETTE_TRANSLATIONS: Record<string, Partial<Record<Language, { badge: string; title: string; description: string }>>> = {
+  "La Proclamation de Foi & d'Action": {
+    en: { badge: 'Victorious Virtue', title: 'The Proclamation of Faith & Action', description: 'Concrete, sincere deeds done in real life defeat the illusions of doubt.' },
+    ar: { badge: 'فَضِيلَةٌ مُنْتَصِرَةٌ', title: 'إِعْلَانُ الْإِيمَانِ وَالْعَمَلِ', description: 'الْأَعْمَالُ الصَّادِقَةُ الْمُحَقَّقَةُ فِي الْوَاقِعِ تَهْزِمُ أَوْهَامَ الشَّكِّ.' }
+  },
+  "Patience & Persévérance Inébranlables": {
+    en: { badge: 'Shield of Sabr', title: 'Unshakeable Patience & Perseverance', description: 'Faith and steadiness in effort reduce the whispers of doubt to nothing.' },
+    ar: { badge: 'دِرْعُ الصَّبْرِ', title: 'صَبْرٌ وَمُثَابَرَةٌ لَا تَلِينَانِ', description: 'الْإِيمَانُ وَالثَّبَاتُ فِي الْجُهْدِ يُبْطِلَانِ وَسَاوِسَ الشَّكِّ.' }
+  },
+  "Ancrage dans les Actes Réels": {
+    en: { badge: 'Armor of Discipline', title: 'Anchored in Real Actions', description: 'Every daily gesture done in real life destroys the deceptive illusions of the Shadow.' },
+    ar: { badge: 'دِرْعُ الِانْضِبَاطِ', title: 'الرُّسُوخُ فِي الْأَعْمَالِ الْحَقِيقِيَّةِ', description: 'كُلُّ فِعْلٍ يَوْمِيٍّ فِي الْوَاقِعِ يَهْدِمُ أَوْهَامَ الظِّلِّ الْمُضَلِّلَةَ.' }
+  },
+  "Pureté de l'Intention": {
+    en: { badge: 'Light of Adab & Hilm', title: 'Purity of Intention', description: 'Sincerely seeking Allah’s pleasure scatters the darkness of the heart.' },
+    ar: { badge: 'نُورُ الْأَدَبِ وَالْحِلْمِ', title: 'نَقَاءُ النِّيَّةِ', description: 'طَلَبُ رِضَا اللَّهِ بِصِدْقٍ يُبَدِّدُ ظُلُمَاتِ الْقَلْبِ.' }
+  },
+  "Le Courage en Mouvement": {
+    en: { badge: 'Surge of Vitality', title: 'Courage in Motion', description: 'Resolute action and a step forward overcome paralysis and fear.' },
+    ar: { badge: 'دَفْعَةُ الْحَيَوِيَّةِ', title: 'الشَّجَاعَةُ فِي الْحَرَكَةِ', description: 'الْفِعْلُ الْحَازِمُ وَالْخُطْوَةُ إِلَى الْأَمَامِ يَقْهَرَانِ الشَّلَلَ وَالْخَوْفَ.' }
   }
 };

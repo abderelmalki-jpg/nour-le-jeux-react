@@ -11,7 +11,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { gameTranslations } from '../i18n/gameTranslations';
 import { TRAIT_CONFIG, getPersonalityProfile } from '../utils/characterTraits';
-import { UI_EXTRAS } from '../i18n/uiExtras';
+import { UI_EXTRAS, VIGNETTE_TRANSLATIONS } from '../i18n/uiExtras';
 import { getLocalizedBeatText, getLocalizedChoiceLabel, getLocalizedVariantText, getLocalizedChoiceBadge } from '../utils/narrativeI18n';
 
 interface DialogueBoxProps {
@@ -124,7 +124,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
     }
   }
 
-  const activeVignette =
+  const rawVignette =
     (beat.adaptiveVariants &&
       beat.adaptiveVariants.length > 0 &&
       beat.adaptiveVariants.find((v) => {
@@ -133,6 +133,9 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
         return v.requiredFlagValue !== undefined ? flagVal === v.requiredFlagValue : Boolean(flagVal);
       })?.actionVignette) ||
     beat.actionVignette;
+  const activeVignette = rawVignette
+    ? { ...rawVignette, ...(VIGNETTE_TRANSLATIONS[rawVignette.title]?.[language] ?? {}) }
+    : rawVignette;
 
   const isWaswas = beat.speaker === 'waswas' || beat.speaker === 'grand_waswas';
   const isSilent = isSilentSpeaker(beat.speaker);
@@ -415,8 +418,8 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
         className={`w-full relative z-20 border ${
           isParchment
             ? beat.isPontDeNour
-              ? 'bg-[#f4faef]/95 border-2 border-emerald-600 shadow-[0_12px_36px_rgba(45,106,79,0.3)] ring-2 ring-emerald-400/40 text-[#1b3d2b]'
-              : 'bg-[#fdfaf2]/95 border-2 border-[#c5a059] shadow-[0_12px_36px_rgba(100,70,20,0.25)] ring-1 ring-[#c5a059]/40 text-[#241a12]'
+              ? 'bg-[#f4faef]/55 backdrop-blur-[3px] border-2 border-emerald-600 shadow-[0_12px_36px_rgba(45,106,79,0.3)] ring-2 ring-emerald-400/40 text-[#1b3d2b]'
+              : 'bg-[#fdfaf2]/55 backdrop-blur-[3px] border-2 border-[#c5a059] shadow-[0_12px_36px_rgba(100,70,20,0.25)] ring-1 ring-[#c5a059]/40 text-[#241a12]'
             : beat.isPontDeNour
             ? 'bg-black/35 sm:bg-black/30 border-emerald-400/70 ring-2 ring-[#52b788]/60 shadow-[0_8px_32px_rgba(45,106,79,0.5)] text-[#ffffff]'
             : 'bg-black/35 sm:bg-black/30 border-amber-400/50 shadow-[0_8px_32px_rgba(0,0,0,0.6)] ring-1 ring-white/10 text-[#ffffff]'
