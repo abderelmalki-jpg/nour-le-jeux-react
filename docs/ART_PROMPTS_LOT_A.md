@@ -95,3 +95,24 @@ Originaux des fichiers remplacés : récupérables via git. Fichiers sources : `
 **Vérifié en jeu (scène 10)** : la scène du carrefour lisait une **vidéo** (`public/game-assets/carrefour_poteau.mp4`) avec l'ancien panneau incrusté (« CH.3 • LE SABR »). `SceneBackground.tsx` affiche désormais l'image fixe sans texte ; la vidéo n'est plus utilisée (fichier conservé).
 
 **Points à traiter** : l'image OG `affiche_nour_whatsapp.jpg` (partage réseaux) contient du texte et n'a pas été touchée.
+
+---
+
+## Lot B/C/D (2026-11-24) — décors des chapitres 2 à 4 et du Waswâs
+
+Générés avec Nano Banana 2.1 dans Google Flow (1344×756, sauf le chemin clair en 2752×1536), prompts de même forme que ci-dessus (style peint doré, sans texte, sans personnage). Installés à la place des décors pixel-art :
+
+| Scène | Fichier remplacé |
+|---|---|
+| Cour à pergola et fontaine (ch. 2) | `bg_mosquee_patio_vigne` |
+| Porche de l'herboriste (ch. 3) | `bg_maison_soins_apothicaire` |
+| Marches de la mosquée (ch. 3) | `bg_mosquee_marches_attelle` |
+| Atelier du sculpteur (ch. 3) | `bg_atelier_sculpture_sac` |
+| Cuisine au bouillon (ch. 3) | `bg_cuisine_bouillon` |
+| Grand chêne et nid (ch. 4) | `bg_teaser_chapitre4_arbre`, `public/game-assets/teaser_chapitre4.jpg` |
+| Cour familiale (ch. 4) | `bg_cour_familiale_parents` (montrait l'arbre) |
+| Chemin d'oliviers sous brume violette (Waswâs) | `bg_scene_waswas_pure_mist` |
+| Chemin d'oliviers dégagé (Waswâs vaincu) | `bg_scene_waswas_clair` |
+| Pavillon de pierre apaisé (climax) | `bg_climax_apaise` |
+
+Sources dans `art_incoming/lot_b/` (local). Les décors sont étirés de 1344×756 à 1920×1080 : un peu moins nets que le lot A (2K natif). Restent en pixel-art ou à classer : `arbre_racines`, `halte_the`, `refus_jeune_corde`, `verger_fleur_lanterne`, `transitions 1-9`, `waswas_bg.jpg` (voir `ART_INVENTORY.md`).
