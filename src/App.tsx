@@ -7,7 +7,7 @@ import { useTheme } from './context/ThemeContext';
 import { KNOWLEDGE_ITEMS } from './data/knowledge';
 import { INITIAL_STATS, INITIAL_QUESTS, INITIAL_BADGES, INITIAL_EQUIPMENT, INITIAL_APPEARANCE } from './data/rpgData';
 import { INITIAL_CHARACTER_TRAITS } from './utils/characterTraits';
-import { getLocalizedScene } from './utils/narrativeI18n';
+import { getLocalizedScene, getLocalizedHabitMessage } from './utils/narrativeI18n';
 import { PlayerProgress, DialogueChoice, TravelerAppearance, Scene, CharacterTraits } from './types';
 import { PixelioHeader } from './components/PixelioHeader';
 import { BottomNavBar, TabType } from './components/BottomNavBar';
@@ -955,8 +955,9 @@ export default function App() {
           vitalite: (currentTraits.vitalite || 0) + (choice.traitGains?.vitalite || 0),
           ilm: (currentTraits.ilm || 0) + (choice.traitGains?.ilm || 0),
         };
-        const newLog = choice.habitMessage
-          ? Array.from(new Set([...(prev.habitLog || []), choice.habitMessage]))
+        const localizedHabit = getLocalizedHabitMessage(choice, language);
+        const newLog = localizedHabit
+          ? Array.from(new Set([...(prev.habitLog || []), localizedHabit]))
           : prev.habitLog || [];
         return {
           ...prev,
@@ -966,7 +967,7 @@ export default function App() {
       });
 
       if (choice.habitMessage) {
-        setHabitToast(choice.habitMessage);
+        setHabitToast(getLocalizedHabitMessage(choice, language) || choice.habitMessage);
         setTimeout(() => {
           setHabitToast(null);
         }, 4000);

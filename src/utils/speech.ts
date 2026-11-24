@@ -321,8 +321,9 @@ class SpeechManager {
       return;
     }
 
-    // Les voix studio sont enregistrées en français : ne jamais les jouer sous un texte EN/AR.
-    if (beat.lang && beat.lang !== 'fr') {
+    // Voix studio : français (dossier /audio/chN) et arabe (dossier /audio/ar/chN, en cours d'enregistrement).
+    // Jamais de voix française sous un texte anglais : silence tant qu'il n'y a pas d'enregistrement.
+    if (beat.lang && beat.lang !== 'fr' && beat.lang !== 'ar') {
       options?.onEnd?.();
       return;
     }
@@ -355,7 +356,9 @@ class SpeechManager {
         }
       }
 
-      const audioUrl = `/audio/ch${chapterNum}/${beat.id}.mp3`;
+      const audioUrl = beat.lang === 'ar'
+        ? `/audio/ar/ch${chapterNum}/${beat.id}.mp3`
+        : `/audio/ch${chapterNum}/${beat.id}.mp3`;
 
       try {
         const audio = new Audio(audioUrl);

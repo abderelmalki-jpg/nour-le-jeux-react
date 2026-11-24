@@ -153,7 +153,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 </span>
               </div>
               <h3 className="text-xs sm:text-sm font-bold text-[#3a2312] font-cinzel line-clamp-1">
-                {quiz.topic}
+                {activeQuiz.topic}
               </h3>
             </div>
           </div>

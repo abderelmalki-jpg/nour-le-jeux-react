@@ -7,10 +7,10 @@ export const CHAPTER_3_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Que signifie véritablement placer sa confiance en Allah (Tawakkul) face à une maladie ou une blessure ?',
     options: [
-      { id: 'A', text: 'Refuser toute aide et attendre passivement sans rien faire.', isCorrect: false },
-      { id: 'B', text: 'Prendre les moyens utiles, consulter un soignant, suivre le traitement, puis remettre l\'issue à Allah.', isCorrect: true },
-      { id: 'C', text: 'Croire que la maladie est le signe qu\'on est rejeté ou puni.', isCorrect: false },
-      { id: 'D', text: 'Cacher sa douleur à tout le monde et prétendre être invincible.', isCorrect: false }
+      { id: 'A', text: 'Attendre sans rien faire, car tout est déjà écrit.', isCorrect: false },
+      { id: 'B', text: 'Se soigner avec sérieux, puis remettre le résultat à Allah.', isCorrect: true },
+      { id: 'C', text: 'Se soigner, mais ne plus penser à Allah tant qu\'on n\'est pas guéri.', isCorrect: false },
+      { id: 'D', text: 'Ne se fier qu\'à des remèdes secrets transmis par des proches.', isCorrect: false }
     ],
     correctOptionId: 'B',
     explanation: 'Le Prophète ﷺ a formellement ordonné de se soigner en affirmant qu\'Allah n\'a créé aucune maladie sans lui créer son remède. Consulter et prendre les remèdes est l\'essence même du Tawakkul prophétique.',
@@ -29,10 +29,10 @@ export const CHAPTER_3_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Que nous enseigne le Coran sur la charge de l\'épreuve et l\'adaptation de notre pratique lorsque le corps faiblit ?',
     options: [
-      { id: 'A', text: 'Si l\'on ne peut pas prier debout comme d\'habitude, la prière n\'est plus acceptée.', isCorrect: false },
-      { id: 'B', text: 'Allah n\'impose à aucune âme une charge supérieure à sa capacité, et la prière s\'adapte avec dignité.', isCorrect: true },
-      { id: 'C', text: 'La maladie prouve que l\'on est moins aimé par Dieu que les personnes en bonne santé.', isCorrect: false },
-      { id: 'D', text: 'Il faut forcer sur sa blessure jusqu\'à s\'évanouir pour prouver sa piété.', isCorrect: false }
+      { id: 'A', text: 'On doit attendre d\'être guéri pour reprendre la prière.', isCorrect: false },
+      { id: 'B', text: 'Allah n\'impose à personne plus que ce qu\'il peut porter : on prie selon ses forces.', isCorrect: true },
+      { id: 'C', text: 'Seuls ceux qui sont en bonne santé reçoivent la récompense complète.', isCorrect: false },
+      { id: 'D', text: 'Il faut prier exactement comme d\'habitude, même si cela fait très mal.', isCorrect: false }
     ],
     correctOptionId: 'B',
     explanation: 'Le verset 2:286 garantit qu\'Allah mesure chaque épreuve à la force de l\'âme. Le Prophète ﷺ a enseigné de prier debout selon ses forces, assis si l\'on ne peut pas, ou même sur le côté, car la miséricorde divine allège la pratique.',
@@ -49,12 +49,12 @@ export const CHAPTER_3_QUIZZES: Record<string, Quiz> = {
     id: 'quiz_remedes_prophetiques',
     topic: 'La Sagesse des Remèdes Prophétiques',
     promptSpeaker: 'noura',
-    question: 'Quels remèdes et nourritures bienfaisantes sont explicitement cités avec louange dans la tradition prophétique authentique ?',
+    question: 'Parmi ces aliments, lesquels sont cités avec éloge dans la tradition prophétique ?',
     options: [
-      { id: 'A', text: 'Le miel pur, la Talbîna (orge apaisante au lait et miel), et la graine de nigelle (Habba sawdā\').', isCorrect: true },
-      { id: 'B', text: 'Des incantations secrètes écrites sur des bouts de papier.', isCorrect: false },
-      { id: 'C', text: 'Des potions magiques qui remplacent les visites chez le médecin.', isCorrect: false },
-      { id: 'D', text: 'Le jeûne continu sans jamais manger ni s\'hydrater.', isCorrect: false }
+      { id: 'A', text: 'Le miel, la Talbîna (bouillie d\'orge) et la graine de nigelle.', isCorrect: true },
+      { id: 'B', text: 'Le sucre raffiné, le sel et les fritures.', isCorrect: false },
+      { id: 'C', text: 'Les boissons très sucrées prises à tout moment de la journée.', isCorrect: false },
+      { id: 'D', text: 'Les aliments très salés mangés en grande quantité.', isCorrect: false }
     ],
     correctOptionId: 'A',
     explanation: 'La Sunnah met en valeur des causes alimentaires douces : le miel (Coran 16:69), la Talbîna qui apaise le cœur du malade et dissipe sa tristesse (Bukhari 5417), et la nigelle (Bukhari 5688), toujours en harmonie avec la science.',
@@ -73,10 +73,10 @@ export const CHAPTER_3_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Quelle est la noble attitude du croyant face à la douleur et aux larmes lorsque l\'épreuve est lourde ?',
     options: [
-      { id: 'A', text: 'S\'interdire de pleurer et prétendre que la douleur n\'existe pas.', isCorrect: false },
-      { id: 'B', text: 'Accueillir la peine avec humilité, pleurer sans révolte, et garder la certitude de la miséricorde.', isCorrect: true },
-      { id: 'C', text: 'Maudire le destin et accuser les autres d\'être responsables.', isCorrect: false },
-      { id: 'D', text: 'S\'enfermer dans sa chambre sans plus jamais parler à personne.', isCorrect: false }
+      { id: 'A', text: 'Retenir ses larmes en toute circonstance, car pleurer est une faiblesse.', isCorrect: false },
+      { id: 'B', text: 'Accepter sa peine, pleurer sans se révolter, et garder confiance en la miséricorde d\'Allah.', isCorrect: true },
+      { id: 'C', text: 'Se révolter contre la douleur, puisqu\'elle n\'a aucun sens.', isCorrect: false },
+      { id: 'D', text: 'S\'isoler pour ne gêner personne, et ne plus rien demander à ses proches.', isCorrect: false }
     ],
     correctOptionId: 'B',
     explanation: 'Le Prophète ﷺ lui-même a versé des larmes lors des épreuves et a dit : « L\'œil pleure, le cœur est triste, mais nous ne disons que ce qui plaît à notre Seigneur » (Bukhari 1303). Les larmes sincères ne contredisent jamais le Sabr.',
@@ -95,10 +95,10 @@ export const CHAPTER_3_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Pourquoi accepter l\'aide d\'un proche ou d\'un soignant quand on est diminué est-il un acte de sagesse et non de faiblesse ?',
     options: [
-      { id: 'A', text: 'Parce que cela permet aux autres d\'exercer la miséricorde et à nous de pratiquer la gratitude sincère.', isCorrect: true },
-      { id: 'B', text: 'Parce que le fort doit exploiter le travail des autres sans dire merci.', isCorrect: false },
-      { id: 'C', text: 'Parce que dépendre des autres prouve qu\'on a échoué dans sa vie.', isCorrect: false },
-      { id: 'D', text: 'Parce qu\'il vaut mieux tout faire payer pour ne rien devoir.', isCorrect: false }
+      { id: 'A', text: 'Parce qu\'on laisse les autres faire le bien, et qu\'on pratique la gratitude.', isCorrect: true },
+      { id: 'B', text: 'Parce que ceux qui aident ont toujours raison, quoi qu\'on pense.', isCorrect: false },
+      { id: 'C', text: 'Parce qu\'on prouve ainsi qu\'on ne peut plus rien faire par soi-même.', isCorrect: false },
+      { id: 'D', text: 'Parce qu\'il vaut mieux accepter sans remercier, pour ne pas se sentir redevable.', isCorrect: false }
     ],
     correctOptionId: 'A',
     explanation: 'Le Prophète ﷺ a enseigné que celui qui ne remercie pas les gens ne remercie pas Allah (Tirmidhi 1954). Permettre à son frère ou à sa sœur de porter secours est une bénédiction partagée qui tisse la véritable fraternité.',

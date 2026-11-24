@@ -11,7 +11,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { gameTranslations } from '../i18n/gameTranslations';
 import { TRAIT_CONFIG, getPersonalityProfile } from '../utils/characterTraits';
-import { getLocalizedBeatText, getLocalizedChoiceLabel } from '../utils/narrativeI18n';
+import { UI_EXTRAS } from '../i18n/uiExtras';
+import { getLocalizedBeatText, getLocalizedChoiceLabel, getLocalizedVariantText, getLocalizedChoiceBadge } from '../utils/narrativeI18n';
 
 interface DialogueBoxProps {
   beat: Beat;
@@ -118,7 +119,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
     }
 
     if (matched) {
-      fullText = matched.text;
+      fullText = getLocalizedVariantText(beat.id, beat.adaptiveVariants.indexOf(matched), matched.text, language);
       if (matched.arabicText) fullArabicText = matched.arabicText;
     }
   }
@@ -529,7 +530,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                 {isVoiceEnabled ? (
                   <>
                     <Volume2 className={`w-3 h-3 text-[#34d399] ${isSpeaking ? 'animate-pulse' : ''}`} />
-                    <span>Voix Active</span>
+                    <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).voiceOn}</span>
                     {isSpeaking && (
                       <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-ping" />
                     )}
@@ -645,7 +646,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
               <div className={`flex justify-end items-center gap-1.5 text-[11px] sm:text-xs font-bold font-cinzel pt-1 animate-pulse select-none ${
                 isParchment ? 'text-amber-800' : 'text-amber-300 [text-shadow:_0_1px_4px_rgb(0_0_0_/_95%)]'
               }`}>
-                <span>Continuer</span>
+                <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).next}</span>
                 <CornerDownLeft className={`w-3.5 h-3.5 ${isParchment ? 'text-amber-800' : 'text-amber-300'}`} />
               </div>
             )}
@@ -730,9 +731,9 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                           </div>
                           
                           <div className="flex items-center gap-2 shrink-0 ml-2">
-                            {choice.badge && (
+                            {getLocalizedChoiceBadge(choice, language) && (
                               <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-[#dc2626] text-white font-cinzel shadow-xs animate-pulse">
-                                {choice.badge}
+                                {getLocalizedChoiceBadge(choice, language)}
                               </span>
                             )}
                             <Lock className={`w-3.5 h-3.5 shrink-0 ${isParchment ? 'text-amber-800' : 'text-amber-400'}`} />
@@ -873,9 +874,9 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                             );
                           })}
 
-                          {choice.badge && (
+                          {getLocalizedChoiceBadge(choice, language) && (
                             <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#2d6a4f] text-[#d8f3dc] font-cinzel">
-                              {choice.badge}
+                              {getLocalizedChoiceBadge(choice, language)}
                             </span>
                           )}
 

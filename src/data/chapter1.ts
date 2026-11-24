@@ -750,7 +750,7 @@ export const CHAPTER_1_SCENES: Scene[] = [
           },
           {
             id: 'c5',
-            label: '⛰️ Chapitre 5 : « La Montagne Intérieure » — La persévérance (Sabr) face à l’épreuve',
+            label: '⛰️ Chapitre 5 : « Le Sommet de la Persévérance » — La persévérance (Sabr) face à l’épreuve',
             disabled: true,
             badge: 'Bientôt • Chapitre 5',
             disabledReason: 'Aujourd’hui, Othmân apprend à agir avec une intention sincère uniquement pour Allah et à surmonter les grandes épreuves avec foi (Niyyah).',
@@ -2158,9 +2158,25 @@ import { QUIZZES_EN, REAL_ACTIONS_EN, CLIMAX_STEPS_EN, CHAPTER_1_SCENES_EN, DAY_
 import { QUIZZES_AR, REAL_ACTIONS_AR, CLIMAX_STEPS_AR, CHAPTER_1_SCENES_AR, DAY_2_POTEAU_BEATS_AR } from './locales/chapter1.ar';
 import { Language } from '../i18n/translations';
 
+// Les versions EN/AR avaient pris du retard sur le français (répliques et choix manquants). On garde la
+// structure française (ordre, choix, effets) et on y superpose, beat par beat, la version traduite quand
+// elle existe ; les beats absents sont traduits par le dictionnaire (src/i18n/chapter1Patch.ts).
+const overlayScenes = (translated: Scene[]): Scene[] =>
+  CHAPTER_1_SCENES.map((frScene) => {
+    const trScene = translated.find((s) => s.id === frScene.id);
+    if (!trScene) return frScene;
+    return {
+      ...trScene,
+      beats: frScene.beats.map((fb) => trScene.beats.find((b) => b.id === fb.id) ?? fb)
+    };
+  });
+
+let CHAPTER_1_SCENES_EN_FULL: Scene[] | null = null;
+let CHAPTER_1_SCENES_AR_FULL: Scene[] | null = null;
+
 export const getChapter1Scenes = (lang: Language): Scene[] => {
-  if (lang === 'en') return CHAPTER_1_SCENES_EN;
-  if (lang === 'ar') return CHAPTER_1_SCENES_AR;
+  if (lang === 'en') return (CHAPTER_1_SCENES_EN_FULL ??= overlayScenes(CHAPTER_1_SCENES_EN));
+  if (lang === 'ar') return (CHAPTER_1_SCENES_AR_FULL ??= overlayScenes(CHAPTER_1_SCENES_AR));
   return CHAPTER_1_SCENES;
 };
 

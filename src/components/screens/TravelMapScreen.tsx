@@ -18,6 +18,8 @@ import { CHAPTER_2_SCENES } from '../../data/chapter2';
 import { CHAPTER_3_SCENES } from '../../data/chapter3';
 import { PIXEL_ASSETS } from '../../utils/assets';
 import { soundManager } from '../../utils/audio';
+import { getLocalizedScene } from '../../utils/narrativeI18n';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface TravelMapScreenProps {
   currentSceneIndex: number;
@@ -42,6 +44,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   onOpenKnowledgeQuiz,
   onBack: _onBack
 }) => {
+  const { language: uiLanguage } = useLanguage();
   const allScenesCombined = [...CHAPTER_1_SCENES, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES];
   const currentActiveScene = allScenesCombined[currentSceneIndex] || CHAPTER_1_SCENES[0];
   const isChapter2Unlocked = true;
@@ -516,13 +519,13 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
             {/* Titre et Sous-titre */}
             <div>
               <h3 className="text-sm sm:text-base lg:text-lg font-black font-cinzel text-[#3a2312] leading-tight">
-                {focusedScene.title}
+                {getLocalizedScene(focusedScene, uiLanguage).title}
               </h3>
               <p className="text-xs text-[#d97c27] font-bold mt-0.5">
-                {focusedScene.subtitle}
+                {getLocalizedScene(focusedScene, uiLanguage).subtitle}
               </p>
               <p className="text-[11px] text-[#6b4724] italic mt-1 bg-[#f3ebd9] p-2 rounded-xl border border-[#d2be9f]">
-                📍 {focusedScene.location}
+                📍 {getLocalizedScene(focusedScene, uiLanguage).location}
               </p>
             </div>
           </div>

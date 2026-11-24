@@ -3,6 +3,8 @@ import officialLogo from '../assets/images/logo_nour_transparent.png';
 import { Sparkles, Play, RotateCcw, ArrowRight, ScrollText, SkipForward, Film, Volume2, VolumeX, Settings, Info, Lock, Clock } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 import { speechManager } from '../utils/speech';
+import { useLanguage } from '../context/LanguageContext';
+import { UI_EXTRAS, CHAPTER_LABELS } from '../i18n/uiExtras';
 
 import bgCh2 from '../assets/images/bg_marche_fruits_renverses.jpg';
 import bgCh3 from '../assets/images/bg_mosquee_marches_attelle.jpg';
@@ -30,6 +32,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   onSelectChapter,
   onOpenLanding
 }) => {
+  const { language: uiLang } = useLanguage();
+  const ux = UI_EXTRAS[uiLang] || UI_EXTRAS.fr;
   const [showCinematic, setShowCinematic] = useState(false);
   const [screenMode, setScreenMode] = useState<'title' | 'chapters'>('title');
 
@@ -321,7 +325,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           <div className="w-full max-w-2xl mx-auto my-auto flex flex-col gap-3 relative z-10 bg-black/75 backdrop-blur-xl p-4 sm:p-6 rounded-3xl border-2 border-[#3a2312] shadow-[0_8px_32px_rgba(0,0,0,0.8)] overflow-y-auto max-h-[85vh] animate-in zoom-in-95 duration-300">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg sm:text-xl font-black font-cinzel text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 tracking-widest uppercase drop-shadow-md">
-                Sélection des Chapitres
+                {ux.chapterSelect}
               </h2>
               <button onClick={() => setScreenMode('title')} className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-amber-200 transition-colors cursor-pointer">
                 <RotateCcw className="w-5 h-5" />
@@ -334,7 +338,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 { id: 2, title: "Le chemin du Hilm", subtitle: "La maîtrise de la colère", status: "playable", image: bgCh2 },
                 { id: 3, title: "Le chemin du Tawakkul", subtitle: "La confiance face à l'épreuve", status: "playable", image: bgCh3 },
                 { id: 4, title: "Ce que tu as encore", subtitle: "La bonté envers les parents", status: "soon", image: bgCh4 },
-                { id: 5, title: "La Montagne Intérieure", subtitle: "La persévérance (Sabr)", status: "soon", image: bgCh5 },
+                { id: 5, title: "Le Sommet de la Persévérance", subtitle: "La persévérance (Sabr)", status: "soon", image: bgCh5 },
               ].map((ch) => (
                 <div key={ch.id} className={`relative flex items-stretch gap-3 sm:gap-4 p-2 sm:p-3 rounded-2xl border ${ch.status === 'playable' ? 'border-amber-500/50 bg-amber-900/20' : 'border-white/10 bg-black/40 opacity-90'} overflow-hidden`}>
                   {/* Thumbnail */}
@@ -349,9 +353,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   
                   {/* Content */}
                   <div className="flex-1 flex flex-col justify-center py-1">
-                    <div className="text-xs sm:text-sm font-bold text-amber-500/80 uppercase tracking-widest font-cinzel">Chapitre {ch.id}</div>
-                    <div className="text-sm sm:text-lg font-black text-amber-100 font-cinzel leading-tight mt-0.5">{ch.title}</div>
-                    <div className="text-[10px] sm:text-xs text-amber-200/60 mt-1">{ch.subtitle}</div>
+                    <div className="text-xs sm:text-sm font-bold text-amber-500/80 uppercase tracking-widest font-cinzel">{(CHAPTER_LABELS[uiLang] || CHAPTER_LABELS.fr).chapter} {ch.id}</div>
+                    <div className="text-sm sm:text-lg font-black text-amber-100 font-cinzel leading-tight mt-0.5">{(CHAPTER_LABELS[uiLang] || CHAPTER_LABELS.fr).items[ch.id]?.title || ch.title}</div>
+                    <div className="text-[10px] sm:text-xs text-amber-200/60 mt-1">{(CHAPTER_LABELS[uiLang] || CHAPTER_LABELS.fr).items[ch.id]?.subtitle || ch.subtitle}</div>
                   </div>
                   
                   {/* Action Button */}
@@ -373,7 +377,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                       </button>
                     ) : (
                       <div className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white/5 border border-white/10 text-white/40 font-bold font-cinzel text-[10px] sm:text-xs tracking-wider flex items-center gap-1.5 shadow-inner">
-                        {ch.status === 'locked' ? <><Lock className="w-3.5 h-3.5" /> BLOQUÉ</> : <><Clock className="w-3.5 h-3.5" /> BIENTÔT</>}
+                        {ch.status === 'locked' ? <><Lock className="w-3.5 h-3.5" /> BLOQUÉ</> : <><Clock className="w-3.5 h-3.5" /> {ux.soon}</>}
                       </div>
                     )}
                   </div>
@@ -404,7 +408,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               {progress < 100 ? (
                 <div className="w-full space-y-2">
                   <div className="flex justify-between items-center text-xs text-amber-200 font-mono px-1">
-                    <span>Éveil de la lumière...</span>
+                    <span>{ux.loading}</span>
                     <span className="font-bold text-amber-300">{progress}%</span>
                   </div>
                   <div
@@ -448,12 +452,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                     <Play className="w-5 h-5 fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
                     <div className="text-center flex flex-col items-center">
                       <span className="block leading-tight font-black uppercase text-white text-sm sm:text-base font-cinzel tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                        {hasSavedGame ? 'CONTINUER' : 'JOUER'}
+                        {hasSavedGame ? ux.continueGame : ux.play}
                       </span>
                       {hasSavedGame && savedSummary && (
                         <div className="mt-1">
                           <span className="inline-block text-[10px] font-mono font-bold text-amber-200 bg-black/50 px-2 py-0.5 rounded-md border border-amber-500/40">
-                            Niv. {savedSummary.level} • {savedSummary.xp} XP
+                            {ux.levelShort} {savedSummary.level} • {savedSummary.xp} XP
                           </span>
                         </div>
                       )}
@@ -470,7 +474,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white/90 hover:text-white font-bold text-[11px] font-cinzel tracking-wider border border-white/20 hover:border-amber-400/50 bg-black/50 hover:bg-black/70 backdrop-blur-sm transition-all cursor-pointer shadow-sm"
                     >
                       <ScrollText className="w-3.5 h-3.5 text-amber-400/80" />
-                      <span>{hasSavedGame ? 'Sélection des Chapitres' : 'Sélection des Chapitres'}</span>
+                      <span>{ux.chapterSelect}</span>
                     </button>
                     {hasSavedGame && (
                       <button
@@ -481,7 +485,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                         className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white/90 hover:text-white font-bold text-[11px] font-cinzel tracking-wider border border-white/20 hover:border-amber-400/50 bg-black/50 hover:bg-black/70 backdrop-blur-sm transition-all cursor-pointer shadow-sm"
                       >
                         <RotateCcw className="w-3.5 h-3.5 text-amber-400/80" />
-                        <span>Nouvelle partie</span>
+                        <span>{ux.newGame}</span>
                       </button>
                     )}
 
@@ -494,7 +498,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                         className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white/90 hover:text-white font-bold text-[11px] font-cinzel tracking-wider border border-white/20 hover:border-amber-400/50 bg-black/50 hover:bg-black/70 backdrop-blur-sm transition-all cursor-pointer shadow-sm"
                       >
                         <Info className="w-3.5 h-3.5 text-slate-300" />
-                        <span>À propos du jeu</span>
+                        <span>{ux.about}</span>
                       </button>
                     )}
                   </div>

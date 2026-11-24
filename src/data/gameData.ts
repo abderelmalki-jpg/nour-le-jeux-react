@@ -121,15 +121,15 @@ export const CHAPTERS: Chapter[] = [
     subtitle: "La Confiance en Dieu face à la maladie & à l'épreuve",
     status: "available",
     statusLabel: "Chapitre 3 — Jouable Dès Maintenant",
-    synopsis: "Au pied du sentier des falaises, le brouillard masque l'horizon. Othmân hésite à s'engager. Il apprend que la confiance n'est pas l'absence d'efforts, mais le fait d'attacher sa monture tout en remettant l'issue entre les mains du Créateur.",
-    virtue: "At-Tawakkul (L'Effort Sincère & La Confiance)",
-    location: "Le Sentier des Brumes & Les Hauts Plateaux",
+    synopsis: "Un matin, Othmân n'a plus la force de se lever : la fièvre ralentit son corps. Entre l'apothicaire, un jeune garçon qui prie avec une attelle et un bol de Talbîna, il découvre que confier son sort à Allah n'empêche pas de se soigner, que la faiblesse n'est pas une honte, et qu'accepter l'aide des autres est aussi une force.",
+    virtue: "At-Tawakkul (La Confiance, en prenant les moyens)",
+    location: "Le Dispensaire, la Mosquée & le Verger d'amandiers",
     bgImage: "/game-assets/waswas_bg.jpg",
     highlights: [
-      "Faire les causes avant d'attendre le résultat",
-      "L'énigme du berger et du nœud de corde",
-      "Raffermir sa détermination face à l'inconnu",
-      "Déblocage de l'invocation de la décision"
+      "Prendre les moyens, puis confier l'issue à Allah",
+      "Prier avec dignité malgré la faiblesse",
+      "Les remèdes doux : miel, Talbîna, nigelle",
+      "Nommer sa peine sans honte et accepter l'aide des autres"
     ]
   },
   {
@@ -154,7 +154,7 @@ export const CHAPTERS: Chapter[] = [
   {
     id: 5,
     number: "05",
-    title: "La Montagne Intérieure",
+    title: "Le Sommet de la Persévérance",
     arabicTitle: "جبل الصبر والثبات",
     subtitle: "La Persévérance (Sabr) face à l'épreuve",
     status: "development",

@@ -4,6 +4,8 @@ import { Compass, MapPin, Sparkles, ArrowRight, Footprints, FastForward, Film, V
 import { soundManager } from '../utils/audio';
 import { CustomAssetsConfig } from '../utils/assets';
 import { CharacterAvatar } from './CharacterAvatar';
+import { getLocalizedScene } from '../utils/narrativeI18n';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SceneTransitionCutsceneProps {
   fromScene?: Scene;
@@ -18,6 +20,8 @@ export const SceneTransitionCutscene: React.FC<SceneTransitionCutsceneProps> = (
   customAssets,
   onFinish
 }) => {
+  const { language: uiLanguage } = useLanguage();
+  const locToScene = getLocalizedScene(toScene, uiLanguage);
   const [progressPercent, setProgressPercent] = useState(0);
   const isVillageArrival = toScene.id === 5;
   const [isMuted, setIsMuted] = useState(true);
@@ -198,18 +202,18 @@ export const SceneTransitionCutscene: React.FC<SceneTransitionCutsceneProps> = (
           </div>
 
           <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-[#3a2312] font-cinzel tracking-wide drop-shadow-sm">
-            {toScene.title}
+            {locToScene.title}
           </h1>
 
           {toScene.subtitle && (
             <p className="text-sm font-bold text-[#d97c27] font-cinzel">
-              {toScene.subtitle}
+              {locToScene.subtitle}
             </p>
           )}
 
           <div className="inline-flex items-center gap-1.5 bg-[#fdf5e6] text-[#6b4724] px-3 py-1 rounded-full text-xs font-semibold border border-[#ebdcc4] mt-1">
             <MapPin className="w-3.5 h-3.5 text-[#d97c27]" />
-            <span>Lieu : {toScene.location}</span>
+            <span>{uiLanguage === 'ar' ? 'الْمَكَانُ' : uiLanguage === 'en' ? 'Place' : 'Lieu'} : {locToScene.location}</span>
           </div>
 
           <p className="text-xs sm:text-sm text-[#8c5a2b] italic leading-relaxed max-w-md mt-2 line-clamp-2">

@@ -491,3 +491,32 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 
 **Non traité (nécessite une décision, des fichiers ou un tiers) :** relecture religieuse, mauvaises réponses plausibles des quiz, doublon du quiz « Niyyah », traduction des chapitres 2–3 et de l'écran-titre, voix manquantes (10), voix EN/AR, scène-menu 10, direction artistique.
 
+### Deuxième vague de corrections (24 novembre, suite)
+
+| Point | Ce qui a été fait |
+|---|---|
+| Voix manquantes (8) | Générées avec CAMB et installées dans `public/audio/` : Noura = **voix clonée** à partir de ses enregistrements existants ; Othmân = voix « Theo Michaud » (catalogue CAMB, aucune voix d'enfant française n'existe) ; la villageoise et l'artisan = voix du catalogue. Volume aligné sur l'existant, format identique (MP3 24 kHz mono 64 kbit/s). Les 2 répliques du Waswas restent **silencieuses par conception**. *À écouter et valider : je ne peux pas juger les voix.* |
+| Quiz des chapitres 2 et 3 | Les 10 quiz ont des **mauvaises réponses plausibles** de longueur voisine (35 réponses réécrites), en plus du mélange automatique. *Reste : chapitre 1 et quiz libres (traductions EN/AR à mettre à jour en même temps).* |
+| Remède contre la colère (ch.2) | Le quiz et le texte ne s'appuient plus que sur les deux hadiths cités (Bukhari 3282, Abu Dawud 4782) ; l'idée de l'eau fraîche reste comme geste apaisant, sans être présentée comme une règle de la Sunnah. La citation affichée correspond maintenant au hadith référencé. |
+| Invocation du marchand (ch.2) | Le texte dit désormais que l'arabe affiché est la prière du Prophète ﷺ pour son peuple, avant la prière d'Othmân. |
+| Titre du chapitre 5 | « **Le Sommet de la Persévérance** » (« La Montagne Intérieure » reste le titre de la dernière scène du chapitre 3). |
+| Synopsis du chapitre 3 (accueil) | Réécrit pour décrire la vraie histoire (fièvre, apothicaire, garçon à l'attelle, Talbîna). |
+
+**Découverte au passage :** le quiz `quiz_hilm_afw` (pardon) est écrit dans le chapitre 2 mais **n'est appelé par aucune scène**. Il pourrait être placé après le pardon du marchand (scène 14).
+**Limites CAMB constatées :** votre offre autorise **une seule voix clonée** (utilisée pour Noura) et **une tâche à la fois**.
+
+### Troisième vague (24 novembre) : langues et voix
+
+| Point | Ce qui a été fait |
+|---|---|
+| Chapitres 2 et 3 en **anglais et en arabe** | Traduits entièrement (répliques, choix, quiz, actions réelles, titres, lieux, variantes adaptatives, étapes du combat du chapitre 2) : `src/i18n/chapter2Translations.ts` et `chapter3Translations.ts`. L'arabe est entièrement vocalisé comme le chapitre 1. ⚠️ **À faire relire par un arabophone natif et par un savant** (citations de hadiths et de versets comprises). |
+| Chapitre 1 : retard des versions EN/AR | **Dix beats manquaient en anglais et huit en arabe** (toute la première conversation de la scène 1, les choix des scènes 6, 7 et 9, la proclamation finale) : le jeu les sautait. Ils sont rattrapés (`src/i18n/chapter1Patch.ts`) et `getChapter1Scenes` garde désormais la structure française. |
+| Interface | Écran-titre, bouton « Continuer », « Voix active », liste des chapitres, titres de la carte et lieux : traduits en EN/AR (`src/i18n/uiExtras.ts`). Messages « Décision morale » et badges de choix traduits aussi. |
+| Voix arabes | **Scène 1 du chapitre 1 : 29 répliques** (Noura, Othmân, narrateur) générées avec CAMB dans `public/audio/ar/ch1/`, et l'application sait les lire en mode arabe (`/audio/ar/chN/`). Voix du catalogue CAMB (« Sara Haddad », « Walid Nasser », « Fadi Aziz »), à écouter. |
+
+**Constats au passage**
+- La narration (le « Sage ») **est voisée** en français : seul le Waswas est silencieux (j'avais écrit l'inverse dans une première version de ma note).
+- Le combat final du **chapitre 2 réutilise les duels du chapitre 1** (doute et solitude) au lieu de duels sur la colère : seul le chapitre 3 a ses propres duels.
+- Il reste en français en mode EN/AR : la vignette « La Proclamation de Foi & d'Action », la fenêtre de confirmation « Nouvelle partie » et le titre de l'onglet du navigateur.
+- Voix : l'anglais n'a toujours aucune voix (silence) ; l'arabe n'existe que pour la scène 1.
+

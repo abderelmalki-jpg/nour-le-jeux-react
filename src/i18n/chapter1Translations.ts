@@ -1,16 +1,20 @@
 import { Language } from './translations';
 
 export interface Chapter1TranslationSet {
-  scenes: Record<number, { title: string; subtitle?: string; description?: string }>;
+  scenes: Record<number, { title: string; subtitle?: string; description?: string; location?: string }>;
   beats: Record<string, string>;
   adaptiveVariants?: Record<string, string>;
-  choices: Record<string, { label: string; habitMessage?: string; fallbackLabel?: string }>;
+  /** Variantes adaptatives (chapitres 2 et 3) : clé « idRéplique#indice ». */
+  variants?: Record<string, string>;
+  choices: Record<string, { label: string; habitMessage?: string; fallbackLabel?: string; responsePreview?: string; badge?: string }>;
   quizzes: Record<string, {
     question: string;
     options: Record<string, string>;
     explanation: string;
     theologicalNote?: string;
     citationText?: string;
+    topic?: string;
+    concept?: string;
   }>;
   realActions: Record<string, {
     title: string;
@@ -22,6 +26,7 @@ export interface Chapter1TranslationSet {
     title: string;
     meaning: string;
     description: string;
+    quote?: string;
   }>;
 }
 

@@ -7,10 +7,10 @@ export const CHAPTER_2_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Selon le Messager d\'Allah ﷺ, qui est véritablement le plus fort parmi les hommes ?',
     options: [
-      { id: 'A', text: 'Celui qui terrasse ses adversaires par sa force physique.', isCorrect: false },
-      { id: 'B', text: 'Celui qui sait maîtriser sa colère face à la provocation.', isCorrect: true },
-      { id: 'C', text: 'Celui qui ne ressent jamais aucune émotion ni tristesse.', isCorrect: false },
-      { id: 'D', text: 'Celui qui crie le plus fort pour faire taire les autres.', isCorrect: false }
+      { id: 'A', text: 'Celui qui gagne toutes les luttes et ne recule jamais.', isCorrect: false },
+      { id: 'B', text: 'Celui qui se maîtrise quand la colère monte.', isCorrect: true },
+      { id: 'C', text: 'Celui qui garde tout en lui et ne montre jamais ce qu\'il ressent.', isCorrect: false },
+      { id: 'D', text: 'Celui qui sait répondre le plus durement à une offense.', isCorrect: false }
     ],
     correctOptionId: 'B',
     explanation: 'Le Prophète ﷺ a enseigné que la véritable force ne réside pas dans la puissance musculaire, mais dans la capacité du croyant à dompter son âme et à retenir sa colère lorsque le Shayṭān cherche à l\'enflammer.',
@@ -27,22 +27,22 @@ export const CHAPTER_2_QUIZZES: Record<string, Quiz> = {
     id: 'quiz_hilm_colere_remede',
     topic: 'Les Remèdes contre la Colère',
     promptSpeaker: 'noura',
-    question: 'Que nous enseigne la Sunnah pour éteindre le feu de la colère quand le Waswâs s\'enflamme ?',
+    question: 'Que peut-on faire, selon les enseignements du Prophète ﷺ, pour apaiser la colère quand elle monte ?',
     options: [
-      { id: 'A', text: 'Crier fort pour évacuer immédiatement la tension accumulée.', isCorrect: false },
-      { id: 'B', text: 'Dire « Aʿūdhu billāh », s\'asseoir ou s\'allonger, et faire ses ablutions d\'eau fraîche.', isCorrect: true },
-      { id: 'C', text: 'S\'isoler pendant des semaines sans plus jamais adresser la parole aux autres.', isCorrect: false },
-      { id: 'D', text: 'Répondre par deux insultes pour chaque affront reçu.', isCorrect: false }
+      { id: 'A', text: 'Répondre tout de suite, pour que l\'autre comprenne qu\'il a tort.', isCorrect: false },
+      { id: 'B', text: 'Chercher refuge auprès d\'Allah, puis s\'asseoir ou s\'allonger pour se calmer.', isCorrect: true },
+      { id: 'C', text: 'Quitter la pièce en claquant la porte et ne plus parler à personne.', isCorrect: false },
+      { id: 'D', text: 'Attendre que l\'autre s\'excuse le premier, sans bouger ni rien dire.', isCorrect: false }
     ],
     correctOptionId: 'B',
-    explanation: 'La colère est une braise du diable. La Sunnah offre un remède complet : chercher refuge auprès d\'Allah (Istiʿādhah), changer de posture physique pour calmer le sang, et faire le Woudhou\' car l\'eau éteint le feu.',
+    explanation: 'Le Prophète ﷺ a enseigné de chercher refuge auprès d\'Allah contre le Shayṭān quand la colère monte (Bukhari 3282), et de s\'asseoir, puis de s\'allonger si l\'on est debout (Abu Dawud 4782). Se rafraîchir à l\'eau aide aussi le corps à se calmer.',
     theologicalNote: 'Changer de position (s\'asseoir si on est debout) brise l\'impulsion physique d\'agression.',
     reference: {
       concept: 'Remèdes prophétiques contre la colère',
       reference: 'Sahih al-Bukhari 3282 & Sunan Abi Dawud 4782',
-      citationText: '« La colère provient du Shayṭān, le Shayṭān a été créé de feu, et le feu s\'éteint par l\'eau. Lorsque l\'un de vous est en colère, qu\'il fasse ses ablutions. »',
+      citationText: '« Je connais une parole qui, s\'il la disait, ferait partir ce qu\'il ressent : Aʿūdhu billāhi mina sh-shayṭāni r-rajīm. »',
       sourceType: 'Hadith',
-      arabic: 'إِنَّ الْغَضَبَ مِنَ الشَّيْطَانِ وَإِنَّ الشَّيْطَانَ خُلِقَ مِنَ النَّارِ وَإِنَّمَا تُطْفَأُ النَّارُ بِالْمَاءِ'
+      arabic: 'إِنِّي لَأَعْلَمُ كَلِمَةً لَوْ قَالَهَا لَذَهَبَ عَنْهُ مَا يَجِدُ لَوْ قَالَ أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ'
     }
   },
   quiz_hilm_rifq: {
@@ -52,9 +52,9 @@ export const CHAPTER_2_QUIZZES: Record<string, Quiz> = {
     question: 'Quelle est la noble promesse faite par le Prophète ﷺ au sujet de la douceur (Ar-Rifq) ?',
     options: [
       { id: 'A', text: 'La douceur ne se trouve dans une chose sans la parer, et n\'en est retirée sans l\'enlaidir.', isCorrect: true },
-      { id: 'B', text: 'La douceur est un signe de faiblesse qui donne raison à l\'adversaire.', isCorrect: false },
-      { id: 'C', text: 'La douceur ne sert à rien face aux gens impolis.', isCorrect: false },
-      { id: 'D', text: 'La douceur ne doit s\'appliquer qu\'envers sa propre famille.', isCorrect: false }
+      { id: 'B', text: 'La douceur est réservée aux gens importants, les autres la méritent moins.', isCorrect: false },
+      { id: 'C', text: 'La douceur est utile seulement quand on est sûr que l\'autre la rendra.', isCorrect: false },
+      { id: 'D', text: 'La douceur rend les affaires plus lentes : elle ne fait donc que gêner.', isCorrect: false }
     ],
     correctOptionId: 'A',
     explanation: 'Le Messager d\'Allah ﷺ a enseigné que la douceur magnifie toute parole et toute action. C\'est l\'ornement du caractère noble qui désamorce les conflits les plus vifs.',
@@ -95,10 +95,10 @@ export const CHAPTER_2_QUIZZES: Record<string, Quiz> = {
     promptSpeaker: 'noura',
     question: 'Pourquoi l\'invocation pour autrui en secret possède-t-elle une valeur immense dans l\'Islam ?',
     options: [
-      { id: 'A', text: 'Parce que les gens doivent nous entendre pour nous féliciter de notre piété.', isCorrect: false },
+      { id: 'A', text: 'Parce qu\'elle est plus facile à réciter, et qu\'Allah l\'accepte forcément.', isCorrect: false },
       { id: 'B', text: 'Parce qu\'elle est pure d\'ostentation, et un ange répond : « Amîn, et à toi la même chose ».', isCorrect: true },
-      { id: 'C', text: 'Parce qu\'elle ne demande aucune sincérité ni intention particulière.', isCorrect: false },
-      { id: 'D', text: 'Parce qu\'elle efface le besoin de prier pour soi-même.', isCorrect: false }
+      { id: 'C', text: 'Parce qu\'elle prouve aux autres que l\'on est généreux.', isCorrect: false },
+      { id: 'D', text: 'Parce qu\'elle remplace les efforts concrets pour réparer un tort.', isCorrect: false }
     ],
     correctOptionId: 'B',
     explanation: 'Le Prophète ﷺ a enseigné que lorsqu\'un musulman invoque pour son frère en secret, un ange désigné dit : « Amîn, et pour toi une part semblable » (Sahih Muslim 2732). C\'est le remède suprême pour purifier le cœur de toute rancune.',
@@ -523,7 +523,7 @@ export const CHAPTER_2_SCENES: Scene[] = [
         id: 's13_b3',
         type: 'dialogue',
         speaker: 'noura',
-        text: 'C\'est naturel, Othmân. La colère est comme une fumée qui met du temps à se dissiper. C\'est pourquoi la Sunnah nous a légué un secret d\'eau et de paix.',
+        text: 'C\'est naturel, Othmân. La colère est comme une fumée qui met du temps à se dissiper. C\'est pourquoi il est bon de s\'asseoir, de chercher refuge auprès d\'Allah, et de se rafraîchir à l\'eau.',
         emotion: 'smiling'
       },
       {
@@ -698,7 +698,7 @@ export const CHAPTER_2_SCENES: Scene[] = [
         type: 'dialogue',
         speaker: 'personnage',
         arabicText: 'اللَّهُمَّ اهْدِ قَوْمِي فَإِنَّهُمْ لَا يَعْلَمُونَ',
-        text: 'Jamais ! Le Prophète ﷺ invoquait le pardon pour ceux qui le rejetaient. Ô Allah, apaise le marchand de grenades, pardonne son emportement, bénis son étal et répands la sérénité dans son foyer.',
+        text: 'Jamais ! Le Prophète ﷺ priait même pour ceux qui l\'avaient rejeté : « Ô Allah, guide mon peuple, car ils ne savent pas. » Moi aussi : Ô Allah, apaise le marchand de grenades, pardonne son emportement, bénis son étal et répands la sérénité dans son foyer.',
         emotion: 'determined'
       },
       {
