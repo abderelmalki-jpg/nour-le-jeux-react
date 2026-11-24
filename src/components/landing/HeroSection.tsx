@@ -147,7 +147,7 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#e5c158] shrink-0" />
-                <span>{t.hero.stat2Value} • 16-Bit</span>
+                <span>{t.hero.stat2Value} • {t.hero.stat3Value}</span>
               </div>
             </div>
 

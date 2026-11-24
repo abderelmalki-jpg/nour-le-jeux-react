@@ -468,11 +468,11 @@ export const translations: Record<Language, Translations> = {
       heroSubtitleDirect: "L'épopée du cœur — De la solitude à la fraternité",
       combatQuizPillTitle: "⚔️ Ni violence, ni magie :",
       combatQuizPillDesc: "Dans NOUR, les défis se relèvent par des Quiz. Votre enfant gagne en sagesse et en confiance, loin des jeux toxiques.",
-      description: "Le RPG narratif en pixel art pensé pour les familles musulmanes. Votre enfant apprend à gérer ses doutes, découvre l'honnêteté, la patience et le respect des parents, tout en s'amusant dans un environnement 100% sûr.",
+      description: "L'aventure narrative illustrée aux personnages en pixel-art pensée pour les familles musulmanes. Votre enfant apprend à gérer ses doutes, découvre l'honnêteté, la patience et le respect des parents, tout en s'amusant dans un environnement sans pub.",
       ctaPlay: 'Jouer gratuitement dans le navigateur',
       ctaSubtext: 'Aucune installation • Mobile & PC • Sans inscription',
-      trustRating: '🧪 Bêta Ouverte Collaborative • Chapitre 1 Gratuit en 1 Clic',
-      studioVoicesBadge: '🎙️ Voix en français & Pixel Art',
+      trustRating: '🧪 Bêta Ouverte Collaborative • Chapitres 1 à 3 Gratuits en 1 Clic',
+      studioVoicesBadge: '🎙️ Voix françaises & Aventure illustrée',
       adFreeBadge: '100% Sans Pub • Éthique',
       ctaDemo: 'Tester un Combat Quiz (Waswâs)',
       ctaVideo: 'Découvrir le Gameplay (32s)',
@@ -480,14 +480,14 @@ export const translations: Record<Language, Translations> = {
       feature1Desc: 'Remportez les duels contre le Waswâs grâce à des quiz de savoir et de discernement moral (sans armes ni magie).',
       feature2Title: "Quiz Islamiques & Gain d'XP",
       feature2Desc: 'Des quiz stimulants sur le Tawhīd, le comportement (Adab) et les hadiths pour faire évoluer votre personnage.',
-      feature3Title: 'Choix Moraux & Hadiths Sûrs',
-      feature3Desc: 'Des dilemmes éthiques à embranchements rigoureusement inspirés du Coran et de la Sunnah.',
-      stat1Label: 'Chapitre 1 Gratuit',
+      feature3Title: 'Choix Moraux & Sources Citées',
+      feature3Desc: 'Des dilemmes éthiques à embranchements inspirés du Coran et de la Sunnah, avec leurs références citées.',
+      stat1Label: 'Chapitres 1 à 3 Gratuits',
       stat1Value: '100%',
       stat2Label: 'Saga Initiatique',
       stat2Value: '5 Chapitres',
       stat3Label: 'Univers Visuel',
-      stat3Value: '16-Bit Pixel Art',
+      stat3Value: 'Aventure illustrée',
       downloadApk: "Télécharger l'APK Android (Bêta)",
       apkNote: '📱 Également disponible : Version Android en bêta (APK autonome)',
       frictionFree: '100% Gratuit & Sans Inscription',
@@ -540,14 +540,14 @@ export const translations: Record<Language, Translations> = {
     },
     gameplayVideo: {
       badge: 'Démonstration en Direct',
-      title: 'Vivez l’Aventure en Pixel Art',
+      title: 'Vivez l’Aventure Illustrée',
       subtitle: "Découvrez l'atmosphère chaleureuse, les dialogues interactifs et le carrefour du village.",
       liveIndicator: 'Session In-Game',
       playChapter1: 'Jouer au Chapitre 1',
       downloadApk: "Télécharger l'APK (Drive)",
       openInNewTab: 'Ouvrir dans un nouvel onglet',
       clickToStart: 'Cliquez pour lancer la vidéo (32 secondes)',
-      highlight1Title: 'Artisanat Pixel-Art & Poésie',
+      highlight1Title: 'Décors Illustrés & Personnages Pixel-Art',
       highlight1Desc: 'Des décors minutieusement dessinés, une lumière dorée du crépuscule et des ambiances sonores inspirées pour une immersion sereine.',
       highlight2Title: 'Épreuves Spirituelles & Choix',
       highlight2Desc: 'Affrontez les murmures intérieurs (Waswâs), domptez la colère avec le Hilm et choisissez la douceur guidée par les Hadiths authentiques.',
@@ -686,7 +686,7 @@ export const translations: Record<Language, Translations> = {
       virtueToMaster: 'Vertu Centrale à Maîtriser',
       keyTrialsQuests: 'Épreuves & Quêtes Clés du Chapitre',
       playChapter1Now: 'Jouer au Chapitre 1 Maintenant',
-      founderPackUnlock: 'Débloquable dans le Pack Fondateur',
+      founderPackUnlock: 'Jouable gratuitement dès maintenant',
       tab1: 'Ch. 1 : Solitude',
       tab2: 'Ch. 2 : Le Hilm',
       tab3: 'Ch. 3 : Le Sabr',
@@ -912,7 +912,7 @@ export const translations: Record<Language, Translations> = {
       col1Title: 'Soutien au Projet',
       col1Price: '1,99 €',
       col1SubPrice: "/ don unique d'encouragement",
-      col1Desc: "Un geste chaleureux et symbolique pour encourager notre studio et financer les voix d'acteurs.",
+      col1Desc: "Un geste chaleureux et symbolique pour encourager notre studio indépendant et soutenir les prochains chapitres.",
       col1Points: [
         'Offrir un thé chaud et un grand encouragement aux créateurs',
         'Permettre d’offrir le Chapitre 1 gratuitement à tous',
@@ -1003,7 +1003,7 @@ export const translations: Record<Language, Translations> = {
       items: [
         {
           q: 'Le jeu est-il gratuit ? Faut-il payer pour jouer ?',
-          a: "Le Chapitre 1 complet (« Vaincre la Solitude ») est 100% gratuit et sans engagement. Vous pouvez y jouer immédiatement sans carte bancaire. Pour débloquer les chapitres suivants et soutenir le studio indépendant (enregistrements studio des comédiens de doublage et graphismes pixel art), un Pack Fondateur optionnel à prix modique est proposé."
+          a: "Les Chapitres 1, 2 et 3 sont 100% gratuits et sans engagement. Vous pouvez y jouer immédiatement sans carte bancaire ni inscription. Les voix françaises sont intégrées dans le jeu, et les prochains chapitres (4 et 5) sont en préparation."
         },
         {
           q: 'Faut-il créer un compte ou installer une application ?',
@@ -1042,7 +1042,7 @@ export const translations: Record<Language, Translations> = {
       ctaPlay: 'Tester le Jeu en 1 Clic (Gratuit)',
       downloadApk: "Télécharger l'APK Android (264 Mo)",
       benefit1: '✧ Sauvegarde instantanée',
-      benefit2: '✧ Voix studio françaises',
+      benefit2: '✧ Voix françaises intégrées',
       benefit3: '✧ Garanti sans pub intrusive'
     },
     tester: {
@@ -1064,7 +1064,7 @@ export const translations: Record<Language, Translations> = {
       nextBtn: 'Suivant'
     },
     footer: {
-      description: 'Un jeu de rôle narratif en 16-bit pixel art combinant aventures spirituelles, quiz vérifiés et défis bienveillants dans la vraie vie.',
+      description: 'Une aventure narrative illustrée aux personnages en pixel-art, combinant récits éducatifs, quiz aux sources citées et défis bienveillants dans la vraie vie.',
       quickLinks: 'Liens Rapides',
       playGame: 'Jouer en Ligne (Gratuit)',
       downloadApk: "Télécharger l'APK Android",
@@ -1118,17 +1118,17 @@ export const translations: Record<Language, Translations> = {
       motDuConcepteur: 'A Word from the Designer'
     },
     hero: {
-      badge: 'The Alliance of 16-Bit RPG Gaming & Islamic Education',
+      badge: 'The Alliance of Illustrated RPG Gaming & Islamic Education',
       titleLine1: 'NOUR — The Narrative Islamic RPG',
       titleLine2: 'Transforming everyday choices into an adventure',
       heroSubtitleDirect: 'The Epic of the Heart — From Solitude to Fraternity',
       combatQuizPillTitle: '⚔️ No swords, no destructive magic:',
       combatQuizPillDesc: 'In NOUR, battles are fought with Wisdom Quizzes. Defeat inner doubts (Waswâs) through knowledge, faith, and ethical discernment!',
-      description: 'The pixel-art narrative RPG reconciling video game fun with thoughtful Islamic learning. Instead of violent combat, progress through Wisdom Quizzes, conquer inner doubts (Waswâs), and earn ethical XP.',
+      description: 'The illustrated narrative RPG with pixel-art characters reconciling video game fun with thoughtful Islamic learning. Instead of violent combat, progress through Wisdom Quizzes, conquer inner doubts (Waswâs), and earn ethical XP.',
       ctaPlay: 'Play Free in Browser',
       ctaSubtext: 'Zero installation • Mobile & PC • No signup required',
-      trustRating: '🧪 Collaborative Open Beta • Free Chapter 1 in 1 Click',
-      studioVoicesBadge: '🎙️ French Voices & Pixel Art',
+      trustRating: '🧪 Collaborative Open Beta • Chapters 1–3 Free in 1 Click',
+      studioVoicesBadge: '🎙️ French Voices & Illustrated World',
       adFreeBadge: '100% Ad-Free • Ethical',
       ctaDemo: 'Test a Quiz Combat (Waswâs)',
       ctaVideo: 'Watch Gameplay (32s)',
@@ -1136,14 +1136,14 @@ export const translations: Record<Language, Translations> = {
       feature1Desc: 'Win duels against Waswâs with knowledge and moral discernment instead of weapons or destructive magic.',
       feature2Title: 'Islamic Quizzes & XP Rewards',
       feature2Desc: 'Engaging interactive quizzes on Tawheed, prophetic ethics (Adab), and hadiths to level up your character.',
-      feature3Title: 'Moral Choices & Authentic Sources',
-      feature3Desc: 'Narrative branching dilemmas strictly grounded in the Quran and authentic Sunnah.',
-      stat1Label: 'Free Chapter 1',
+      feature3Title: 'Moral Choices & Cited Sources',
+      feature3Desc: 'Narrative branching dilemmas inspired by the Quran and the Sunnah, with cited references.',
+      stat1Label: 'Chapters 1–3 Free',
       stat1Value: '100%',
       stat2Label: '5 Chapters',
       stat2Value: '5 Chapters',
-      stat3Label: '16-Bit',
-      stat3Value: '16-Bit Pixel Art',
+      stat3Label: 'HD-2D',
+      stat3Value: 'Illustrated Adventure',
       downloadApk: 'Download Android APK (Beta)',
       apkNote: '📱 Also available: Android Beta App (standalone APK)',
       frictionFree: '100% Free & No Registration Required',
@@ -1196,14 +1196,14 @@ export const translations: Record<Language, Translations> = {
     },
     gameplayVideo: {
       badge: 'Live Demonstration',
-      title: 'Experience the Adventure in Pixel Art',
+      title: 'Experience the Illustrated Adventure',
       subtitle: 'Discover the warm atmosphere, interactive dialogues, and village crossroads.',
       liveIndicator: 'In-Game Session',
       playChapter1: 'Play Chapter 1 Now',
       downloadApk: 'Download APK (Drive)',
       openInNewTab: 'Open in a new tab',
       clickToStart: 'Click to start the video (32 seconds)',
-      highlight1Title: 'Pixel Art & Poetry Crafts',
+      highlight1Title: 'Illustrated Scenery & Pixel-Art Characters',
       highlight1Desc: 'Meticulously designed sets, golden twilight lighting and inspired soundscapes for a serene immersion.',
       highlight2Title: 'Spiritual Trials & Choices',
       highlight2Desc: 'Confront the inner whispers (Waswâs), tame anger with Hilm and choose gentleness guided by authentic Hadiths.',
@@ -1342,7 +1342,7 @@ export const translations: Record<Language, Translations> = {
       virtueToMaster: 'Central Virtue to Master',
       keyTrialsQuests: 'Chapter Key Trials & Quests',
       playChapter1Now: 'Play Chapter 1 Now',
-      founderPackUnlock: "Unlockable in the Founder's Pack",
+      founderPackUnlock: 'Playable for free right now',
       tab1: '01 Overcoming Loneliness',
       tab2: '02 The Hilm path',
       tab3: '03 The Path of Enlightenment',
@@ -1568,7 +1568,7 @@ export const translations: Record<Language, Translations> = {
       col1Title: 'Project Support',
       col1Price: '1,99 €',
       col1SubPrice: "/ don unique d'encouragement",
-      col1Desc: 'A warm and symbolic gesture to encourage our studio and fund actors\' voices.',
+      col1Desc: 'A warm and symbolic gesture to encourage our indie studio and support upcoming chapters.',
       col1Points: [
         'Offering a hot cup of tea and a big word of encouragement to the creators',
         'To make Chapter 1 available to everyone for free',
@@ -1645,7 +1645,7 @@ export const translations: Record<Language, Translations> = {
       ethicsTitle: 'Zero Ads & Absolute Privacy',
       ethicsDesc: 'No annoying ads, no forced account creation. Real-life challenges are honor-based: no camera, photos or personal data collected.',
       sourcesBadge: 'Authentic',
-      sourcesTitle: 'Verified Sources & Universal Values',
+      sourcesTitle: 'Cited Sources & Universal Values',
       sourcesDesc: "Grounded in the Noble Qur'an and authentic hadiths (Bukhari & Muslim), emphasizing Adab, patience, and kind character.",
       devicesBadge: 'Universal Access',
       devicesTitle: '1-Click on Mobile, Tablet & PC',
@@ -1659,7 +1659,7 @@ export const translations: Record<Language, Translations> = {
       items: [
         {
           q: 'Is the game free? Are there any hidden fees?',
-          a: 'The complete Chapter 1 (« Overcoming Loneliness ») is 100% free with no commitment. You can play right away without entering credit card info. An optional low-cost Founder’s Pack is available for those who wish to support our indie animation studio and french voice actors.'
+          a: 'Chapters 1, 2, and 3 are 100% free with no commitment. You can play right away without credit card info or signup. French voices are built into the game, and Chapters 4 and 5 are in development.'
         },
         {
           q: 'Do I need to create an account or download an app?',
@@ -1698,7 +1698,7 @@ export const translations: Record<Language, Translations> = {
       ctaPlay: 'Try the game in 1 click (Free)',
       downloadApk: 'Download the Android APK (264 MB)',
       benefit1: '✧ Instant backup',
-      benefit2: '✧ French studio voices',
+      benefit2: '✧ Built-in French voices',
       benefit3: '✧ Non-intrusive pub guarantee'
     },
     tester: {
@@ -1720,7 +1720,7 @@ export const translations: Record<Language, Translations> = {
       nextBtn: 'Following'
     },
     footer: {
-      description: 'A 16-bit pixel art narrative role-playing game combining spiritual adventures, verified quizzes, and benevolent real-life challenges.',
+      description: 'An illustrated narrative role-playing game with pixel-art characters, combining educational adventures, source-cited quizzes, and benevolent real-life challenges.',
       quickLinks: 'Quick Links',
       playGame: 'Play Online (Free)',
       downloadApk: 'Download the Android APK',
@@ -1784,7 +1784,7 @@ export const translations: Record<Language, Translations> = {
       ctaPlay: 'العب مجاناً في المتصفح',
       ctaSubtext: 'دون تثبيت • للجوال والكمبيوتر • دون تسجيل',
       trustRating: '🧪 نسخة تجريبية مفتوحة • الفصل الأول مجاني بنقرة واحدة',
-      studioVoicesBadge: '🎙️ أصوات بالفرنسية وبيكسل آرت',
+      studioVoicesBadge: '🎙️ أصوات فرنسية وعالم مصوّر',
       adFreeBadge: '١٠٠٪ دون إعلانات • أخلاقية',
       ctaDemo: 'جرّب مواجهة الوسواس (كويز)',
       ctaVideo: 'استكشف أسلوب اللعب (٣٢ ث)',
@@ -1799,7 +1799,7 @@ export const translations: Record<Language, Translations> = {
       stat2Label: 'ملحمة متكاملة',
       stat2Value: '٥ فصول',
       stat3Label: 'عالم بصري كلاسيكي',
-      stat3Value: 'بيكسل آرت ١٦ بت',
+      stat3Value: 'مغامرة مصوّرة',
       downloadApk: 'تحميل تطبيق أندرويد (نسخة بيتا)',
       apkNote: '📱 متوفر أيضاً: تطبيق أندرويد التجريبي (ملف APK مستقل)',
       frictionFree: '١٠٠٪ مجاناً ودون تسجيل',
@@ -1852,7 +1852,7 @@ export const translations: Record<Language, Translations> = {
     },
     gameplayVideo: {
       badge: 'استعراض حي',
-      title: 'عِش المغامرة في عالم البيكسل آرت',
+      title: 'عِش المغامرة المصوّرة',
       subtitle: 'اكتشف الأجواء الهادئة، والحوارات المؤثرة، ومفترق طرق القرية العريق.',
       liveIndicator: 'جلسة لعب مباشرة',
       playChapter1: 'العب الفصل الأول الآن',
@@ -1998,7 +1998,7 @@ export const translations: Record<Language, Translations> = {
       virtueToMaster: 'الفضيلة الكبرى للمرحلة',
       keyTrialsQuests: 'أهم المهمات والتحديات',
       playChapter1Now: 'العب الفصل الأول الآن',
-      founderPackUnlock: 'متاح ضمن باقة المؤسسين',
+      founderPackUnlock: 'متاح مجاناً الآن',
       tab1: 'ف١ : العزلة',
       tab2: 'ف٢ : الحِلم',
       tab3: 'ف٣ : الصبر',
@@ -2169,7 +2169,7 @@ export const translations: Record<Language, Translations> = {
     gallery: {
       badge: 'الهوية الفنية والجمالية',
       title: 'بانوراما عوالم «نور»',
-      subtitle: 'رؤية فنية تجمع بين سحر البيكسل آرت الكلاسيكي ودفء المعالم المشرقية الأصيلة.',
+      subtitle: 'رؤية فنية تجمع بين الخلفيات المرسومة الدافئة وشخصيات البيكسل آرت.',
       items: [
         {
           id: 'vallee',
@@ -2301,7 +2301,7 @@ export const translations: Record<Language, Translations> = {
       ethicsTitle: 'دون إعلانات ودون جمع لأي بيانات شخصية',
       ethicsDesc: 'خالية تماماً من الإعلانات المزعجة والتسجيل الإجباري. مهمات الحياة الواقعية قائمة على الأمانة الذاتية دون كاميرا أو صور.',
       sourcesBadge: 'أصالة ومصداقية',
-      sourcesTitle: 'مصادر قرآنية ونبوية موثقة',
+      sourcesTitle: 'مراجع قرآنية ونبوية مذكورة وقيم إنسانية',
       sourcesDesc: 'مبنية على هدي القرآن الكريم وصحيح السنة النبوية (البخاري ومسلم) لترسيخ مكارم الأخلاق والآداب.',
       devicesBadge: 'سهولة الوصول',
       devicesTitle: 'بنقرة واحدة على الجوال واللوحي والحاسوب',
@@ -2315,7 +2315,7 @@ export const translations: Record<Language, Translations> = {
       items: [
         {
           q: 'هل اللعبة مجانية بالكامل ؟ وهل توجد أي رسوم خفية ؟',
-          a: 'الفصل الأول كاملاً («كسر العزلة») مجاني ١٠٠٪ دون أي شروط أو بطاقة بنكية. ويمكنكم الاستمتاع به فوراً. ولفتح بقية الفصول ودعم الاستوديو المستقل في إنتاج الأصوات ورسومات البيكسل، نوفر باقة المؤسسين الاختيارية بسعر رمزي مخفض.'
+          a: 'الفصول ١ و٢ و٣ مجانية ١٠٠٪ دون أي شروط أو بطاقة بنكية أو تسجيل. يمكنكم اللعب فوراً، بينما يجري العمل على الفصلين الرابع والخامس.'
         },
         {
           q: 'هل يجب إنشاء حساب أو تحميل تطبيق للعب ؟',
@@ -2376,7 +2376,7 @@ export const translations: Record<Language, Translations> = {
       nextBtn: 'التالي'
     },
     footer: {
-      description: 'لعبة تقمص أدوار بيكسل آرت ١٦ بت تجمع بين البناء الإيماني، واختبارات الحكمة، والمهمات العملية الإيجابية.',
+      description: 'مغامرة سردية مصوّرة بشخصيات بيكسل آرت تجمع بين القيم التربوية، واختبارات الحكمة بمراجعها، والمهمات العملية الإيجابية.',
       quickLinks: 'روابط سريعة',
       playGame: 'العب في المتصفح (مجاناً)',
       downloadApk: 'تحميل تطبيق الأندرويد APK',

@@ -1,13 +1,13 @@
 # NOUR : La Voie de la Sagesse (نور - طريق الحكمة)
 
-> Le 1er RPG narratif et éducatif islamique en pixel art 16-bit avec voix françaises. Jeu sans violence, jouable gratuitement en 1 clic dans le navigateur et sur Android (iOS en préparation).
+> Aventure narrative et éducative islamique illustrée, avec personnages en pixel-art et voix françaises. Jeu sans violence, jouable gratuitement en 1 clic dans le navigateur et sur Android (iOS en préparation).
 
 ## Fiche d'Identité & Entités Clés
 - **Nom officiel** : NOUR : La Voie de la Sagesse (نور - طريق الحكمة)
 - **URL officielle** : https://playnour.online/
 - **Développeur & Concepteur** : Abderrahmane El Malki (Nour Studios)
-- **Genre** : Jeu de rôle (RPG), Aventure narrative, Jeu éducatif islamique, Pixel Art 16-Bit
-- **Modèle économique** : Gratuit / Free-to-Play (Chapitre 1 100% gratuit, sans publicité, sans inscription, sans carte bancaire)
+- **Genre** : Jeu de rôle (RPG), Aventure narrative illustrée, Jeu éducatif islamique
+- **Modèle économique** : Gratuit (Chapitres 1 à 3 gratuits, sans publicité, sans inscription, sans carte bancaire)
 - **Plateformes** : Web (Navigateurs mobiles iOS / Safari, Android / Chrome, PC Windows, Mac, Linux) et Application Android APK autonome
 - **Âge** : recommandé dès 8 ans (aucune classification officielle PEGI n'a été demandée)
 - **Langues** : Français (voix pour les dialogues principaux), Arabe (textes complets ; voix en cours d'ajout), Anglais (textes, sans voix)

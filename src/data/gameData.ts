@@ -215,33 +215,6 @@ export const WISDOM_CARDS: WisdomCard[] = [
   }
 ];
 
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    id: "1",
-    name: "Yassine B.",
-    role: "Père de famille & Gamer",
-    badge: "Joueur du Chapitre 1",
-    content: "Enfin un RPG avec une âme ! Mes deux garçons de 9 et 12 ans ont adoré Othmân. Ce qui m'a bluffé, c'est le 'Pont de Nour' : après la scène, mon fils s'est levé spontanément pour ranger son lit ! C'est du jeu vidéo noble et intelligent.",
-    rating: 5
-  },
-  {
-    id: "2",
-    name: "Amina L.",
-    role: "Enseignante & Passionnée de récits interactifs",
-    badge: "Critique Jeu Narratif",
-    content: "La mécanique du combat contre le Waswâs est une trouvaille de game design brillante. Au lieu de taper sur des gobelins avec une hache, on apprend à identifier ses pensées automatiques négatives et à les désamorcer par la sérénité.",
-    rating: 5
-  },
-  {
-    id: "3",
-    name: "Sofiane M.",
-    role: "Développeur Indie & Rôliste",
-    badge: "Testeur Bêta",
-    content: "L'ambiance sonore, les dialogues ciselés et le pixel art oriental apportent une fraîcheur immense dans le paysage du RPG. Une expérience accessible immédiatement dans le navigateur sans rien installer.",
-    rating: 5
-  }
-];
-
 export const FAQS = [
   {
     q: "Sur quels appareils peut-on jouer à NOUR ?",
@@ -249,7 +222,7 @@ export const FAQS = [
   },
   {
     q: "Le jeu est-il gratuit ? Quels sont les tarifs des chapitres ?",
-    a: "Le Chapitre 1 complet (« Vaincre la Solitude ») est 100% gratuit et accessible immédiatement à tous, sans publicité intrusive ni inscription requise. Pour débloquer la suite de l'aventure (Chapitres 2 et 3) et financer les enregistrements de voix studio et les décors, nous proposons une Offre de Lancement exclusive (Pack Fondateur à 4,99 € au lieu de 7,99 €) ainsi qu'un soutien libre (1,99 € — Thé de l'Artisan). Il s'agit d'un accès définitif et à vie, sans abonnement récurrent."
+    a: "Les Chapitres 1, 2 et 3 sont 100% gratuits et accessibles immédiatement à tous, sans publicité, sans carte bancaire ni inscription requise."
   },
   {
     q: "À quelle tranche d'âge NOUR s'adresse-t-il ?",

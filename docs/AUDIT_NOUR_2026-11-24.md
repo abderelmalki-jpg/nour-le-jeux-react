@@ -538,3 +538,14 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 
 **Préparé (pas de contenu de jeu écrit)** : `docs/CHAPITRES_4_5_ET_STYLE.md`, `docs/seo/*`.
 **Signalé, non modifié** : note 4,9/148 avis dans le JSON-LD de `index.html` (aucune preuve dans le dépôt) et promesses (« hadiths sûrs », « PEGI 3+ », « doublage intégral ») à aligner.
+
+---
+
+## Cinquième vague (2026-11-24) — Lot A : alignement du discours public
+
+**Fait**
+- Enregistrement du document de reprise `docs/HANDOFF_GEMINI.md`.
+- Alignement « aventure illustrée, personnages en pixel-art » (retrait de « Pixel Art 16-Bit » / « en pixel art ») dans `index.html`, `public/llms.txt`, `public/sitemap.xml`, `src/i18n/translations.ts` (FR/EN/AR), `src/components/landing/HeroSection.tsx` et `docs/APP_STORE_LISTING.md`.
+- Suppression du tableau inutilisé `TESTIMONIALS` (témoignages fictifs) dans `src/data/gameData.ts`.
+- Alignement de la gratuité (Chapitres 1 à 3 gratuits, retrait de la promesse « Pack Fondateur 4,99 € pour débloquer les chapitres 2 et 3 » dans les FAQ FR/EN/AR, `index.html`, `llms.txt`, `gameData.ts`).
+- Adoucissement des promesses religieuses (« quiz vérifiés » / « Hadiths sûrs » / « savoirs authentiques » → « sources citées » / « savoirs sourcés ») et voix (« comédiens de doublage » / « voix studio » → « voix françaises intégrées »).

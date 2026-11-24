@@ -11,7 +11,7 @@ Les longueurs respectent les limites d'Apple (vérifiées).
 | Sous-titre | `L'Adab en jouant, en famille` (28) | 30 |
 | Catégorie principale | **Jeux** → sous-catégorie *Jeux de rôle* | |
 | Catégorie secondaire | **Éducation** | |
-| Mots-clés | `jeu islamique,adab,éducatif,famille,hadith,quiz,musulman,RPG,sagesse,enfants,pixel art,halal` (92) | 100 |
+| Mots-clés | `jeu islamique,adab,éducatif,famille,hadith,quiz,musulman,RPG,sagesse,enfants,aventure,halal` (91) | 100 |
 | Langue principale | Français (+ Anglais et Arabe si tu veux) | |
 | URL d'assistance | `https://playnour.online` (ou une page contact) | |
 | URL de politique de confidentialité | `https://playnour.online/privacy.html` | |
@@ -27,7 +27,7 @@ Les longueurs respectent les limites d'Apple (vérifiées).
 ## Description (4000 max)
 
 > **Nour : retrouve ta lumière.**
-> Un jeu de rôle narratif en pixel art, inspiré des contes d'Orient, où chaque dialogue est une occasion de grandir.
+> Une aventure illustrée aux personnages en pixel-art, inspirée des contes d'Orient, où chaque dialogue est une occasion de grandir.
 >
 > ✨ **Une aventure en 3 chapitres**
 > Du premier Salām au jardin réhabilité, de la colère maîtrisée par le Hilm jusqu'à la montagne intérieure : suis Othmân dans son village et fais grandir sa lumière à chacun de tes choix.
@@ -35,8 +35,8 @@ Les longueurs respectent les limites d'Apple (vérifiées).
 > 🌱 **Des actions dans la vraie vie**
 > Ranger son lit, boire avec Adab, pardonner, rendre visite aux malades… Chaque chapitre propose de petites actions concrètes pour que le jeu transforme vraiment le quotidien.
 >
-> 📖 **Des savoirs authentiques**
-> Quiz de sagesse, hadiths et versets sélectionnés avec soin, en français, anglais et arabe.
+> 📖 **Des savoirs sourcés**
+> Quiz de sagesse, hadiths et versets avec leurs références citées, en français, anglais et arabe.
 >
 > 👨‍👩‍👧 **Fait pour toute la famille**
 > Sans violence, sans publicité, sans achat intégré, sans création de compte. Votre progression reste sur votre appareil.

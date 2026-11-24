@@ -17,13 +17,13 @@
     <!-- Google Image Extension (Images Clés Indexées) -->
     <image:image>
       <image:loc>https://playnour.online/affiche_nour_whatsapp.jpg</image:loc>
-      <image:title>NOUR — Affiche Officielle du Jeu RPG Islamique en Pixel Art</image:title>
+      <image:title>NOUR — Affiche Officielle de l'Aventure Narrative Islamique</image:title>
       <image:caption>Aventure initiatique d'Othmân : Combats par quiz de sagesse et apprentissage de l'Adab</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://playnour.online/game-assets/chambre.jpg</image:loc>
       <image:title>NOUR — La Chambre d'Othmân (Chapitre 1 : Vaincre la Solitude)</image:title>
-      <image:caption>Le point de départ de l'aventure d'Othmân en pixel art 16-bit</image:caption>
+      <image:caption>Le point de départ de l'aventure illustrée d'Othmân</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://playnour.online/game-assets/verger.jpg</image:loc>
@@ -44,8 +44,8 @@
     <!-- Google Video Extension (Trailer & Gameplay Indexés dans l'onglet Vidéos) -->
     <video:video>
       <video:thumbnail_loc>https://playnour.online/affiche_nour_whatsapp.jpg</video:thumbnail_loc>
-      <video:title>NOUR — Bande-Annonce Officielle du RPG Islamique en Pixel Art</video:title>
-      <video:description>Découvrez le gameplay de NOUR : le 1er jeu de rôle narratif islamique doublé en voix françaises. Combats par quiz de foi et de discernement contre le Waswâs.</video:description>
+      <video:title>NOUR — Bande-Annonce Officielle de l'Aventure Narrative Islamique</video:title>
+      <video:description>Découvrez le gameplay de NOUR : aventure narrative et éducative islamique illustrée avec personnages en pixel-art et voix françaises. Combats par quiz de discernement contre le Waswâs.</video:description>
       <video:content_loc>https://playnour.online/nour_le_jeu_trailer_25s.mp4</video:content_loc>
       <video:player_loc>https://playnour.online/#gameplay-video</video:player_loc>
       <video:duration>25</video:duration>
@@ -55,7 +55,7 @@
       <video:tag>rpg islamique</video:tag>
       <video:tag>waswas</video:tag>
       <video:tag>adab</video:tag>
-      <video:tag>pixel art</video:tag>
+      <video:tag>aventure illustrée</video:tag>
       <video:tag>jeu musulman</video:tag>
     </video:video>
   </url>
@@ -71,7 +71,7 @@
 
     <image:image>
       <image:loc>https://playnour.online/affiche_nour_whatsapp.jpg</image:loc>
-      <image:title>لعبة نُور — طريق الحكمة | أول لعبة تقمص أدوار إسلامية بيكسل آرت</image:title>
+      <image:title>لعبة نُور — طريق الحكمة | مغامرة تربوية إسلامية مصوّرة</image:title>
       <image:caption>مغامرة عثمان التربوية : مواجهة الوسواس بمسابقات الحكمة والأدب النبوي</image:caption>
     </image:image>
   </url>
@@ -87,7 +87,7 @@
 
     <image:image>
       <image:loc>https://playnour.online/affiche_nour_whatsapp.jpg</image:loc>
-      <image:title>NOUR — The Path of Wisdom | Islamic Pixel Art Narrative RPG</image:title>
+      <image:title>NOUR — The Path of Wisdom | Illustrated Islamic Narrative RPG</image:title>
       <image:caption>Join Othman in a moral RPG adventure: Quiz-based combat against Waswas and real-life Adab quests</image:caption>
     </image:image>
   </url>
