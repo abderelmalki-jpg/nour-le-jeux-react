@@ -170,7 +170,7 @@ export const HUD: React.FC<HUDProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 max-h-64 overflow-y-auto pr-1">
             {CHAPTER_1_SCENES.map((scene) => {
               const isCurrent = scene.id === currentScene.id;
-              const isUnlocked = playerProgress.completedScenes.includes(scene.id) || scene.id <= Math.max(1, ...playerProgress.completedScenes) + 1;
+              const isUnlocked = true;
 
               return (
                 <button

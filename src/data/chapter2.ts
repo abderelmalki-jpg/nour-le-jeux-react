@@ -241,7 +241,7 @@ export const CHAPTER_2_SCENES: Scene[] = [
         choices: [
           {
             id: 'c2_chap2',
-            label: '« Le Chemin du Hilm » — Chapitre 2 (La Maîtrise de soi)',
+            label: '« Le chemin du Hilm » — Chapitre 2 (La maîtrise de soi)',
             badge: '✦ Continuer'
           },
           {
@@ -251,7 +251,7 @@ export const CHAPTER_2_SCENES: Scene[] = [
           },
           {
             id: 'c3_chap3',
-            label: '« L\'Enfant à l\'Attelle » — Chapitre 3 (La Patience - Sabr)',
+            label: '« Le chemin du Tawakkul » — Chapitre 3 (La confiance en Allah face à l\'épreuve)',
             badge: '✦ Chapitre 3'
           }
         ]
@@ -817,7 +817,7 @@ export const CHAPTER_2_SCENES: Scene[] = [
         id: 's16_b5',
         type: 'dialogue',
         speaker: 'narration',
-        text: 'Au carrefour des chemins, la direction d\'une nouvelle étape se dessine clairement :\n« Le chemin du Tawakkul — Chapitre 3 : La Prise de Décision & la Confiance en Dieu ».'
+        text: 'Au carrefour des chemins, la direction d\'une nouvelle étape se dessine clairement :\n« Le chemin du Tawakkul — Chapitre 3 : La Confiance en Allah face à l\'épreuve ».'
       },
       {
         id: 's16_b6',

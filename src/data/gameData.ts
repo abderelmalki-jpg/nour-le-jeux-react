@@ -100,8 +100,8 @@ export const CHAPTERS: Chapter[] = [
     title: "Le chemin du Hilm",
     arabicTitle: "طريق الحلم وضبط النفس",
     subtitle: "La Colère & la Maîtrise de soi",
-    status: "upcoming",
-    statusLabel: "Chapitre 2 — Finalisation en cours",
+    status: "available",
+    statusLabel: "Chapitre 2 — Jouable Dès Maintenant",
     synopsis: "Devant les étals du marché aux fruits, une bousculade injuste renverse les paniers. Othmân sent le sang lui monter aux tempes. Pour progresser, il devra dompter l'embrasement de l'irritation et expérimenter la puissance libératrice du pardon et de la douceur.",
     virtue: "Al-Hilm (Douceur, Clémence & Sang-froid)",
     location: "Le Marché aux Fruits & L'Atelier du Potier",
@@ -118,9 +118,9 @@ export const CHAPTERS: Chapter[] = [
     number: "03",
     title: "Le chemin du Tawakkul",
     arabicTitle: "طريق التوكل واليقين",
-    subtitle: "La Décision & la Confiance en Dieu",
-    status: "development",
-    statusLabel: "Chapitre 3 — En développement",
+    subtitle: "La Confiance en Dieu face à la maladie & à l'épreuve",
+    status: "available",
+    statusLabel: "Chapitre 3 — Jouable Dès Maintenant",
     synopsis: "Au pied du sentier des falaises, le brouillard masque l'horizon. Othmân hésite à s'engager. Il apprend que la confiance n'est pas l'absence d'efforts, mais le fait d'attacher sa monture tout en remettant l'issue entre les mains du Créateur.",
     virtue: "At-Tawakkul (L'Effort Sincère & La Confiance)",
     location: "Le Sentier des Brumes & Les Hauts Plateaux",
@@ -260,7 +260,7 @@ export const FAQS = [
     a: "Ce sont des quêtes novatrices qui dépassent l'écran : à certains moments clés, le jeu invite avec bienveillance le joueur à poser un acte réel dans son quotidien (ranger son espace, remercier un parent, sourire à un proche) pour ancrer les valeurs du récit dans la vraie vie."
   },
   {
-    q: "Quand sortiront les prochains chapitres (Chapitres 2, 3, 4 et 5) ?",
-    a: "Les Chapitres 2 (« Le Chemin du Hilm ») et 3 (« L'Enfant à l'Attelle — Sabr ») sont en cours de finalisation et débloquables via le Pack Fondateur. Le Chapitre 4 (« Ce que tu as encore » — Birr al-Wālidayn) est actuellement en phase active de scénarisation. Vous pouvez suivre l'avancée de chaque étape en direct dans la section interactive « Le Carrefour des Sentiers » de cette page d'accueil."
+    q: "Quand sortiront les prochains chapitres (Chapitres 4 et 5) ?",
+    a: "Les Chapitres 2 (« Le chemin du Hilm ») et 3 (« Le chemin du Tawakkul ») sont jouables dès maintenant, gratuitement. Le Chapitre 4 (« Ce que tu as encore » — Birr al-Wālidayn) est en cours d'écriture. Vous pouvez suivre l'avancée de chaque étape dans la section « Le Carrefour des Sentiers » de cette page."
   }
 ];

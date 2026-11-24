@@ -63,6 +63,10 @@ const IS_NATIVE_SHELL =
     window.location.protocol === 'ionic:' ||
     Boolean((window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.()));
 
+/** Liens de paiement réels (pas en mode test). Tant qu'ils sont en test, aucun bouton « Soutenir » n'est affiché. */
+export const PAYMENTS_LIVE: boolean = STRIPE_CONFIG.tiers.every((tier) => !/\/test_/.test(tier.stripeUrl));
+export const SUPPORT_ENABLED: boolean = !IS_NATIVE_SHELL && PAYMENTS_LIVE;
+
 export function getSupporterStatus(): boolean {
   // Tout est débloqué gratuitement par défaut (mode accès complet)
   return true;

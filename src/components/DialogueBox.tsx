@@ -194,7 +194,8 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
       speechManager.speakBeat({
         id: beat.id,
         speaker: beat.speaker,
-        text: fullText
+        text: fullText,
+        lang: language
       });
     }
 
@@ -512,7 +513,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                   const newState = speechManager.toggleVoice();
                   setIsVoiceEnabled(newState);
                   if (newState) {
-                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText }, { force: true });
+                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
                   } else {
                     speechManager.stop();
                   }
@@ -549,7 +550,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                     e.stopPropagation();
                     speechManager.setVoiceEnabled(true);
                     setIsVoiceEnabled(true);
-                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText }, { force: true });
+                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
                   }}
                   className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-1.5 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
                   title="Réécouter la réplique"

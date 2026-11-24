@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { shuffleSeeded, SESSION_SHUFFLE_SEED } from '../utils/quizShuffle';
 import { Quiz } from '../types';
 import { CharacterAvatar } from './CharacterAvatar';
 import {
@@ -40,7 +41,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
 
   // Defensive normalization of quiz props to prevent any runtime crashes
   const rawOptions = (activeQuiz && Array.isArray(activeQuiz.options)) ? activeQuiz.options : [];
-  const normalizedOptions: { id: 'A' | 'B' | 'C' | 'D'; text: string; isCorrect: boolean }[] = rawOptions.map((opt: any, index: number) => {
+  const baseOptions: { id: 'A' | 'B' | 'C' | 'D'; text: string; isCorrect: boolean }[] = rawOptions.map((opt: any, index: number) => {
     const defaultLetter = (['A', 'B', 'C', 'D'][index] || 'A') as 'A' | 'B' | 'C' | 'D';
     if (typeof opt === 'string') {
       const isAns = (activeQuiz as any).correctAnswer !== undefined ? index === (activeQuiz as any).correctAnswer : index === 0;
@@ -53,7 +54,15 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     };
   });
 
-  const correctOptionId: 'A' | 'B' | 'C' | 'D' = activeQuiz?.correctOptionId || normalizedOptions.find((o) => o.isCorrect)?.id || 'A';
+  // Ordre des réponses mélangé (stable pendant l'affichage de la question) : la bonne réponse
+  // ne reste plus toujours en B/C, et les lettres A–D sont réattribuées dans l'ordre affiché.
+  const quizKey = activeQuiz?.id || quiz?.id || 'quiz';
+  const normalizedOptions = useMemo(() => {
+    const shuffled = shuffleSeeded(baseOptions, `${SESSION_SHUFFLE_SEED}:${quizKey}`);
+    return shuffled.map((o, i) => ({ ...o, id: (['A', 'B', 'C', 'D'][i] || 'A') as 'A' | 'B' | 'C' | 'D' }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizKey, language]);
+  const correctOptionId: 'A' | 'B' | 'C' | 'D' = normalizedOptions.find((o) => o.isCorrect)?.id || 'A';
   const reference = activeQuiz?.reference || {
     concept: activeQuiz?.topic || 'Sagesse & Enseignement',
     reference: 'Enseignement',

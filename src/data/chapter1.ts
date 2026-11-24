@@ -724,25 +724,25 @@ export const CHAPTER_1_SCENES: Scene[] = [
         choices: [
           {
             id: 'c1',
-            label: '🌿 Chapitre 1 : « Combattre le Waswâs » — Dépasser ses doutes et aller vers les autres (Taʿāruf)',
+            label: '🌿 Chapitre 1 : « Vaincre la Solitude » — Dépasser ses doutes et aller vers les autres (Taʿāruf)',
             badge: 'Disponible • Chapitre 1',
             interactiveSpot: { x: '35%', y: '55%' }
           },
           {
             id: 'c2',
-            label: '⚖️ Chapitre 2 : « Maîtriser sa Colère » — L’épreuve du marché & la clémence (Hilm)',
+            label: '⚖️ Chapitre 2 : « Le chemin du Hilm » — L’épreuve du marché & la clémence',
             badge: 'Disponible • Chapitre 2',
             interactiveSpot: { x: '50%', y: '45%' }
           },
           {
             id: 'c3',
-            label: '🍯 Chapitre 3 : « Face à la Maladie » — Les remèdes prophétiques & la confiance en Allah (Tawakkul)',
+            label: '🍯 Chapitre 3 : « Le chemin du Tawakkul » — Les remèdes prophétiques & la confiance en Allah',
             badge: 'Disponible • Chapitre 3',
             interactiveSpot: { x: '65%', y: '50%' }
           },
           {
             id: 'c4',
-            label: '👨‍👩‍👧 Chapitre 4 : « La Bonté envers les Parents » — Le respect, l’amour & le service (Birr al-Wālidayn)',
+            label: '👨‍👩‍👧 Chapitre 4 : « Ce que tu as encore » — La bonté envers les parents & la reconnaissance (Birr al-Wālidayn)',
             disabled: true,
             badge: 'Bientôt • Chapitre 4',
             disabledReason: 'Aujourd’hui, Othmân apprend l’importance capitale des parents, le devoir de leur obéir avec amour et de prendre soin d’eux au quotidien (Birr al-Wālidayn).',
@@ -750,7 +750,7 @@ export const CHAPTER_1_SCENES: Scene[] = [
           },
           {
             id: 'c5',
-            label: '⛰️ Chapitre 5 : « La Montagne Intérieure » — La pureté de l’intention (Niyyah & Sincérité)',
+            label: '⛰️ Chapitre 5 : « La Montagne Intérieure » — La persévérance (Sabr) face à l’épreuve',
             disabled: true,
             badge: 'Bientôt • Chapitre 5',
             disabledReason: 'Aujourd’hui, Othmân apprend à agir avec une intention sincère uniquement pour Allah et à surmonter les grandes épreuves avec foi (Niyyah).',
@@ -2137,7 +2137,7 @@ export const DAY_2_POTEAU_BEATS: Beat[] = [
     choices: [
       {
         id: 'c2_chap2',
-        label: '« Le Chemin du Hilm » — Chapitre 2 (La Maîtrise de soi)',
+        label: '« Le chemin du Hilm » — Chapitre 2 (La maîtrise de soi)',
         badge: '✦ Continuer'
       },
       {
@@ -2147,7 +2147,7 @@ export const DAY_2_POTEAU_BEATS: Beat[] = [
       },
       {
         id: 'c3_chap3',
-        label: '« L\'Enfant à l\'Attelle » — Chapitre 3 (La Patience - Sabr)',
+        label: '« Le chemin du Tawakkul » — Chapitre 3 (La confiance en Allah face à l\'épreuve)',
         badge: '✦ Chapitre 3'
       }
     ]

@@ -220,7 +220,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                   SÉRIE ACTUELLE
                 </span>
                 <span className="text-sm font-bold text-[#3a2312] font-mono">
-                  {progress.streakDays} jours
+                  {progress.streakDays} {progress.streakDays > 1 ? 'jours' : 'jour'}
                 </span>
               </div>
             </div>
@@ -232,7 +232,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                   MEILLEURE SÉRIE
                 </span>
                 <span className="text-sm font-bold text-[#3a2312] font-mono">
-                  {progress.bestStreakDays} jours
+                  {progress.bestStreakDays} {progress.bestStreakDays > 1 ? 'jours' : 'jour'}
                 </span>
               </div>
             </div>

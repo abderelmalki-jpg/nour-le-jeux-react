@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { shuffleSeeded, SESSION_SHUFFLE_SEED } from '../utils/quizShuffle';
 import { ISLAMIC_QUIZZES } from '../data/islamicQuizzes';
 import { IslamicQuizQuestion } from '../types';
 import {
@@ -56,6 +57,14 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   const [localCompleted, setLocalCompleted] = useState<string[]>(completedQuizIds);
 
   const activeQuiz: IslamicQuizQuestion = ISLAMIC_QUIZZES[currentIndex];
+  // Ordre des réponses mélangé (la bonne réponse était en 2ᵉ position 11 fois sur 18)
+  const shuffledQuiz = useMemo(() => {
+    const order = shuffleSeeded(activeQuiz.options.map((_, i) => i), `${SESSION_SHUFFLE_SEED}:${activeQuiz.id}`);
+    return {
+      options: order.map((i) => activeQuiz.options[i]),
+      correctIndex: order.indexOf(activeQuiz.correctIndex)
+    };
+  }, [activeQuiz.id]);
   const isAlreadyCompleted = localCompleted.includes(activeQuiz.id);
   const totalCount = ISLAMIC_QUIZZES.length;
   const completedCount = localCompleted.length;
@@ -79,7 +88,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     speechManager.stop();
 
     setIsSubmitted(true);
-    const correct = selectedOptionIndex === activeQuiz.correctIndex;
+    const correct = selectedOptionIndex === shuffledQuiz.correctIndex;
     setIsCorrect(correct);
 
     if (correct) {
@@ -227,9 +236,9 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
 
           {/* Direct Choices List: 100% visible, ergonomic for mobile fingers */}
           <div className="flex flex-col gap-2.5">
-            {activeQuiz.options.map((option, idx) => {
+            {shuffledQuiz.options.map((option, idx) => {
               const isSelected = selectedOptionIndex === idx;
-              const isOptionCorrect = idx === activeQuiz.correctIndex;
+              const isOptionCorrect = idx === shuffledQuiz.correctIndex;
 
               let cardStyle =
                 'bg-[#fbf7ee] border-[#d2be9f] text-[#3a2312] hover:bg-[#f3ebd9] active:scale-[0.99]';

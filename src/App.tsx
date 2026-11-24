@@ -39,7 +39,7 @@ import { soundManager } from './utils/audio';
 import { speechManager } from './utils/speech';
 import { refreshDailyReminder } from './utils/notifications';
 import { loadCustomAssets, CustomAssetsConfig, PIXEL_ASSETS, DEFAULT_ASSETS } from './utils/assets';
-import { getSupporterStatus, setSupporterStatus, SUPPORTER_EVENT_NAME } from './utils/stripe';
+import { getSupporterStatus, setSupporterStatus, SUPPORTER_EVENT_NAME, SUPPORT_ENABLED } from './utils/stripe';
 import { Sparkles, Play, Compass, Shield, ChevronLeft, ChevronRight, BookOpen, ScrollText, MessageSquareQuote, FastForward, Flame } from 'lucide-react';
 import {
   trackScreenView,
@@ -1288,7 +1288,7 @@ export default function App() {
             soundEnabled={progress.soundEnabled}
             onToggleSound={toggleSound}
             onOpenAssetManager={() => setShowAssetManager(true)}
-            onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
+            onOpenSupport={SUPPORT_ENABLED ? () => {
               setSupportModalReason('profile');
               setShowSupportModal(true);
             } : undefined}
@@ -1351,7 +1351,7 @@ export default function App() {
                   narrativeFlags={progress.narrativeFlags}
                   showSkipSeen={canSkipSeen}
                   onSkipSeen={handleSkipSeen}
-                  onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
+                  onOpenSupport={SUPPORT_ENABLED ? () => {
                     setSupportModalReason('chapter_end');
                     setShowSupportModal(true);
                   } : undefined}
@@ -1497,7 +1497,7 @@ export default function App() {
                   }}
                   onOpenKnowledge={() => setShowKnowledge(true)}
                   onOpenFeedback={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
-                  onOpenSupport={WEB_ONLY_FEATURES_ENABLED ? () => {
+                  onOpenSupport={SUPPORT_ENABLED ? () => {
                     setSupportModalReason('chapter_end');
                     setShowSupportModal(true);
                   } : undefined}
@@ -1636,6 +1636,21 @@ export default function App() {
             setShowSplash(false);
             setActiveTab('adventure');
           }}
+          onSelectChapter={(chapter) => {
+            const targetSceneId = chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
+            const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
+            trackGameStarted(false, progress.level, progress.xp);
+            setProgress((prev) => ({
+              ...prev,
+              dayNumber: chapter,
+              selectedChapter: chapter,
+              currentSceneIndex: targetIdx !== -1 ? targetIdx : 0,
+              currentBeatIndex: 0
+            }));
+            setClimaxStep(0);
+            setShowSplash(false);
+            setActiveTab('adventure');
+          }}
           onOpenLanding={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
         />
       )}
@@ -1652,7 +1667,7 @@ export default function App() {
       )}
 
       {/* Support & Mécénat / Founder Unlock Modal (Stripe Web) */}
-      {showSupportModal && WEB_ONLY_FEATURES_ENABLED && (
+      {showSupportModal && SUPPORT_ENABLED && (
         <SupportModal
           reason={supportModalReason}
           onClose={() => setShowSupportModal(false)}

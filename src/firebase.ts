@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { getAnalytics, isSupported, type Analytics } from "firebase/analytics";
+import { analyticsAllowed } from "./utils/consent";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -30,7 +31,18 @@ const isBot = typeof window !== "undefined" && (
 const isNativeShell = typeof window !== "undefined" &&
   (window.location.protocol === "capacitor:" || window.location.protocol === "ionic:");
 
-export const analyticsPromise = typeof window !== "undefined" && !isBot && !isNativeShell
-  ? isSupported().then((supported) => (supported ? getAnalytics(app) : null))
-  : Promise.resolve(null);
+const startAnalytics = (): Promise<Analytics | null> =>
+  isSupported().then((supported) => (supported ? getAnalytics(app) : null));
+
+// Sur le web, Google Analytics (cookies) ne démarre qu'avec l'accord de l'utilisateur (bandeau de consentement).
+export let analyticsPromise: Promise<Analytics | null> =
+  typeof window !== "undefined" && !isBot && !isNativeShell && analyticsAllowed()
+    ? startAnalytics()
+    : Promise.resolve(null);
+
+/** Appelée quand l'utilisateur accepte les statistiques. */
+export function enableFirebaseAnalytics() {
+  if (typeof window === "undefined" || isBot || isNativeShell) return;
+  analyticsPromise = startAnalytics();
+}
 

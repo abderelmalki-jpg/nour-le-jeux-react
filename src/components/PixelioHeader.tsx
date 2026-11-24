@@ -121,6 +121,9 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
 
   const { language, isRtl, setLanguage } = useLanguage();
   const t = gameTranslations[language]?.hud || gameTranslations.fr.hud;
+  // Libellés courts lisibles (au lieu de couper les mots : « NIVE. », « Pressio »)
+  const shortLevel = language === 'fr' ? 'Niv.' : language === 'en' ? 'Lv.' : t.level;
+  const shortWaswas = language === 'fr' ? 'Pression' : language === 'en' ? 'Shadow' : t.waswasGauge;
   const tNav = gameTranslations[language]?.nav || gameTranslations.fr.nav;
 
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -184,7 +187,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
         >
           <div className="flex items-center gap-1 sm:gap-1.5 relative">
             <span className="text-[10px] font-black text-amber-950 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-300 px-1 sm:px-1.5 py-0.2 rounded-md border border-yellow-200 font-mono shadow-xs uppercase">
-              {t.level.slice(0, 4)}. {level}
+              {shortLevel} {level}
             </span>
             <span
               className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
@@ -233,7 +236,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
           <div className="flex items-center gap-1 sm:gap-1.5 relative">
             <span className="text-[10px] font-black text-fuchsia-200 bg-purple-950/90 px-1 sm:px-1.5 py-0.2 rounded-md border border-purple-400/60 font-mono shadow-xs flex items-center gap-0.5 sm:gap-1">
               <span>🌑</span>
-              <span className="tracking-wide hidden sm:inline">{t.waswasGauge.slice(0, 7)}</span>
+              <span className="tracking-wide hidden sm:inline">{shortWaswas}</span>
             </span>
             <span
               className={`text-[10px] font-bold font-mono transition-colors duration-200 ${

@@ -58,7 +58,7 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
       {/* Background with layered desert sand atmosphere and authentic game landscape */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/game-assets/vallee.jpg"
+          src="/game-assets/title_screen_bg.jpg"
           alt="Paysage de la vallée de NOUR : Le 1er RPG Islamique"
           fetchPriority="high"
           decoding="async"
@@ -247,7 +247,8 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
                   <div onClick={toggleHeroPlay} className="absolute inset-0">
                     <video
                       ref={heroVideoRef}
-                      src="/game-assets/tiktok_promo.mp4"
+                      src="/nour_le_jeu_trailer_25s.mp4"
+                      poster="/game-assets/hero_landing.jpg"
                       autoPlay
                       loop
                       muted

@@ -61,7 +61,7 @@ export default function UnifiedBenefitsSection() {
             
             <div className="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden border border-[#d4af37]/30 relative group shadow-2xl">
                <img
-                 src="/game-assets/family_bond.jpg" 
+                 src="/game-assets/chambre.jpg" 
                  alt="Action réelle en famille"
                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
                  onError={(e) => { (e.target as HTMLImageElement).src = '/game-assets/chambre.jpg'; }}

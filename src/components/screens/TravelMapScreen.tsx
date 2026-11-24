@@ -234,72 +234,23 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   const isFocusedCompleted = completedScenes.includes(focusedScene.id);
   const isFocusedCurrent = focusedScene.id === nextPlayableScene.id && !isFocusedCompleted;
   
-  // A scene is progression-locked if it's neither completed nor the current next scene
-  const isProgressionLocked = !isFocusedCompleted && !isFocusedCurrent;
-  const isFocusedLocked =
-    isProgressionLocked ||
-    playerXp < (focusedScene.requiredXp || 0) ||
-    (focusedScene.id >= 10 ? !isSupporter : false);
+  // Toutes les étapes et chapitres sont débloqués.
+  const isFocusedLocked = false;
 
   const handleNodeClick = (
     sceneId: number,
-    requiredXp: number,
-    sceneTitle: string,
-    gateReason?: string,
-    isSpiritualGate?: boolean
+    _requiredXp: number,
+    _sceneTitle: string,
+    _gateReason?: string,
+    _isSpiritualGate?: boolean
   ) => {
     soundManager.playSelect();
     setSelectedSceneId(sceneId);
-
-    const isNodeCompleted = completedScenes.includes(sceneId);
-    const isNodeCurrent = sceneId === nextPlayableScene.id && !isNodeCompleted;
-
-    if (!isNodeCompleted && !isNodeCurrent) {
-      setLockedSceneModal({
-        sceneTitle,
-        requiredXp: 0,
-        gateReason: 'Vous devez d\'abord terminer les étapes précédentes pour accéder à celle-ci.',
-        isFounderRequired: false
-      });
-      return;
-    }
-
-    if (sceneId >= 10 && !isSupporter) {
-      setLockedSceneModal({
-        sceneTitle,
-        requiredXp: sceneId >= 17 ? 780 : 450,
-        gateReason: 'Cette étape fait partie du Chapitre 2 ou 3. Débloquez la suite avec le Pack Fondateur (4,99 €) ou appliquez votre Code Promo.',
-        isFounderRequired: true
-      });
-      return;
-    }
-
-    if (playerXp < requiredXp) {
-      setLockedSceneModal({ sceneTitle, requiredXp, gateReason, isSpiritualGate });
-    }
   };
 
   const handleLaunchScene = (sceneId: number) => {
     const target = allScenesCombined.find((s) => s.id === sceneId);
     if (!target) return;
-    if (target.id >= 10 && !isSupporter) {
-      setLockedSceneModal({
-        sceneTitle: target.title,
-        requiredXp: target.id >= 17 ? 780 : 450,
-        gateReason: 'Cette étape fait partie du Chapitre 2 ou 3. Débloquez la suite avec le Pack Fondateur (4,99 €) ou appliquez votre Code Promo.',
-        isFounderRequired: true
-      });
-      return;
-    }
-    if (playerXp < (target.requiredXp || 0)) {
-      setLockedSceneModal({
-        sceneTitle: target.title,
-        requiredXp: target.requiredXp || 0,
-        gateReason: target.gateReason,
-        isSpiritualGate: target.isSpiritualGate
-      });
-      return;
-    }
     soundManager.playSelect();
     onSelectScene(sceneId);
   };
@@ -460,7 +411,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
           {currentChapterConfig.scenes.map((scene, index) => {
             const isCompleted = completedScenes.includes(scene.id);
             const isCurrent = scene.id === nextPlayableScene.id && !isCompleted;
-            const isUnlocked = (isCompleted || isCurrent) && playerXp >= (scene.requiredXp || 0);
+            const isUnlocked = true;
             const isSelected = scene.id === focusedScene.id;
             const pos = currentChapterConfig.positions[index] || { top: '50%', left: '50%' };
             const isBoss = scene.id === 9 || scene.id === 15 || scene.id === 25;

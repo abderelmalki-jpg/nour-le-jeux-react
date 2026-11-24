@@ -8,30 +8,9 @@ import './fonts.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
-import { isNativeApp } from './utils/platform';
-
-const posthogApiKey = import.meta.env.VITE_POSTHOG_PROJECT_TOKEN || 'phc_si9wAvbE35sJQojXKyZy4EKcSfEdYwYN4V2rJqbfr3iu';
-const posthogHost = import.meta.env.VITE_POSTHOG_HOST || 'https://eu.i.posthog.com';
-
-// App native (iOS/Android) : analytics minimaux et anonymes, sans enregistrement de session,
-// sans autocapture ni profil de personne (public familial, App Store Privacy).
-const posthogOptions = isNativeApp
-  ? {
-      api_host: posthogHost,
-      person_profiles: 'identified_only' as const,
-      capture_pageview: false,
-      capture_pageleave: false,
-      autocapture: false,
-      disable_session_recording: true,
-    }
-  : {
-      api_host: posthogHost,
-      person_profiles: 'always' as const,
-      capture_pageview: true,
-      capture_pageleave: true,
-      autocapture: true,
-      disable_session_recording: false,
-    };
+import { posthogApiKey, posthogOptions } from './utils/posthogConfig';
+import { analyticsAllowed } from './utils/consent';
+import { ConsentBanner } from './components/ConsentBanner';
 
 interface Props {
   children: ReactNode;
@@ -116,17 +95,26 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <PostHogProvider apiKey={posthogApiKey} options={posthogOptions}>
-      <ErrorBoundary>
-        <LanguageProvider>
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
-        </LanguageProvider>
-      </ErrorBoundary>
-    </PostHogProvider>
-  </StrictMode>,
+const appTree = (
+  <ErrorBoundary>
+    <LanguageProvider>
+      <ThemeProvider>
+        <App />
+        <ConsentBanner />
+      </ThemeProvider>
+    </LanguageProvider>
+  </ErrorBoundary>
 );
 
+// Web : PostHog n'est même pas chargé tant que l'utilisateur n'a pas accepté (voir ConsentBanner).
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    {analyticsAllowed() ? (
+      <PostHogProvider apiKey={posthogApiKey} options={posthogOptions}>
+        {appTree}
+      </PostHogProvider>
+    ) : (
+      appTree
+    )}
+  </StrictMode>,
+);

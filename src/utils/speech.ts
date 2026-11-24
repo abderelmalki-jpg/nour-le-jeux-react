@@ -309,7 +309,7 @@ class SpeechManager {
    * Hybrid playback: tries MP3 first, falls back to native Web Speech API
    */
   public speakBeat(
-    beat: { id?: string; speaker: SpeakerRole; text: string; chapter?: number },
+    beat: { id?: string; speaker: SpeakerRole; text: string; chapter?: number; lang?: string },
     options?: { onEnd?: () => void; force?: boolean }
   ) {
     if (!this.isEnabled && !options?.force) return;
@@ -317,6 +317,12 @@ class SpeechManager {
 
     // Waswâs (inward whisper/passing thought) and Narration (scene descriptions) are strictly silent
     if (isSilentSpeaker(beat.speaker)) {
+      options?.onEnd?.();
+      return;
+    }
+
+    // Les voix studio sont enregistrées en français : ne jamais les jouer sous un texte EN/AR.
+    if (beat.lang && beat.lang !== 'fr') {
       options?.onEnd?.();
       return;
     }

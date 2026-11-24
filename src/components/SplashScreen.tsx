@@ -18,6 +18,7 @@ interface SplashScreenProps {
   };
   onContinue: () => void;
   onNewGame: () => void;
+  onSelectChapter?: (chapter: 1 | 2 | 3) => void;
   onOpenLanding?: () => void;
 }
 
@@ -26,6 +27,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   savedSummary,
   onContinue,
   onNewGame,
+  onSelectChapter,
   onOpenLanding
 }) => {
   const [showCinematic, setShowCinematic] = useState(false);
@@ -159,6 +161,24 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     }
     
     finalizeAction(actionType);
+  };
+
+  const handleSelectChapter = (chapter: 1 | 2 | 3) => {
+    if (isFadingOut) return;
+    try {
+      soundManager.playSelect();
+      speechManager.unlock();
+    } catch {
+      // Audio fallback
+    }
+    setIsFadingOut(true);
+    setTimeout(() => {
+      if (onSelectChapter) {
+        onSelectChapter(chapter);
+      } else {
+        onNewGame();
+      }
+    }, 700);
   };
 
   return (
@@ -310,11 +330,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
             
             <div className="flex flex-col gap-3 sm:gap-4 pb-2">
               {[
-                { id: 1, title: "L'Aventure Intérieure", subtitle: "Le premier pas", status: "playable", image: "/game-assets/title_screen_bg.jpg" },
-                { id: 2, title: "La Maîtrise de la Colère", subtitle: "Le Marchand", status: "locked", image: bgCh2 },
-                { id: 3, title: "L'Enfant à l'Attelle", subtitle: "La Patience", status: "locked", image: bgCh3 },
-                { id: 4, title: "Le Respect aux Parents", subtitle: "L'Épreuve", status: "soon", image: bgCh4 },
-                { id: 5, title: "Le But de l'Existence", subtitle: "La Révélation", status: "soon", image: bgCh5 },
+                { id: 1, title: "Vaincre la Solitude", subtitle: "Le premier pas", status: "playable", image: "/game-assets/title_screen_bg.jpg" },
+                { id: 2, title: "Le chemin du Hilm", subtitle: "La maîtrise de la colère", status: "playable", image: bgCh2 },
+                { id: 3, title: "Le chemin du Tawakkul", subtitle: "La confiance face à l'épreuve", status: "playable", image: bgCh3 },
+                { id: 4, title: "Ce que tu as encore", subtitle: "La bonté envers les parents", status: "soon", image: bgCh4 },
+                { id: 5, title: "La Montagne Intérieure", subtitle: "La persévérance (Sabr)", status: "soon", image: bgCh5 },
               ].map((ch) => (
                 <div key={ch.id} className={`relative flex items-stretch gap-3 sm:gap-4 p-2 sm:p-3 rounded-2xl border ${ch.status === 'playable' ? 'border-amber-500/50 bg-amber-900/20' : 'border-white/10 bg-black/40 opacity-90'} overflow-hidden`}>
                   {/* Thumbnail */}
@@ -339,7 +359,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                     {ch.status === 'playable' ? (
                       <button 
                         onClick={() => {
-                           if (hasSavedGame && ch.id === 1) {
+                           if (ch.id === 2 || ch.id === 3) {
+                             handleSelectChapter(ch.id as 2 | 3);
+                           } else if (hasSavedGame && ch.id === 1) {
                              setShowNewGameConfirm(true);
                            } else {
                              handleAction('new');
@@ -411,7 +433,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                       if (hasSavedGame) {
                         handleAction('continue');
                       } else {
-                        setScreenMode('chapters');
+                        // Nouveau joueur : on lance directement le chapitre 1 (la liste des chapitres
+                        // reste accessible via « Sélection des Chapitres »)
+                        handleAction('new');
                       }
                     }}
                     style={{

@@ -559,9 +559,9 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
   const actionBeat = completedScene.beats.find((b) => b.type === 'real_action');
   const action = actionBeat?.realActionId ? REAL_ACTIONS[actionBeat.realActionId] : undefined;
 
-  // Spiritual Gate & XP requirements
+  // Spiritual Gate & XP requirements (débloqué pour tous)
   const nextRequiredXp = nextScene?.requiredXp || 0;
-  const isLocked = Boolean(nextScene && nextRequiredXp > playerXp);
+  const isLocked = false;
   const missingXp = Math.max(0, nextRequiredXp - playerXp);
   const xpPercent = nextRequiredXp > 0 ? Math.min(100, Math.round((playerXp / nextRequiredXp) * 100)) : 100;
 

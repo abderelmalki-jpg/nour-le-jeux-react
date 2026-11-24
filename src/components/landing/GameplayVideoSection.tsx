@@ -32,10 +32,10 @@ export const GameplayVideoSection: React.FC<GameplayVideoSectionProps> = ({ onOp
       tag: "1080p • 60 FPS"
     },
     gameplay: {
-      src: '/game-assets/video-gameplay.mp4',
+      src: '/nour_le_jeu_trailer_25s.mp4',
       poster: '/game-assets/play_games_cover_1920x1080.jpg',
-      title: "NOUR — Démo de Gameplay (Pixel-Art RPG)",
-      badge: "🎮 GAMEPLAY IN-GAME",
+      title: "NOUR — Bande-annonce officielle (25 s)",
+      badge: "🎮 BANDE-ANNONCE",
       tag: "Mobile & Web"
     }
   };

@@ -2,6 +2,7 @@ import { logEvent } from 'firebase/analytics';
 import { analyticsPromise } from '../firebase';
 import posthog from 'posthog-js';
 import { Capacitor } from '@capacitor/core';
+import { analyticsAllowed } from './consent';
 
 export { posthog };
 
@@ -51,6 +52,11 @@ export function isBotOrCrawler(): boolean {
 export async function trackEvent(eventName: string, params: Record<string, any> = {}) {
   // Ignore les bots et spiders automatisés
   if (isBotOrCrawler()) {
+    return;
+  }
+
+  // Web : aucune mesure sans l'accord de l'utilisateur (bandeau de consentement)
+  if (!analyticsAllowed()) {
     return;
   }
 
