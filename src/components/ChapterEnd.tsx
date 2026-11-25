@@ -72,8 +72,62 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
     setCurrentSlide(0);
   };
 
+  const endLabels =
+    language === 'ar'
+      ? {
+          skip: 'تخطّي',
+          openMap: 'افْتَحْ خَرِيطَةَ الرِّحْلَةِ',
+          continueTo: (n: number) => `مُتَابَعَةٌ إِلَى الْفَصْلِ ${n}`,
+          replay: 'إِعَادَةُ هٰذَا الْفَصْلِ',
+          reviewTreasures: 'مُرَاجَعَةُ كُنُوزِي',
+          savePause: 'حِفْظٌ وَاسْتِرَاحَةٌ',
+          feedback: 'إِرْسَالُ رَأْيِي',
+          savedMsg: 'تَمَّ حِفْظُ التَّقَدُّمِ! جَارِي التَّوْجِيهُ...'
+        }
+      : language === 'en'
+      ? {
+          skip: 'Skip',
+          openMap: 'Open Travel Map',
+          continueTo: (n: number) => `Continue to Chapter ${n}`,
+          replay: 'Replay this Chapter',
+          reviewTreasures: 'Review my Treasures',
+          savePause: 'Save & Pause',
+          feedback: 'Give Feedback',
+          savedMsg: 'Progress saved! Redirecting...'
+        }
+      : {
+          skip: 'Passer',
+          openMap: 'Ouvrir la Carte du Voyage',
+          continueTo: (n: number) => `Continuer vers le Chapitre ${n}`,
+          replay: 'Rejouer ce Chapitre',
+          reviewTreasures: 'Revoir mes Trésors',
+          savePause: 'Sauvegarder & Pause',
+          feedback: 'Donner mon avis',
+          savedMsg: 'Progression sauvegardée ! Redirection...'
+        };
+
   const nextChapterTitle =
-    chapterNumber === 1
+    language === 'ar'
+      ? chapterNumber === 1
+        ? 'الْفَصْلُ ٢ : طَرِيقُ الْحِلْمِ'
+        : chapterNumber === 2
+        ? 'الْفَصْلُ ٣ : طَرِيقُ التَّوَكُّلِ'
+        : chapterNumber === 3
+        ? 'الْفَصْلُ ٤ : مَا زَالَ بَيْنَ يَدَيْكَ'
+        : chapterNumber === 4
+        ? 'الْفَصْلُ ٥ : قِمَّةُ الْمُثَابَرَةِ'
+        : 'اكْتَمَلَ الْمَوْسِمُ الْأَوَّلُ — الْفُصُولُ الْخَمْسَةُ مُنْجَزَةٌ!'
+      : language === 'en'
+      ? chapterNumber === 1
+        ? 'Chapter 2: The Path of Hilm'
+        : chapterNumber === 2
+        ? 'Chapter 3: The Path of Tawakkul'
+        : chapterNumber === 3
+        ? 'Chapter 4: What You Still Have'
+        : chapterNumber === 4
+        ? 'Chapter 5: The Summit of Perseverance'
+        : 'Season 1 Complete — All 5 Chapters Accomplished!'
+      : chapterNumber === 1
       ? 'Chapitre 2 : Le Chemin du Hilm'
       : chapterNumber === 2
       ? 'Chapitre 3 : Le Chemin du Tawakkul'
@@ -116,7 +170,7 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
               className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#ebdfc8] hover:bg-[#d97c27] text-[#3a2312] hover:text-white border border-[#3a2312]/40 text-[10px] sm:text-xs font-black font-cinzel tracking-wider uppercase transition-all cursor-pointer shadow-xs active:translate-y-0.5"
               title="Passer directement au choix final"
             >
-              <span>Passer</span>
+              <span>{endLabels.skip}</span>
               <FastForward className="w-3.5 h-3.5" />
             </button>
           )}
@@ -231,14 +285,8 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                     <Play className="w-4 h-4 fill-white" />
                     <span>
                       {chapterNumber === 5
-                        ? "Ouvrir la Carte du Voyage"
-                        : chapterNumber === 4
-                        ? 'Continuer vers le Chapitre 5'
-                        : chapterNumber === 3
-                        ? 'Continuer vers le Chapitre 4'
-                        : chapterNumber === 2
-                        ? 'Continuer vers le Chapitre 3'
-                        : 'Continuer vers le Chapitre 2'}
+                        ? endLabels.openMap
+                        : endLabels.continueTo(chapterNumber + 1)}
                     </span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -253,7 +301,7 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                 className="w-full py-2.5 px-4 rounded-2xl bg-[#ebdfc8] hover:bg-[#dfceb5] text-[#3a2312] font-black text-xs flex items-center justify-center gap-2 border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer font-cinzel tracking-wider uppercase"
               >
                 <RotateCcw className="w-3.5 h-3.5 text-[#8c5a2b]" />
-                <span>Rejouer ce Chapitre</span>
+                <span>{endLabels.replay}</span>
               </button>
 
               {/* Liens discrets tout en bas */}
@@ -263,7 +311,7 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                   className="hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="w-3 h-3" />
-                  <span>Revoir mes Trésors</span>
+                  <span>{endLabels.reviewTreasures}</span>
                 </button>
 
                 {onSaveAndExit && (
@@ -272,13 +320,13 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                     <button
                       onClick={() => {
                         soundManager.playXpHarvest();
-                        setSaveFeedback('Progression sauvegardée ! Redirection...');
+                        setSaveFeedback(endLabels.savedMsg);
                         setTimeout(() => onSaveAndExit(), 600);
                       }}
                       className="hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Save className="w-3 h-3" />
-                      <span>Sauvegarder & Pause</span>
+                      <span>{endLabels.savePause}</span>
                     </button>
                   </>
                 )}
@@ -291,7 +339,7 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                       className="hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Sparkles className="w-3 h-3 text-amber-600" />
-                      <span>Donner mon avis</span>
+                      <span>{endLabels.feedback}</span>
                     </button>
                   </>
                 )}

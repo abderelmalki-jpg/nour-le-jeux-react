@@ -607,3 +607,13 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Traductions complètes EN + AR vocalisé (`src/i18n/chapter5Translations.ts`, fusionnées dans `narrativeI18n.ts` — ⚠️ arabe à faire relire par un natif).
 - Combat final dédié dans `ClimaxCombat.tsx` (`CHAPTER_5_DUEL_ROUNDS`, FR/EN/AR, « Ombre du Découragement »).
 - Branchement complet dans `App.tsx` (`getChapterForSceneId` étendu à `1 | 2 | 3 | 4 | 5`), `SplashScreen.tsx` (Chapitre 5 jouable), `TravelMapScreen.tsx` (5ᵉ onglet + 6 nœuds, flèche suivant corrigée jusqu'au Chapitre 5), `QuestsScreen.tsx`, `ChapterEnd.tsx` (transition Ch. 4 → Ch. 5 et final Saison 1), et chunk dédié `chapter-5-data` dans `vite.config.ts`.
+
+---
+
+## Douzième vague (2026-11-25) — Finitions UI, contrastes Parchemin et localisation FR/EN/AR complète
+
+**Fait**
+- `src/components/PixelioHeader.tsx` : correction du contraste en thème Parchemin sur les compteurs XP (`text-[#4a2e12]`), Waswâs (`text-purple-900`) et le bouton `Chemin` (`bg-[#eddcc3] text-[#3a2312] border-[#b07d3c]`), et localisation FR/EN/AR des boutons `Parchemin`/`Nuit` et `Quiz`.
+- `src/components/screens/TravelMapScreen.tsx` : numérotation relative par chapitre (`1..N` au lieu des IDs globaux `30..45`), détection `SOMMET` étendue aux scènes `35` et `44`, et localisation intégrale FR/EN/AR + RTL de l'en-tête, des onglets, des nœuds, de la fiche d'étape et des boutons d'action.
+- `src/components/DialogueBox.tsx` : ajout des noms d'orateurs `pere` (`LE PÈRE` / `FATHER` / `الْأَبُ`) et `grand_pere` (`GRAND-PÈRE` / `GRANDFATHER` / `الْجَدُّ`), et localisation FR/EN/AR du bouton `Passer` et du bandeau `+X Doute`.
+- `src/components/ChapterEnd.tsx` & `src/components/SplashScreen.tsx` : localisation FR/EN/AR des boutons `JOUER`, `BLOQUÉ`, de la modale « Nouvelle Partie » et de l'écran de fin de chapitre.

@@ -373,11 +373,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                         }}
                         className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold font-cinzel text-xs sm:text-sm tracking-wider shadow-[0_0_15px_rgba(245,158,11,0.4)] active:scale-95 transition-all cursor-pointer"
                       >
-                        JOUER
+                        {ux.play}
                       </button>
                     ) : (
                       <div className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white/5 border border-white/10 text-white/40 font-bold font-cinzel text-[10px] sm:text-xs tracking-wider flex items-center gap-1.5 shadow-inner">
-                        {ch.status === 'locked' ? <><Lock className="w-3.5 h-3.5" /> BLOQUÉ</> : <><Clock className="w-3.5 h-3.5" /> {ux.soon}</>}
+                        {ch.status === 'locked' ? <><Lock className="w-3.5 h-3.5" /> {uiLang === 'ar' ? 'مُغْلَقٌ' : uiLang === 'en' ? 'LOCKED' : 'BLOQUÉ'}</> : <><Clock className="w-3.5 h-3.5" /> {ux.soon}</>}
                       </div>
                     )}
                   </div>
@@ -539,23 +539,23 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
             {/* Header Title & Badge */}
             <div>
               <span className="text-xs font-black uppercase tracking-wider text-[#8c5a2b] font-cinzel bg-[#ebdfc8] px-4 py-1.5 rounded-full border-2 border-[#3a2312] shadow-xs">
-                ⚠️ Nouvelle Partie
+                {ux.resetBadge}
               </span>
               <h3 className="text-lg sm:text-xl font-black text-[#3a2312] font-cinzel mt-2 tracking-wide">
-                Recommencer à zéro ?
+                {ux.resetTitle}
               </h3>
             </div>
 
             {/* Child-Friendly Clear Warning Box */}
             <div className="w-full bg-[#f3ebd9] border-2 border-[#3a2312] p-4 rounded-2xl flex flex-col gap-2.5 shadow-inner text-center">
               <p className="text-sm sm:text-base font-bold text-[#3a2312] leading-snug">
-                Attention ! Tu vas effacer toute ton aventure et repartir du tout début.
+                {ux.resetWarning}
               </p>
               
               <div className="flex items-center justify-center gap-2 bg-[#ebdfc8] py-2 px-3 rounded-xl border border-[#3a2312] text-xs sm:text-sm font-bold text-[#5c4028]">
-                <span>Niveau {savedSummary?.level || 1}</span>
+                <span>{ux.levelShort} {savedSummary?.level || 1}</span>
                 <span>•</span>
-                <span className="text-[#d97c27] font-black">{savedSummary?.xp || 0} XP acquis</span>
+                <span className="text-[#d97c27] font-black">{savedSummary?.xp || 0} {ux.resetXp}</span>
               </div>
             </div>
 
@@ -569,7 +569,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 }}
                 className="w-full py-3.5 px-4 rounded-2xl bg-[#2d6a4f] hover:bg-[#1b4332] text-[#fbf7ee] font-black text-sm sm:text-base font-cinzel border-2 border-[#1b4332] shadow-[0_4px_0_#1b4332] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2 uppercase tracking-wide"
               >
-                <span>Garder ma partie</span>
+                <span>{ux.resetKeep}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -582,7 +582,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 className="w-full py-3 px-4 rounded-2xl bg-[#ebdfc8] hover:bg-[#e0cfb4] text-[#8c2b2b] font-bold text-xs sm:text-sm font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>Oui, tout recommencer</span>
+                <span>{ux.resetConfirm}</span>
               </button>
             </div>
           </div>

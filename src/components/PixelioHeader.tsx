@@ -191,7 +191,13 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             </span>
             <span
               className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
-                isGaining ? 'text-yellow-300 font-black scale-105' : 'text-amber-100/90'
+                isGaining
+                  ? isParchment
+                    ? 'text-amber-800 font-black scale-105'
+                    : 'text-yellow-300 font-black scale-105'
+                  : isParchment
+                  ? 'text-[#4a2e12]'
+                  : 'text-amber-100/90'
               }`}
             >
               {displayedXp}/{maxXp}
@@ -241,9 +247,15 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             <span
               className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
                 isWaswasGaining
-                  ? 'text-fuchsia-300 font-black scale-105'
+                  ? isParchment
+                    ? 'text-purple-800 font-black scale-105'
+                    : 'text-fuchsia-300 font-black scale-105'
                   : isWaswasDecreasing
-                  ? 'text-emerald-300 font-bold'
+                  ? isParchment
+                    ? 'text-emerald-800 font-bold'
+                    : 'text-emerald-300 font-bold'
+                  : isParchment
+                  ? 'text-purple-900'
                   : 'text-purple-300/90'
               }`}
             >
@@ -311,7 +323,17 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             <Moon className="w-3.5 h-3.5 text-amber-300" />
           )}
           <span className="font-mono text-[9px] sm:text-[10px] hidden md:inline font-bold">
-            {isParchment ? 'Parchemin' : 'Nuit'}
+            {isParchment
+              ? language === 'ar'
+                ? 'فاتح'
+                : language === 'en'
+                ? 'Parchment'
+                : 'Parchemin'
+              : language === 'ar'
+              ? 'ليلي'
+              : language === 'en'
+              ? 'Night'
+              : 'Nuit'}
           </span>
         </button>
 
@@ -388,9 +410,13 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               onOpenMap();
             }}
             title={tNav.map}
-            className="hidden sm:flex px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-amber-500/25 hover:bg-amber-500/40 border-2 border-amber-400/60 text-amber-200 hover:text-white font-bold transition-all cursor-pointer shadow-md items-center gap-1.5 active:scale-95 font-cinzel text-[10px] sm:text-xs tracking-wider backdrop-blur-sm shrink-0"
+            className={`hidden sm:flex px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 font-bold transition-all cursor-pointer shadow-md items-center gap-1.5 active:scale-95 font-cinzel text-[10px] sm:text-xs tracking-wider backdrop-blur-sm shrink-0 ${
+              isParchment
+                ? 'bg-[#eddcc3] hover:bg-[#e4ceb0] border-[#b07d3c] text-[#3a2312]'
+                : 'bg-amber-500/25 hover:bg-amber-500/40 border-amber-400/60 text-amber-200 hover:text-white'
+            }`}
           >
-            <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+            <Compass className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isParchment ? 'text-[#b45309]' : 'text-amber-400'}`} />
             <span>{tNav.map}</span>
           </button>
         )}
@@ -414,7 +440,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             }`}
           >
             <Zap className={`w-3.5 h-3.5 shrink-0 ${hasSpiritualGatePending ? 'fill-amber-300 text-amber-300 animate-bounce' : 'fill-amber-300 text-amber-300'}`} />
-            <span>Quiz</span>
+            <span>{language === 'ar' ? 'اختبار' : 'Quiz'}</span>
             <span className="hidden xs:inline text-[9px] font-mono text-amber-300">+XP</span>
           </button>
         )}

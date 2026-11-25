@@ -274,6 +274,10 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
         return gameUI.dialogue.speakerChild.toUpperCase();
       case 'marchand':
         return gameUI.dialogue.speakerMerchant.toUpperCase();
+      case 'pere':
+        return language === 'ar' ? 'الْأَبُ' : language === 'en' ? 'FATHER' : 'LE PÈRE';
+      case 'grand_pere':
+        return language === 'ar' ? 'الْجَدُّ' : language === 'en' ? 'GRANDFATHER' : 'GRAND-PÈRE';
       case 'narration':
         return gameUI.dialogue.speakerSage.toUpperCase();
       default:
@@ -440,8 +444,8 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
               </span>
               <span className="text-[11px] sm:text-xs font-black font-mono tracking-wide shrink-0">
                 {!activeWaswasImpact.isNegative
-                  ? `+${activeWaswasImpact.amount} Doute`
-                  : `-${activeWaswasImpact.amount} Doute`}
+                  ? `+${activeWaswasImpact.amount} ${language === 'ar' ? 'وسواس' : language === 'en' ? 'Doubt' : 'Doute'}`
+                  : `-${activeWaswasImpact.amount} ${language === 'ar' ? 'وسواس' : language === 'en' ? 'Doubt' : 'Doute'}`}
               </span>
               {activeWaswasImpact.reason && (
                 <>
@@ -583,7 +587,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                   className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-2 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
                 >
                   <FastForward className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  Passer
+                  {language === 'ar' ? 'تخطّي' : language === 'en' ? 'Skip' : 'Passer'}
                 </button>
               )}
             </div>

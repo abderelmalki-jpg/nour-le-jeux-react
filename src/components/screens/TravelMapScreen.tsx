@@ -22,6 +22,7 @@ import { PIXEL_ASSETS } from '../../utils/assets';
 import { soundManager } from '../../utils/audio';
 import { getLocalizedScene } from '../../utils/narrativeI18n';
 import { useLanguage } from '../../context/LanguageContext';
+import { CHAPTER_LABELS } from '../../i18n/uiExtras';
 
 interface TravelMapScreenProps {
   currentSceneIndex: number;
@@ -46,7 +47,49 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   onOpenKnowledgeQuiz,
   onBack: _onBack
 }) => {
-  const { language: uiLanguage } = useLanguage();
+  const { language: uiLanguage, isRtl } = useLanguage();
+  const mapLabels =
+    uiLanguage === 'ar'
+      ? {
+          path: 'الطَّرِيقُ',
+          chapter: 'الْفَصْلُ',
+          chShort: 'ف.',
+          steps: 'خُطُوَاتٍ',
+          youAreHere: 'أَنْتَ هُنَا',
+          summit: 'الْقِمَّةُ',
+          stepOf: (n: number, total: number) => `الْخُطْوَةُ ${n} مِنْ ${total}`,
+          validated: '✓ مُكْتَمِلَةٌ (+XP)',
+          toCross: 'التَّالِيَةُ',
+          replayStep: 'إِعَادَةُ هٰذِهِ الْخُطْوَةِ',
+          continueJourney: 'مُتَابَعَةُ الرِّحْلَةِ ←'
+        }
+      : uiLanguage === 'en'
+      ? {
+          path: 'THE PATH',
+          chapter: 'CHAPTER',
+          chShort: 'Ch.',
+          steps: 'steps',
+          youAreHere: 'YOU ARE HERE',
+          summit: 'SUMMIT',
+          stepOf: (n: number, total: number) => `Step ${n} of ${total}`,
+          validated: '✓ Completed (+XP)',
+          toCross: 'Next step',
+          replayStep: 'REPLAY THIS STEP',
+          continueJourney: 'CONTINUE JOURNEY →'
+        }
+      : {
+          path: 'LE CHEMIN',
+          chapter: 'CHAPITRE',
+          chShort: 'Ch.',
+          steps: 'étapes',
+          youAreHere: 'TU ES ICI',
+          summit: 'SOMMET',
+          stepOf: (n: number, total: number) => `Étape ${n} sur ${total}`,
+          validated: '✓ Validée (+XP acquis)',
+          toCross: 'À franchir',
+          replayStep: 'REJOUER CETTE ÉTAPE',
+          continueJourney: 'POURSUIVRE LE VOYAGE →'
+        };
   const allScenesCombined = [...CHAPTER_1_SCENES, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES, ...CHAPTER_4_SCENES, ...CHAPTER_5_SCENES];
   const currentActiveScene = allScenesCombined[currentSceneIndex] || CHAPTER_1_SCENES[0];
   const isChapter2Unlocked = true;
@@ -330,6 +373,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
 
   return (
     <div
+      dir={isRtl ? 'rtl' : 'ltr'}
       className="flex-1 min-h-0 flex flex-col w-full h-full max-w-6xl mx-auto px-2 sm:px-4 lg:px-6 py-1 sm:py-2 select-none relative overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -354,24 +398,24 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#8c5a2b] font-cinzel flex items-center gap-1">
               <Compass className="w-3.5 h-3.5 text-[#d97c27]" />
-              <span>LE CHEMIN • CHAPITRE {currentChapterConfig.number}</span>
+              <span>{mapLabels.path} • {mapLabels.chapter} {currentChapterConfig.number}</span>
             </span>
             <span className="text-[10px] sm:text-xs font-black text-[#d97c27]">•</span>
             <span className="text-[10px] sm:text-xs font-bold text-[#2d6a4f] font-cinzel">
-              {completedCount}/{totalScenes} étapes
+              {completedCount}/{totalScenes} {mapLabels.steps}
             </span>
           </div>
 
           <h2 className="text-xs sm:text-base lg:text-lg font-black text-[#3a2312] font-cinzel truncate max-w-[240px] sm:max-w-md mt-0.5">
-            {currentChapterConfig.title}
+            {(CHAPTER_LABELS[uiLanguage] || CHAPTER_LABELS.fr).items[currentChapterConfig.number]?.title || currentChapterConfig.title}
           </h2>
 
           <p className="hidden sm:block text-[11px] text-[#6b4724] italic font-medium truncate max-w-lg mt-0.5">
-            « {currentChapterConfig.theme} »
+            « {(CHAPTER_LABELS[uiLanguage] || CHAPTER_LABELS.fr).items[currentChapterConfig.number]?.subtitle || currentChapterConfig.theme} »
           </p>
 
-          {/* Onglets Ch. 1, Ch. 2, Ch. 3 */}
-          <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5">
+          {/* Onglets Ch. 1..5 */}
+          <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5 flex-wrap justify-center">
             {CHAPTERS.map((chap) => {
               const isActive = chap.id === activeChapter;
               return (
@@ -387,7 +431,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                   }`}
                 >
                   <span>{chap.icon}</span>
-                  <span>Ch. {chap.number}</span>
+                  <span>{mapLabels.chShort} {chap.number}</span>
                   {!chap.isUnlocked && <Lock className="w-2.5 h-2.5 text-stone-500" />}
                   {chap.isComplete && <span className="text-emerald-600 font-black">✓</span>}
                 </button>
@@ -466,7 +510,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
             const isUnlocked = true;
             const isSelected = scene.id === focusedScene.id;
             const pos = currentChapterConfig.positions[index] || { top: '50%', left: '50%' };
-            const isBoss = scene.id === 9 || scene.id === 15 || scene.id === 25;
+            const isBoss = scene.id === 9 || scene.id === 15 || scene.id === 25 || scene.id === 35 || scene.id === 44;
 
             return (
               <div
@@ -489,7 +533,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                 {isCurrent && (
                   <div className="absolute -top-6 sm:-top-7 flex items-center gap-1 bg-[#3a2312] text-amber-300 font-cinzel font-black text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full border border-amber-400 shadow-md animate-bounce whitespace-nowrap">
                     <Footprints className="w-2.5 h-2.5" />
-                    <span>TU ES ICI</span>
+                    <span>{mapLabels.youAreHere}</span>
                   </div>
                 )}
 
@@ -519,18 +563,18 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                   ) : !isUnlocked ? (
                     <Lock className="w-3 h-3 text-[#8c5a2b] shrink-0" />
                   ) : (
-                    <span className="text-[10px] font-bold text-[#8c5a2b]">{scene.id}.</span>
+                    <span className="text-[10px] font-bold text-[#8c5a2b]">{index + 1}.</span>
                   )}
 
                   {/* Nom court de l'étape */}
                   <span className="text-[9.5px] sm:text-[11px] font-bold whitespace-nowrap tracking-tight">
-                    {scene.title}
+                    {getLocalizedScene(scene, uiLanguage).title}
                   </span>
 
                   {/* Badge Spécial Sommet */}
                   {isBoss && !isCurrent && (
                     <span className="text-[7.5px] font-black uppercase bg-[#8b0000] text-amber-200 border border-amber-500/60 px-1 py-0.2 rounded-md tracking-wider shrink-0">
-                      SOMMET
+                      {mapLabels.summit}
                     </span>
                   )}
                 </div>
@@ -549,18 +593,18 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
             <div className="flex items-center justify-between border-b border-[#ebdcc4] pb-2">
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-black uppercase tracking-wider text-[#8c5a2b] font-cinzel">
-                  Étape {focusedScene.id} sur {totalScenes}
+                  {mapLabels.stepOf(Math.max(1, currentChapterConfig.scenes.findIndex((s) => s.id === focusedScene.id) + 1), totalScenes)}
                 </span>
                 {isFocusedCompleted && (
                   <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-1.5 py-0.2 rounded-md">
-                    ✓ Validée (+XP acquis)
+                    {mapLabels.validated}
                   </span>
                 )}
               </div>
 
               {isFocusedCurrent && (
                 <span className="text-[9px] font-black uppercase bg-amber-400 text-stone-950 px-2 py-0.5 rounded-full border border-[#3a2312] font-cinzel shadow-xs">
-                  À franchir
+                  {mapLabels.toCross}
                 </span>
               )}
             </div>
@@ -636,7 +680,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                 className="w-full py-2.5 px-4 rounded-xl bg-[#ebdfc8] hover:bg-[#dfceb3] text-[#3a2312] font-black font-cinzel text-xs sm:text-sm border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-4 h-4 text-[#8c5a2b]" />
-                <span>REJOUER CETTE ÉTAPE</span>
+                <span>{mapLabels.replayStep}</span>
               </button>
             ) : (
               <button
@@ -644,7 +688,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black font-cinzel text-xs sm:text-sm border-2 border-[#3a2312] shadow-[0_3px_0_#3a2312] hover:-translate-y-0.5 active:translate-y-0 active:shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <Play className="w-4 h-4 fill-current" />
-                <span>POURSUIVRE LE VOYAGE →</span>
+                <span>{mapLabels.continueJourney}</span>
               </button>
             )}
           </div>
