@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { shuffleSeeded, SESSION_SHUFFLE_SEED } from '../utils/quizShuffle';
-import { ISLAMIC_QUIZZES } from '../data/islamicQuizzes';
-import { IslamicQuizQuestion } from '../types';
+import { getLocalizedIslamicQuizzes, LocalizedIslamicQuizQuestion } from '../i18n/islamicQuizzesTranslations';
 import {
   X,
   Zap,
@@ -32,21 +31,85 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   onCompleteQuiz,
   onWaswasMistake,
   onClose,
-  currentXp = 0,
   initialCategory
 }) => {
+  const { language, isRtl } = useLanguage();
+  const quizzes = useMemo(() => getLocalizedIslamicQuizzes(language), [language]);
+
+  const ui = useMemo(() => {
+    if (language === 'ar') {
+      return {
+        title: 'الِاخْتِبَارَاتُ وَالتَّحَدِّيَاتُ',
+        xpToWin: (xp: number) => `+${xp} XP لِلرِّبْحِ`,
+        close: 'إِغْلَاقٌ',
+        prev: 'السَّابِقُ',
+        prevTitle: 'السُّؤَالُ السَّابِقُ',
+        next: 'التَّالِي',
+        nextTitle: 'السُّؤَالُ التَّالِي',
+        questionOf: (cur: number, tot: number) => `السُّؤَالُ ${cur} / ${tot}`,
+        completed: '✓ مُكْتَمِلٌ',
+        validate: 'تَأْكِيدُ الْإِجَابَةِ',
+        correct: (xp: number) => `إِجَابَةٌ صَحِيحَةٌ! (+${xp} XP)`,
+        wrong: 'لَيْسَ تَمَامًا… حَاوِلْ مَرَّةً أُخْرَى.',
+        source: 'الْمَصْدَرُ :',
+        retry: 'إِعَادَةُ الْمُحَاوَلَةِ',
+        skip: 'تَخَطٍّ',
+        collectXp: (xp: number) => `احْصُدْ +${xp} XP!`,
+        waswasMistake: 'تَغَذَّى الشَّكُّ: الْوَسْوَاسُ يَزْدَادُ قُوَّةً!'
+      };
+    }
+    if (language === 'en') {
+      return {
+        title: 'Quizzes & Challenges',
+        xpToWin: (xp: number) => `+${xp} XP to earn`,
+        close: 'Close',
+        prev: 'Prev',
+        prevTitle: 'Previous question',
+        next: 'Next',
+        nextTitle: 'Next question',
+        questionOf: (cur: number, tot: number) => `Question ${cur} / ${tot}`,
+        completed: '✓ Completed',
+        validate: 'Submit my answer',
+        correct: (xp: number) => `Correct answer! (+${xp} XP)`,
+        wrong: 'Not quite right.',
+        source: 'Source:',
+        retry: 'Try again',
+        skip: 'Skip',
+        collectXp: (xp: number) => `COLLECT MY +${xp} XP!`,
+        waswasMistake: 'Doubt fed: The Waswâs grows stronger!'
+      };
+    }
+    return {
+      title: 'Quiz & Défis',
+      xpToWin: (xp: number) => `+${xp} XP à gagner`,
+      close: 'Fermer',
+      prev: 'Préc.',
+      prevTitle: 'Question précédente',
+      next: 'Suiv.',
+      nextTitle: 'Question suivante',
+      questionOf: (cur: number, tot: number) => `Question ${cur} / ${tot}`,
+      completed: '✓ Réussi',
+      validate: 'Valider ma réponse',
+      correct: (xp: number) => `Bonne réponse ! (+${xp} XP)`,
+      wrong: "Ce n'est pas tout à fait cela.",
+      source: 'Source :',
+      retry: 'Réessayer',
+      skip: 'Passer',
+      collectXp: (xp: number) => `RÉCOLTER MES +${xp} XP !`,
+      waswasMistake: 'Doute nourri : Le Waswâs prend de la force !'
+    };
+  }, [language]);
+
   // Find first uncompleted quiz matching initialCategory if provided, or first uncompleted
   const initialIndex = Math.max(
     0,
-    ISLAMIC_QUIZZES.findIndex((q) => {
+    quizzes.findIndex((q) => {
       if (initialCategory && q.category.toLowerCase().includes('hilm')) {
         return !completedQuizIds.includes(q.id);
       }
       return !completedQuizIds.includes(q.id);
     })
   );
-
-  const { language, isRtl } = useLanguage();
 
   const [currentIndex, setCurrentIndex] = useState<number>(
     initialIndex === -1 ? 0 : initialIndex
@@ -56,7 +119,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [localCompleted, setLocalCompleted] = useState<string[]>(completedQuizIds);
 
-  const activeQuiz: IslamicQuizQuestion = ISLAMIC_QUIZZES[currentIndex];
+  const activeQuiz: LocalizedIslamicQuizQuestion = quizzes[currentIndex];
   // Ordre des réponses mélangé (la bonne réponse était en 2ᵉ position 11 fois sur 18)
   const shuffledQuiz = useMemo(() => {
     const order = shuffleSeeded(activeQuiz.options.map((_, i) => i), `${SESSION_SHUFFLE_SEED}:${activeQuiz.id}`);
@@ -64,9 +127,9 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
       options: order.map((i) => activeQuiz.options[i]),
       correctIndex: order.indexOf(activeQuiz.correctIndex)
     };
-  }, [activeQuiz.id]);
+  }, [activeQuiz]);
   const isAlreadyCompleted = localCompleted.includes(activeQuiz.id);
-  const totalCount = ISLAMIC_QUIZZES.length;
+  const totalCount = quizzes.length;
   const completedCount = localCompleted.length;
 
   useEffect(() => {
@@ -103,7 +166,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     } else {
       soundManager.playSelect();
       if (onWaswasMistake) {
-        onWaswasMistake(15, `Doute nourri : Le Waswâs prend de la force !`);
+        onWaswasMistake(15, ui.waswasMistake);
       }
     }
   };
@@ -140,7 +203,10 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 select-none">
-      <div className="bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl w-full max-w-lg shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden max-h-[94vh] sm:max-h-[90vh]">
+      <div
+        dir={isRtl ? 'rtl' : 'ltr'}
+        className="bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl w-full max-w-lg shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden max-h-[94vh] sm:max-h-[90vh]"
+      >
         {/* Minimal Header: Just 'Quiz & Défis' + XP info + Close */}
         <div className="flex items-center justify-between px-3.5 py-2.5 sm:px-5 sm:py-3 bg-[#f3ebd9] border-b-2 border-[#3a2312] shrink-0">
           <div className="flex items-center gap-2">
@@ -150,7 +216,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <h2 className="text-sm sm:text-base font-bold text-[#3a2312] font-cinzel leading-tight">
-                  Quiz & Défis
+                  {ui.title}
                 </h2>
                 {activeQuiz.category && (
                   <span className="text-[9px] font-bold text-[#2d6a4f] bg-[#d8f3dc] px-1.5 py-0.2 rounded border border-[#74c69d]">
@@ -159,7 +225,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                 )}
               </div>
               <span className="text-[10px] text-[#2d6a4f] font-bold font-mono">
-                +{activeQuiz.xpReward} XP à gagner
+                {ui.xpToWin(activeQuiz.xpReward)}
               </span>
             </div>
           </div>
@@ -176,7 +242,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                 soundManager.playSelect();
                 onClose();
               }}
-              title="Fermer"
+              title={ui.close}
               className="p-1.5 rounded-xl bg-[#ebdfc8] hover:bg-[#d9c7ab] text-[#3a2312] transition-colors cursor-pointer border border-[#3a2312] active:translate-y-0.5 shadow-xs"
             >
               <X className="w-4 h-4" />
@@ -189,19 +255,19 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
           <button
             onClick={handlePrev}
             className="flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-[#fbf7ee] hover:bg-[#f3ebd9] text-[#3a2312] border border-[#b89f81] font-bold cursor-pointer transition-all active:translate-y-0.5"
-            title="Question précédente"
+            title={ui.prevTitle}
           >
             <ChevronLeft className="w-3.5 h-3.5" />
-            <span className="text-[10px] sm:text-xs">Préc.</span>
+            <span className="text-[10px] sm:text-xs">{ui.prev}</span>
           </button>
 
           <div className="flex items-center gap-2">
             <span className="font-bold text-[#3a2312] font-cinzel text-xs">
-              Question {currentIndex + 1} / {totalCount}
+              {ui.questionOf(currentIndex + 1, totalCount)}
             </span>
             {isAlreadyCompleted && (
               <span className="flex items-center gap-0.5 text-[10px] font-bold text-[#1b4332] bg-[#d8f3dc] px-1.5 py-0.2 rounded-md border border-[#74c69d]">
-                ✓ Réussi
+                {ui.completed}
               </span>
             )}
           </div>
@@ -209,9 +275,9 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
           <button
             onClick={handleNext}
             className="flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-[#fbf7ee] hover:bg-[#f3ebd9] text-[#3a2312] border border-[#b89f81] font-bold cursor-pointer transition-all active:translate-y-0.5"
-            title="Question suivante"
+            title={ui.nextTitle}
           >
-            <span className="text-[10px] sm:text-xs">Suiv.</span>
+            <span className="text-[10px] sm:text-xs">{ui.next}</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -267,7 +333,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                   type="button"
                   disabled={isSubmitted && isCorrect}
                   onClick={() => handleSelectOption(idx)}
-                  className={`w-full p-3 sm:p-3.5 rounded-2xl border-2 text-sm sm:text-base font-bold text-left transition-all flex items-center justify-between gap-3 cursor-pointer ${cardStyle}`}
+                  className={`w-full p-3 sm:p-3.5 rounded-2xl border-2 text-sm sm:text-base font-bold ${isRtl ? 'text-right' : 'text-left'} transition-all flex items-center justify-between gap-3 cursor-pointer ${cardStyle}`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span
@@ -310,7 +376,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              <span>Valider ma réponse</span>
+              <span>{ui.validate}</span>
             </button>
           )}
 
@@ -329,12 +395,12 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                     {isCorrect ? (
                       <>
                         <Sparkles className="w-5 h-5 text-[#2d6a4f] shrink-0" />
-                        <span>Bonne réponse ! (+{activeQuiz.xpReward} XP)</span>
+                        <span>{ui.correct(activeQuiz.xpReward)}</span>
                       </>
                     ) : (
                       <>
                         <AlertCircle className="w-5 h-5 text-[#b91c1c] shrink-0" />
-                        <span>Ce n'est pas tout à fait cela.</span>
+                        <span>{ui.wrong}</span>
                       </>
                     )}
                   </div>
@@ -349,7 +415,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                 {activeQuiz.hadithOrQuranRef && (
                   <div className="mt-2.5 pt-2 border-t border-[#3a2312]/15 flex items-start gap-1.5 text-xs sm:text-sm font-bold text-[#2d6a4f]">
                     <BookOpen className="w-4 h-4 shrink-0 mt-0.5" />
-                    <span>Source : {activeQuiz.hadithOrQuranRef}</span>
+                    <span>{ui.source} {activeQuiz.hadithOrQuranRef}</span>
                   </div>
                 )}
               </div>
@@ -368,7 +434,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                       className="flex-1 py-3 px-3 rounded-2xl text-[#3a2312] font-bold text-xs sm:text-sm font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[#e0cfb4]"
                     >
                       <RotateCcw className="w-4 h-4 text-[#3a2312]" />
-                      <span>Réessayer</span>
+                      <span>{ui.retry}</span>
                     </button>
                     <button
                       type="button"
@@ -379,7 +445,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                       }}
                       className="flex-1 py-3 px-3 rounded-2xl text-[#6b4724] font-bold text-xs sm:text-sm font-cinzel border-2 border-[#b89f81] shadow-xs active:translate-y-0.5 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[#ebdfc8]"
                     >
-                      <span>Passer</span>
+                      <span>{ui.skip}</span>
                       <ArrowRight className="w-4 h-4 text-[#6b4724]" />
                     </button>
                   </>
@@ -395,7 +461,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                     className="w-full py-4 px-4 rounded-2xl text-white font-black text-sm sm:text-base font-cinzel border-2 border-[#0d281e] shadow-[0_4px_0_#0d281e] active:translate-y-0.5 flex items-center justify-center gap-2.5 cursor-pointer hover:brightness-110 uppercase tracking-wide"
                   >
                     <Sparkles className="w-5 h-5 text-amber-300 fill-amber-300" />
-                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">RÉCOLTER MES +{activeQuiz.xpReward} XP !</span>
+                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{ui.collectXp(activeQuiz.xpReward)}</span>
                     <ArrowRight className="w-5 h-5 text-amber-300" />
                   </button>
                 )}

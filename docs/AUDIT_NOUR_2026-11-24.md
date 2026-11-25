@@ -559,3 +559,13 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Masquage automatique des boutons « Voix active » et « Réécouter » dans `src/components/DialogueBox.tsx` lorsque la réplique n'a pas de fichier audio (anglais, arabe hors scène 1, répliques du Waswâs), évitant aussi tout 404 audio inutile.
 - Correctifs Footer (`src/components/landing/Footer.tsx`) : suppression du doublon `© 2026 © 2026` et amélioration du contraste du bouton « Télécharger l'APK Android » (`!text-white` sur fond émeraude).
 - Alignement des versions natives : Android `1.0.6` (`versionCode 7`) et iOS `MARKETING_VERSION = 1.0.6`.
+
+---
+
+## Septième vague (2026-11-25) — Quiz libre traduit en EN/AR + modale localisée
+
+**Fait**
+- Traduction complète des 18 questions du quiz libre (`src/data/islamicQuizzes.ts`) en anglais et en arabe entièrement vocalisé dans `src/i18n/islamicQuizzesTranslations.ts` (⚠️ à faire relire par un arabophone natif et un savant).
+- Alignement de la question 18 (`quiz_hilm_colere_remede`) sur les deux hadiths cités (Bukhari 3282, Abu Dawud 4782) sans présenter les ablutions comme règle de la Sunnah (cohérence avec le chapitre 2).
+- Localisation complète de l'interface de `src/components/IslamicQuizModal.tsx` (FR / EN / AR + mise en page RTL).
+- Création du dossier unique de relecture religieuse et arabe (`docs/RELECTURE_RELIGIEUSE_ET_ARABE.md`) listant automatiquement toutes les références (versets, hadiths, invocations) des chapitres 1–3, des 18 quiz libres et du Livre du Savoir, avec cases à cocher pour le savant et le relecteur arabophone.

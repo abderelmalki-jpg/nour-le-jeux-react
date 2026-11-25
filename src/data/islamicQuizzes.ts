@@ -315,12 +315,12 @@ export const ISLAMIC_QUIZZES: IslamicQuizQuestion[] = [
     difficulty: 'facile',
     arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
     options: [
-      'A. Crier fort pour évacuer immédiatement la tension.',
-      'B. Dire « Aʿūdhu billāh », s\'asseoir ou s\'allonger, et faire ses ablutions.',
-      'C. S\'isoler pendant plusieurs jours sans parler à personne.'
+      'Crier fort pour évacuer immédiatement la tension.',
+      'Dire « Aʿūdhu billāh » et s\'asseoir ou s\'allonger pour retrouver son calme.',
+      'S\'isoler pendant plusieurs jours sans parler à personne.'
     ],
     correctIndex: 1,
-    explanation: 'Face à l\'énervement insufflé par le Waswâs, la Sunnah enseigne de chercher refuge auprès d\'Allah (Istiʿādhah), de changer de posture physique et d\'éteindre le feu intérieur par l\'eau des ablutions.',
+    explanation: 'Face à l\'énervement insufflé par le Waswâs, la Sunnah enseigne de chercher refuge auprès d\'Allah (Istiʿādhah) et de changer de posture (s\'asseoir ou s\'allonger) ; se rafraîchir avec de l\'eau aide aussi à apaiser la colère.',
     hadithOrQuranRef: 'Sahih Al-Bukhari (n°3282) et Sunan Abi Dawud (n°4782)',
     xpReward: 30
   }
