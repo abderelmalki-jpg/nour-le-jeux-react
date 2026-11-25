@@ -587,3 +587,23 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Génération en 2K Améliorée dans Google Flow (Nano Banana 2.1), optimisation `mozjpeg` 82 % (1920×1080 / 1024×1024) et installation des 8 visuels du Lot E (`docs/ART_PROMPTS_LOT_E.md`) :
   - 4 derniers décors pixel-art repeints : `bg_arbre_racines_anciennes.jpg`, `bg_halte_the_apaisement.jpg`, `bg_verger_fleur_lanterne.jpg`, `public/game-assets/waswas_bg.jpg`.
   - 4 corrections prioritaires : `bg_carrefour_sac_pose.jpg` (variante réelle avec sac, panneaux vierges), `bg_village_accueillant.jpg` + `public/game-assets/village_accueillant.jpg` (sans foules masquées), `public/game-assets/marche.jpg` (sans visages), `public/affiche_nour_whatsapp.jpg` (1:1 sans texte incrusté).
+
+---
+
+## Dixième vague (2026-11-25) — Chapitre 4 « Ce que tu as encore » (Birr al-Wālidayn)
+
+**Fait**
+- Écriture complète du Chapitre 4 (`src/data/chapter4.ts`) : 7 scènes (IDs 30–36 : Le Matin Agacé, Sous le Grand Arbre, La Confidence, Le Retour à la Maison, Le Geste Réparateur, L'Ombre de l'Ingratitude, Le Soir qui Apaise), 4 quiz équilibrés (Coran 17:23, 17:24, 31:14, Bukhari 5971 / Muslim 2548 — ⚠️ à faire relire par un savant), 3 Ponts de Nour, et premiers dialogues pour `pere` et `grand_pere`.
+- Traductions complètes EN + AR vocalisé (`src/i18n/chapter4Translations.ts`, fusionnées dans `narrativeI18n.ts` — ⚠️ arabe à faire relire par un natif).
+- Combat final dédié dans `ClimaxCombat.tsx` (`CHAPTER_4_DUEL_ROUNDS`, FR/EN/AR, « Ombre de l'Ingratitude »).
+- Branchement complet dans `App.tsx` (helper `getChapterForSceneId`), `SplashScreen.tsx` (Chapitre 4 jouable), `TravelMapScreen.tsx` (4ᵉ onglet + 7 nœuds), `QuestsScreen.tsx`, `ChapterEnd.tsx`, et chunk dédié `chapter-4-data` dans `vite.config.ts`.
+
+---
+
+## Onzième vague (2026-11-25) — Chapitre 5 « Le Sommet de la Persévérance » (As-Sabr & La Constance — Finale Saison 1)
+
+**Fait**
+- Écriture complète du Chapitre 5 (`src/data/chapter5.ts`) : 6 scènes (IDs 40–45 : Le Sentier des Crêtes, L'Ancrage dans le Refuge, La Halte sur la Pente, Les Mains qui Soutiennent, Le Sommet de l'Épreuve, La Lumière sur la Vallée), 2 quiz équilibrés (Sahih al-Bukhari 6464 / Sahih Muslim 782 et Coran 94:5-6 — ⚠️ à faire relire par un savant), 2 Ponts de Nour (`action_petite_constance` et `action_encourager_proche`).
+- Traductions complètes EN + AR vocalisé (`src/i18n/chapter5Translations.ts`, fusionnées dans `narrativeI18n.ts` — ⚠️ arabe à faire relire par un natif).
+- Combat final dédié dans `ClimaxCombat.tsx` (`CHAPTER_5_DUEL_ROUNDS`, FR/EN/AR, « Ombre du Découragement »).
+- Branchement complet dans `App.tsx` (`getChapterForSceneId` étendu à `1 | 2 | 3 | 4 | 5`), `SplashScreen.tsx` (Chapitre 5 jouable), `TravelMapScreen.tsx` (5ᵉ onglet + 6 nœuds, flèche suivant corrigée jusqu'au Chapitre 5), `QuestsScreen.tsx`, `ChapterEnd.tsx` (transition Ch. 4 → Ch. 5 et final Saison 1), et chunk dédié `chapter-5-data` dans `vite.config.ts`.

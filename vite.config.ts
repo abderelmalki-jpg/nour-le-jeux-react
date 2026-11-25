@@ -39,6 +39,12 @@ export default defineConfig(() => {
             if (id.includes('src/data/chapter3')) {
               return 'chapter-3-data';
             }
+            if (id.includes('src/data/chapter4')) {
+              return 'chapter-4-data';
+            }
+            if (id.includes('src/data/chapter5')) {
+              return 'chapter-5-data';
+            }
             if (id.includes('src/data/islamicQuizzes') || id.includes('src/data/knowledge')) {
               return 'game-knowledge';
             }

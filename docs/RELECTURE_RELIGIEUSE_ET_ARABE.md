@@ -58,6 +58,22 @@
 | [ ] | `quiz_dignite_souffrance` | Dignité & Accueil des Émotions | Sahih al-Bukhari 1303 | إِنَّ الْعَيْنَ تَدْمَعُ ، وَالْقَلْبَ يَحْزَنُ ، وَلَا نَقُولُ إِلَّا مَا يَرْضَى رَبُّنَا | « L'œil verse des larmes et le cœur s'attriste, mais nous ne disons que ce qui satisfait notre Seigneur. » — Le Prophète ﷺ lui-même a versé des larmes lors des épreuves et a dit : « L'œil pleure, le cœur est triste, mais nous ne disons que ce qui plaît à notre Seigneur » (Bukhari 1303). Les larmes sincères ne contredisent jamais le Sabr. |
 | [ ] | `quiz_shukr_dependance` | L'Humilité de Recevoir l'Aide | Jami` at-Tirmidhi 1954 | مَنْ لَا يَشْكُرُ النَّاسَ لَا يَشْكُرُ اللَّهَ | « Celui qui ne remercie pas les gens ne remercie pas Allah. » — Le Prophète ﷺ a enseigné que celui qui ne remercie pas les gens ne remercie pas Allah (Tirmidhi 1954). Permettre à son frère ou à sa sœur de porter secours est une bénédiction partagée qui tisse la véritable fraternité. |
 
+## 4 bis. Quiz de l'histoire — Chapitre 4 (Ce que tu as encore — Birr al-Wālidayn)
+
+| Statut | ID | Notion / Sujet | Référence citée | Texte arabe | Citation / Explication (FR) |
+|---|---|---|---|---|---|
+| [ ] | `quiz_birr_parole` | La Parole Noble envers les Parents | Coran 17:23 (à faire relire) | فَلَا تَقُل لَّهُمَا أُفٍّ وَلَا تَنْهَرْهُمَا وَقُل لَّهُمَا قَوْلًا كَرِيمًا | « Ne leur dis point : "Fi !" et ne les brusque pas, mais adresse-leur des paroles respectueuses. » |
+| [ ] | `quiz_birr_mere` | La Place de la Mère et du Père | Sahih al-Bukhari 5971 & Sahih Muslim 2548 (à faire relire) | أُمُّكَ، ثُمَّ أُمُّكَ، ثُمَّ أُمُّكَ، ثُمَّ أَبُوكَ | « Ta mère. — Et ensuite ? — Ta mère. — Et ensuite ? — Ta mère. — Et ensuite ? — Ton père. » |
+| [ ] | `quiz_birr_shukr` | La Gratitude (Shukr) envers Allah et les Parents | Coran 31:14 (à faire relire) | أَنِ اشْكُرْ لِي وَلِوَالِدَيْكَ إِلَيَّ الْمَصِيرُ | « Sois reconnaissant envers Moi ainsi qu'envers tes parents. Vers Moi est la destination. » |
+| [ ] | `quiz_birr_invocation` | L'Invocation pour ses Parents | Coran 17:24 (à faire relire) | رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا | « Ô mon Seigneur, fais-leur à tous deux miséricorde comme ils m'ont élevé tout petit. » |
+
+## 4 ter. Quiz de l'histoire — Chapitre 5 (Le Sommet de la Persévérance — As-Sabr & La Constance)
+
+| Statut | ID | Notion / Sujet | Référence citée | Texte arabe | Citation / Explication (FR) |
+|---|---|---|---|---|---|
+| [ ] | `quiz_sabr_constance` | La Constance dans le Bien (Al-Mudāwamah) | Sahih al-Bukhari 6464 & Sahih Muslim 782 (à faire relire) | أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ | « Les œuvres les plus aimées d'Allah sont les plus constantes, même si elles sont peu nombreuses. » |
+| [ ] | `quiz_sabr_facilite` | Avec la Difficulté vient la Facilité | Coran 94:5-6 (à faire relire) | فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا | « À côté de la difficulté est, certes, une facilité ! À côté de la difficulté est, certes, une facilité ! » |
+
 ## 5. Quiz libres (« Quiz & Défis » — 18 questions, FR / EN / AR)
 
 | Statut | ID | Catégorie | Référence citée | Arabe affiché | Explication (FR) |

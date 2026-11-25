@@ -5,6 +5,8 @@ import { soundManager } from '../../utils/audio';
 import { CHAPTER_1_SCENES } from '../../data/chapter1';
 import { CHAPTER_2_SCENES } from '../../data/chapter2';
 import { CHAPTER_3_SCENES } from '../../data/chapter3';
+import { CHAPTER_4_SCENES } from '../../data/chapter4';
+import { CHAPTER_5_SCENES } from '../../data/chapter5';
 
 interface QuestsScreenProps {
   progress: PlayerProgress;
@@ -64,6 +66,26 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
       requiredXp: 780,
       icon: '🏔️',
       color: '#0e7490'
+    },
+    {
+      number: 4,
+      title: 'Ce que tu as encore',
+      theme: 'La bonté envers les parents (Birr al-Wālidayn)',
+      scenes: CHAPTER_4_SCENES,
+      isUnlocked: true,
+      requiredXp: 0,
+      icon: '🌳',
+      color: '#9f1239'
+    },
+    {
+      number: 5,
+      title: 'Le Sommet de la Persévérance',
+      theme: 'La constance (As-Sabr) & Finale Saison 1',
+      scenes: CHAPTER_5_SCENES,
+      isUnlocked: true,
+      requiredXp: 0,
+      icon: '⛰️',
+      color: '#b45309'
     }
   ];
 

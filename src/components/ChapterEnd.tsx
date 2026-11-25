@@ -76,8 +76,12 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
     chapterNumber === 1
       ? 'Chapitre 2 : Le Chemin du Hilm'
       : chapterNumber === 2
-      ? 'Chapitre 3 : La Montagne Intérieure'
-      : 'Trilogie de Nour Complète !';
+      ? 'Chapitre 3 : Le Chemin du Tawakkul'
+      : chapterNumber === 3
+      ? 'Chapitre 4 : Ce que tu as encore'
+      : chapterNumber === 4
+      ? 'Chapitre 5 : Le Sommet de la Persévérance'
+      : 'Saison 1 Complète — Les 5 Chapitres Accomplis !';
 
   const headerTag = isFinalPopup
     ? language === 'ar'
@@ -226,8 +230,12 @@ export const ChapterEnd: React.FC<ChapterEndProps> = ({
                   >
                     <Play className="w-4 h-4 fill-white" />
                     <span>
-                      {chapterNumber === 3
+                      {chapterNumber === 5
                         ? "Ouvrir la Carte du Voyage"
+                        : chapterNumber === 4
+                        ? 'Continuer vers le Chapitre 5'
+                        : chapterNumber === 3
+                        ? 'Continuer vers le Chapitre 4'
                         : chapterNumber === 2
                         ? 'Continuer vers le Chapitre 3'
                         : 'Continuer vers le Chapitre 2'}

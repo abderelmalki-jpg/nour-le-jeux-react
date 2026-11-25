@@ -16,6 +16,8 @@ import {
 import { CHAPTER_1_SCENES } from '../../data/chapter1';
 import { CHAPTER_2_SCENES } from '../../data/chapter2';
 import { CHAPTER_3_SCENES } from '../../data/chapter3';
+import { CHAPTER_4_SCENES } from '../../data/chapter4';
+import { CHAPTER_5_SCENES } from '../../data/chapter5';
 import { PIXEL_ASSETS } from '../../utils/assets';
 import { soundManager } from '../../utils/audio';
 import { getLocalizedScene } from '../../utils/narrativeI18n';
@@ -45,16 +47,20 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   onBack: _onBack
 }) => {
   const { language: uiLanguage } = useLanguage();
-  const allScenesCombined = [...CHAPTER_1_SCENES, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES];
+  const allScenesCombined = [...CHAPTER_1_SCENES, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES, ...CHAPTER_4_SCENES, ...CHAPTER_5_SCENES];
   const currentActiveScene = allScenesCombined[currentSceneIndex] || CHAPTER_1_SCENES[0];
   const isChapter2Unlocked = true;
   const isChapter3Unlocked = true;
+  const isChapter4Unlocked = true;
+  const isChapter5Unlocked = true;
 
   // Auto-select smart chapter: all chapters unlocked
-  const [activeChapter, setActiveChapter] = useState<1 | 2 | 3>(() => {
-    if (initialChapter === 1 || initialChapter === 2 || initialChapter === 3) {
+  const [activeChapter, setActiveChapter] = useState<1 | 2 | 3 | 4 | 5>(() => {
+    if (initialChapter === 1 || initialChapter === 2 || initialChapter === 3 || initialChapter === 4 || initialChapter === 5) {
       return initialChapter;
     }
+    if (currentActiveScene.id >= 40 && currentActiveScene.id <= 49) return 5;
+    if (currentActiveScene.id >= 30 && currentActiveScene.id <= 39) return 4;
     if (currentActiveScene.id >= 17 && completedScenes.includes(16)) return 3;
     if (currentActiveScene.id >= 10 && completedScenes.includes(9)) return 2;
     return 1;
@@ -181,30 +187,73 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
       isComplete:
         [17, 18, 19, 20, 21, 22, 23, 24, 25].every((id) => completedScenes.includes(id)) &&
         (completedScenes.includes(201) || completedScenes.includes(202))
+    },
+    {
+      id: 4 as const,
+      number: 4,
+      title: 'Ce que tu as encore',
+      theme: 'La bonté envers les parents (Birr al-Wālidayn)',
+      scenes: CHAPTER_4_SCENES,
+      requiredXp: 0,
+      isUnlocked: isChapter4Unlocked,
+      badgeColor: 'bg-rose-100 text-rose-900 border-rose-400',
+      accentColor: '#9f1239',
+      icon: '🌳',
+      positions: [
+        { top: '12%', left: '50%', x: 50, y: 12 },
+        { top: '26%', left: '30%', x: 30, y: 26 },
+        { top: '40%', left: '70%', x: 70, y: 40 },
+        { top: '55%', left: '32%', x: 32, y: 55 },
+        { top: '69%', left: '68%', x: 68, y: 69 },
+        { top: '82%', left: '38%', x: 38, y: 82 },
+        { top: '92%', left: '50%', x: 50, y: 92 }
+      ],
+      isComplete: [30, 31, 32, 33, 34, 35, 36].every((id) => completedScenes.includes(id))
+    },
+    {
+      id: 5 as const,
+      number: 5,
+      title: 'Le Sommet de la Persévérance',
+      theme: 'La constance (As-Sabr) & Finale Saison 1',
+      scenes: CHAPTER_5_SCENES,
+      requiredXp: 0,
+      isUnlocked: isChapter5Unlocked,
+      badgeColor: 'bg-amber-100 text-amber-900 border-amber-500',
+      accentColor: '#b45309',
+      icon: '⛰️',
+      positions: [
+        { top: '85%', left: '50%', x: 50, y: 85 },
+        { top: '70%', left: '34%', x: 34, y: 70 },
+        { top: '55%', left: '66%', x: 66, y: 55 },
+        { top: '40%', left: '36%', x: 36, y: 40 },
+        { top: '24%', left: '62%', x: 62, y: 24 },
+        { top: '10%', left: '50%', x: 50, y: 10 }
+      ],
+      isComplete: [40, 41, 42, 43, 44, 45].every((id) => completedScenes.includes(id))
     }
   ];
 
   const currentChapterConfig = CHAPTERS[activeChapter - 1];
   const prevChapterConfig = activeChapter > 1 ? CHAPTERS[activeChapter - 2] : null;
-  const nextChapterConfig = activeChapter < 3 ? CHAPTERS[activeChapter] : null;
+  const nextChapterConfig = activeChapter < 5 ? CHAPTERS[activeChapter] : null;
 
   const handlePrevChapter = () => {
     if (activeChapter > 1) {
       soundManager.playSelect();
       setSlideDirection('left');
-      setActiveChapter((prev) => (prev - 1) as 1 | 2 | 3);
+      setActiveChapter((prev) => (prev - 1) as 1 | 2 | 3 | 4 | 5);
     }
   };
 
   const handleNextChapter = () => {
-    if (activeChapter < 3) {
+    if (activeChapter < 5) {
       soundManager.playSelect();
       setSlideDirection('right');
-      setActiveChapter((prev) => (prev + 1) as 1 | 2 | 3);
+      setActiveChapter((prev) => (prev + 1) as 1 | 2 | 3 | 4 | 5);
     }
   };
 
-  const handleSelectChapterDirectly = (chapterNumber: 1 | 2 | 3) => {
+  const handleSelectChapterDirectly = (chapterNumber: 1 | 2 | 3 | 4 | 5) => {
     if (chapterNumber === activeChapter) return;
     soundManager.playSelect();
     setSlideDirection(chapterNumber > activeChapter ? 'right' : 'left');
@@ -350,7 +399,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
         {/* Flèche Chapitre Suivant */}
         <button
           onClick={handleNextChapter}
-          disabled={activeChapter === 3}
+          disabled={activeChapter === 5}
           aria-label="Chapitre suivant"
           className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#3a2312] bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#d97706] hover:from-[#fde047] hover:to-[#f59e0b] text-[#3a2312] shadow-[0_2px_0_#3a2312] sm:shadow-[0_3px_0_#3a2312] active:translate-y-0.5 disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center shrink-0 cursor-pointer transition-all"
         >

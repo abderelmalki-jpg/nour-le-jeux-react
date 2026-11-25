@@ -584,6 +584,373 @@ interface ClimaxCombatProps {
   chapterNumber?: number;
 }
 
+const CHAPTER_4_DUEL_ROUNDS: Record<'fr' | 'en' | 'ar', DuelRound[]> = {
+  fr: [
+    {
+      id: 'round_birr_devoir',
+      whisper: '« Tes parents n’ont fait que leur devoir ! Pourquoi te fatiguer à les remercier pour des choses normales ? »',
+      whisperSubtitle: 'Murmure de l’ingratitude',
+      arabic: 'أَنِ اشْكُرْ لِي وَلِوَالِدَيْكَ إِلَيَّ الْمَصِيرُ',
+      options: [
+        {
+          id: 'A',
+          text: '« Shukr : Allah a lié Sa gratitude à celle envers les parents. Rien de leur amour ne va de soi ! »',
+          concept: 'Reconnaissance (Shukr al-Wālidayn)',
+          isCorrect: true,
+          feedback: 'La gratitude sincère dissipe le voile de l’ingratitude !'
+        },
+        {
+          id: 'B',
+          text: '« C’est vrai, ils sont obligés de s’occuper de moi après tout… »',
+          concept: 'Banalisation des bienfaits',
+          isCorrect: false,
+          feedback: 'Prendre les bienfaits pour acquis endurcit le cœur.'
+        },
+        {
+          id: 'C',
+          text: '« Je les remercierai quand je serai grand, pas besoin aujourd’hui. »',
+          concept: 'Remise à plus tard',
+          isCorrect: false,
+          feedback: 'La bonté envers les parents se vit maintenant, tant qu’ils sont là.'
+        }
+      ]
+    },
+    {
+      id: 'round_birr_parole',
+      whisper: '« Ils te demandent trop de choses ! Soupire, réponds sèchement et ferme la porte pour qu’on te laisse tranquille ! »',
+      whisperSubtitle: 'Murmure de l’agacement',
+      arabic: 'فَلَا تَقُل لَّهُمَا أُفٍّ وَلَا تَنْهَرْهُمَا وَقُل لَّهُمَا قَوْلًا كَرِيمًا',
+      options: [
+        {
+          id: 'A',
+          text: '« Si je râle un peu, ils comprendront que je suis occupé. »',
+          concept: 'Impatience',
+          isCorrect: false,
+          feedback: 'Un mot brusque blesse bien plus longtemps qu’on ne le croit.'
+        },
+        {
+          id: 'B',
+          text: '« Birr & Adab : Pas même un "Ouf !". Je choisis la parole noble et l’invocation pour eux ! »',
+          concept: 'Parole noble & Miséricorde',
+          isCorrect: true,
+          feedback: 'Ta douceur et tes invocations font reculer l’Ombre définitivement !'
+        },
+        {
+          id: 'C',
+          text: '« Je vais faire semblant de ne pas entendre et sortir sans rien dire. »',
+          concept: 'Indifférence',
+          isCorrect: false,
+          feedback: 'L’indifférence blesse autant que la colère.'
+        }
+      ]
+    }
+  ],
+  en: [
+    {
+      id: 'round_birr_devoir',
+      whisper: '"Your parents only did their duty! Why tire yourself thanking them for normal things?"',
+      whisperSubtitle: 'Whisper of ingratitude',
+      arabic: 'أَنِ اشْكُرْ لِي وَلِوَالِدَيْكَ إِلَيَّ الْمَصِيرُ',
+      options: [
+        {
+          id: 'A',
+          text: '"Shukr: Allah paired gratitude to Him with gratitude to parents. None of their love should be taken for granted!"',
+          concept: 'Gratitude (Shukr al-Wālidayn)',
+          isCorrect: true,
+          feedback: 'Sincere gratitude clears away the veil of ingratitude!'
+        },
+        {
+          id: 'B',
+          text: '"True, it is their job to take care of me after all…"',
+          concept: 'Taking blessings for granted',
+          isCorrect: false,
+          feedback: 'Taking blessings for granted hardens the heart.'
+        },
+        {
+          id: 'C',
+          text: '"I will thank them when I grow up, no need today."',
+          concept: 'Procrastination',
+          isCorrect: false,
+          feedback: 'Kindness to parents is lived today, while they are with us.'
+        }
+      ]
+    },
+    {
+      id: 'round_birr_parole',
+      whisper: '"They ask too much of you! Sigh, snap back, and shut the door so they leave you alone!"',
+      whisperSubtitle: 'Whisper of irritation',
+      arabic: 'فَلَا تَقُل لَّهُمَا أُفٍّ وَلَا تَنْهَرْهُمَا وَقُل لَّهُمَا قَوْلًا كَرِيمًا',
+      options: [
+        {
+          id: 'A',
+          text: '"If I grumble a little, they will see I am busy."',
+          concept: 'Impatience',
+          isCorrect: false,
+          feedback: 'A sharp word hurts far longer than we realize.'
+        },
+        {
+          id: 'B',
+          text: '"Birr & Adab: Not even an ‘Uff!’. I choose noble words and sincere prayer for them!"',
+          concept: 'Noble Speech & Mercy',
+          isCorrect: true,
+          feedback: 'Your gentleness and prayers drive the Shadow away for good!'
+        },
+        {
+          id: 'C',
+          text: '"I will pretend not to hear and walk out silently."',
+          concept: 'Indifference',
+          isCorrect: false,
+          feedback: 'Indifference hurts just as much as anger.'
+        }
+      ]
+    }
+  ],
+  ar: [
+    {
+      id: 'round_birr_devoir',
+      whisper: '« وَالِدَاكَ لَمْ يَفْعَلَا سِوَى وَاجِبِهِمَا! لِمَاذَا تُتْعِبُ نَفْسَكَ بِشُكْرِهِمَا عَلَى أُمُورٍ عَادِيَّةٍ؟ »',
+      whisperSubtitle: 'وَسْوَسَةُ الْجُحُودِ',
+      arabic: 'أَنِ اشْكُرْ لِي وَلِوَالِدَيْكَ إِلَيَّ الْمَصِيرُ',
+      options: [
+        {
+          id: 'A',
+          text: '« الشُّكْرُ: قَرَنَ اللَّهُ شُكْرَهُ بِشُكْرِ الْوَالِدَيْنِ، فَلَا أَسْتَهِينُ أَبَدًا بِفَضْلِهِمَا! »',
+          concept: 'شُكْرُ الْوَالِدَيْنِ',
+          isCorrect: true,
+          feedback: 'الشُّكْرُ الصَّادِقُ يُبَدِّدُ ظِلَّ الْجُحُودِ!'
+        },
+        {
+          id: 'B',
+          text: '« صَحِيحٌ، فَهَذَا وَاجِبُهُمَا نَحْوِي عَلَى كُلِّ حَالٍ… »',
+          concept: 'الِاسْتِهَانَةُ بِالنِّعَمِ',
+          isCorrect: false,
+          feedback: 'الِاعْتِيَادُ عَلَى النِّعْمَةِ يُقَسِّي الْقَلْبَ.'
+        },
+        {
+          id: 'C',
+          text: '« سَأَشْكُرُهُمَا حِينَ أَكْبَرُ، لَا دَاعِيَ الْيَوْمَ. »',
+          concept: 'التَّسْوِيفُ',
+          isCorrect: false,
+          feedback: 'الْبِرُّ يُعَاشُ الْيَوْمَ مَا دَامَا بَيْنَنَا.'
+        }
+      ]
+    },
+    {
+      id: 'round_birr_parole',
+      whisper: '« يَطْلُبَانِ مِنْكَ الْكَثِيرَ! تَأَفَّفْ وَرُدَّ بِحِدَّةٍ وَأَغْلِقِ الْبَابَ كَيْ يَتْرُكَاكَ! »',
+      whisperSubtitle: 'وَسْوَسَةُ الضَّيْقِ',
+      arabic: 'فَلَا تَقُل لَّهُمَا أُفٍّ وَلَا تَنْهَرْهُمَا وَقُل لَّهُمَا قَوْلًا كَرِيمًا',
+      options: [
+        {
+          id: 'A',
+          text: '« إِذَا تَذَمَّرْتُ قَلِيلًا سَيَفْهَمَانِ أَنَّنِي مَشْغُولٌ. »',
+          concept: 'قِلَّةُ الصَّبْرِ',
+          isCorrect: false,
+          feedback: 'الْكَلِمَةُ الْقَاسِيَةُ تَجْرَحُ أَطْوَلَ مِمَّا نَظُنُّ.'
+        },
+        {
+          id: 'B',
+          text: '« الْبِرُّ وَالْأَدَبُ: لَا أَقُولُ حَتَّى "أُفٍّ"، بَلْ أَخْتَارُ الْقَوْلَ الْكَرِيمَ وَالدُّعَاءَ لَهُمَا! »',
+          concept: 'الْقَوْلُ الْكَرِيمُ وَالرَّحْمَةُ',
+          isCorrect: true,
+          feedback: 'لُطْفُكَ وَدُعَاؤُكَ يَدْفَعَانِ الظِّلَّ إِلَى غَيْرِ رَجْعَةٍ!'
+        },
+        {
+          id: 'C',
+          text: '« سَأَتَظَاهَرُ بِأَنَّنِي لَمْ أَسْمَعْ وَأَخْرُجُ بِصَمْتٍ. »',
+          concept: 'اللَّامُبَالَاةُ',
+          isCorrect: false,
+          feedback: 'التَّجَاهُلُ يُؤْلِمُ الْقَلْبَ كَالْغَضَبِ تَمَامًا.'
+        }
+      ]
+    }
+  ]
+};
+
+// Rounds spécifiques au Chapitre 5 : « Le Sommet de la Persévérance » (As-Sabr & La Constance — Finale Saison 1)
+const CHAPTER_5_DUEL_ROUNDS: Record<'fr' | 'en' | 'ar', DuelRound[]> = {
+  fr: [
+    {
+      id: 'round_sabr_constance',
+      whisper: '« Tu as marché si longtemps… Pourquoi continuer ? Un si petit pas chaque jour ne sert à rien ! »',
+      whisperSubtitle: "Murmure de lassitude et d'abandon",
+      arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ',
+      options: [
+        {
+          id: 'A',
+          text: '« As-Sabr : les œuvres les plus aimées d’Allah sont les plus constantes, même petites ! »',
+          concept: 'La Constance (Al-Mudâwamah)',
+          isCorrect: true,
+          feedback: 'Chaque pas régulier éclaire la crête et fait reculer le découragement !'
+        },
+        {
+          id: 'B',
+          text: '« Tu as raison, si je ne peux pas tout réussir d’un coup, autant tout arrêter. »',
+          concept: 'Perfectionnisme paralysant',
+          isCorrect: false,
+          feedback: "Le Waswâs veut te faire croire que le peu ne compte pas."
+        },
+        {
+          id: 'C',
+          text: '« Je vais tout faire en une seule nuit sans dormir pour prouver ma force ! »',
+          concept: 'Excès éphémère',
+          isCorrect: false,
+          feedback: "L'excès épuise ; c'est la constance douce qui atteint le sommet."
+        }
+      ]
+    },
+    {
+      id: 'round_sabr_facilite',
+      whisper: '« Regarde ces nuages sombres : après cette épreuve viendra encore une autre épreuve, sans jamais d’issue ! »',
+      whisperSubtitle: 'Tentative de désespoir au sommet',
+      arabic: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا',
+      options: [
+        {
+          id: 'A',
+          text: '« C’est vrai, la difficulté ne finira jamais… »',
+          concept: 'Résignation sombre',
+          isCorrect: false,
+          feedback: "Oublier la promesse d'Allah laisse le cœur sans lumière."
+        },
+        {
+          id: 'B',
+          text: '« Certes, avec la difficulté vient la facilité ! J’avance avec confiance, douceur et gratitude ! »',
+          concept: 'Espérance & Synthèse des Vertus',
+          isCorrect: true,
+          feedback: 'Les quatre lumières (Refuge, Hilm, Tawakkul, Birr) s’unissent dans le Sabr et dissipent l’Ombre !'
+        },
+        {
+          id: 'C',
+          text: '« Je n’ai besoin ni de patience ni d’aide, je suis invincible seul. »',
+          concept: 'Orgueil solitaire',
+          isCorrect: false,
+          feedback: "La vraie force s'appuie sur Allah et sur ceux qui nous aiment."
+        }
+      ]
+    }
+  ],
+  en: [
+    {
+      id: 'round_sabr_constance',
+      whisper: '« You have walked so long… Why keep going? Such a small step each day changes nothing! »',
+      whisperSubtitle: 'Whisper of weariness and quitting',
+      arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ',
+      options: [
+        {
+          id: 'A',
+          text: '« As-Sabr: the deeds most beloved to Allah are the most consistent, even if small! »',
+          concept: 'Steadfastness (Al-Mudāwamah)',
+          isCorrect: true,
+          feedback: 'Every steady step lights up the ridge and pushes discouragement back!'
+        },
+        {
+          id: 'B',
+          text: '« You are right, if I cannot succeed all at once, I might as well stop. »',
+          concept: 'Paralyzing perfectionism',
+          isCorrect: false,
+          feedback: 'The Waswas wants you to believe that small steps do not count.'
+        },
+        {
+          id: 'C',
+          text: '« I will do everything in one sleepless night to prove my strength! »',
+          concept: 'Burnout excess',
+          isCorrect: false,
+          feedback: 'Excess exhausts the soul; gentle consistency reaches the summit.'
+        }
+      ]
+    },
+    {
+      id: 'round_sabr_facilite',
+      whisper: '« Look at these dark clouds: after this hardship comes only more hardship, with no way out! »',
+      whisperSubtitle: 'Attempt to sow despair at the summit',
+      arabic: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا',
+      options: [
+        {
+          id: 'A',
+          text: '« It is true, the hardship will never end… »',
+          concept: 'Dark resignation',
+          isCorrect: false,
+          feedback: "Forgetting Allah's promise leaves the heart in darkness."
+        },
+        {
+          id: 'B',
+          text: '« Truly, with hardship comes ease! I move forward with trust, gentleness, and gratitude! »',
+          concept: 'Hope & Synthesis of Virtues',
+          isCorrect: true,
+          feedback: 'All four lights (Refuge, Hilm, Tawakkul, Birr) unite in Sabr and scatter the Shadow!'
+        },
+        {
+          id: 'C',
+          text: '« I need neither patience nor help, I am invincible on my own. »',
+          concept: 'Solitary pride',
+          isCorrect: false,
+          feedback: 'True strength relies on Allah and on the loved ones who support us.'
+        }
+      ]
+    }
+  ],
+  ar: [
+    {
+      id: 'round_sabr_constance',
+      whisper: '« لَقَدْ مَشَيْتَ طَوِيلًا... لِمَاذَا تُوَاصِلُ؟ خُطْوَةٌ صَغِيرَةٌ كُلَّ يَوْمٍ لَا تُغَيِّرُ شَيْئًا! »',
+      whisperSubtitle: 'وَسْوَسَةُ الْمَلَلِ وَالِانْسِحَابِ',
+      arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ',
+      options: [
+        {
+          id: 'A',
+          text: '« الصَّبْرُ وَالْمُدَاوَمَةُ: أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ! »',
+          concept: 'الْمُدَاوَمَةُ عَلَى الْخَيْرِ',
+          isCorrect: true,
+          feedback: 'كُلُّ خُطْوَةٍ ثَابِتَةٍ تُضِيءُ الْقِمَّةَ وَتُبْعِدُ الْإِحْبَاطَ!'
+        },
+        {
+          id: 'B',
+          text: '« مَعَكَ حَقٌّ، إِنْ لَمْ أَنْجَحْ دُفْعَةً وَاحِدَةً فَالْأَفْضَلُ أَنْ أَتَوَقَّفَ. »',
+          concept: 'الِاسْتِسْلَامُ السَّرِيعُ',
+          isCorrect: false,
+          feedback: 'الْوَسْوَاسُ يُرِيدُ أَنْ يُوهمَكَ أَنَّ الْقَلِيلَ لَا قِيمَةَ لَهُ.'
+        },
+        {
+          id: 'C',
+          text: '« سَأَفْعَلُ كُلَّ شَيْءٍ فِي لَيْلَةٍ وَاحِدَةٍ بِلَا نَوْمٍ لِأُثْبِتَ قُوَّتِي! »',
+          concept: 'الْإِجْهَادُ الْعَابِرُ',
+          isCorrect: false,
+          feedback: 'الْإِفْرَاطُ يُتْعِبُ النَّفْسَ، أَمَّا الثَّبَاتُ الرَّفِيقُ فَيَصِلُ إِلَى الْقِمَّةِ.'
+        }
+      ]
+    },
+    {
+      id: 'round_sabr_facilite',
+      whisper: '« انْظُرْ إِلَى هٰذِهِ الْغُيُومِ السَّوْدَاءِ: لَا يُسْرَ بَعْدَ هٰذَا الْعُسْرِ وَلَا مَخْرَجَ! »',
+      whisperSubtitle: 'مُحَاوَلَةُ إِشَاعَةِ الْيَأْسِ عِنْدَ الْقِمَّةِ',
+      arabic: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا',
+      options: [
+        {
+          id: 'A',
+          text: '« صَحِيحٌ، الشِّدَّةُ لَنْ تَنْتَهِيَ أَبَدًا... »',
+          concept: 'الْيَأْسُ',
+          isCorrect: false,
+          feedback: 'نِسْيَانُ وَعْدِ اللَّهِ يُطْفِئُ نُورَ الْقَلْبِ.'
+        },
+        {
+          id: 'B',
+          text: '« فَإِنَّ مَعَ الْعُسْرِ يُسْرًا! أَمْضِي بِالتَّوَكُّلِ وَالْحِلْمِ وَالْبِرِّ وَالصَّبْرِ! »',
+          concept: 'الرَّجَاءُ وَاجْتِمَاعُ الْفَضَائِلِ',
+          isCorrect: true,
+          feedback: 'تَتَّحِدُ الْأَنْوَارُ الْأَرْبَعَةُ فِي الصَّبْرِ فَيَتَبَدَّدُ الظِّلُّ إِلَى الْأَبَدِ!'
+        },
+        {
+          id: 'C',
+          text: '« لَا أَحْتَاجُ إِلَى صَبْرٍ وَلَا إِلَى عَوْنِ أَحَدٍ، أَنَا قَوِيٌّ وَحْدِي. »',
+          concept: 'الْغُرُورُ',
+          isCorrect: false,
+          feedback: 'الْقُوَّةُ الْحَقِيقِيَّةُ تَسْتَنِدُ إِلَى اللَّهِ ثُمَّ إِلَى مَنْ يُحِبُّونَنَا.'
+        }
+      ]
+    }
+  ]
+};
+
 export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
   waswasXp = 0,
   traits,
@@ -597,7 +964,11 @@ export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
   const t = gameTranslations[language]?.climax || gameTranslations.fr.climax;
 
   const ch1Rounds = language === 'ar' ? DUEL_ROUNDS_AR : language === 'en' ? DUEL_ROUNDS_EN : DUEL_ROUNDS;
-  const baseRounds = chapterNumber === 3
+  const baseRounds = chapterNumber === 5
+    ? CHAPTER_5_DUEL_ROUNDS[language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr']
+    : chapterNumber === 4
+    ? CHAPTER_4_DUEL_ROUNDS[language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr']
+    : chapterNumber === 3
     ? CHAPTER_3_DUEL_ROUNDS
     : chapterNumber === 2
     ? CHAPTER_2_DUEL_ROUNDS[language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr']
@@ -701,7 +1072,11 @@ export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
   };
 
   const othmanLabel = language === 'ar' ? 'سكينة عثمان' : language === 'en' ? "Othmân's Serenity" : 'Sérénité Othmân';
-  const bossLabel = chapterNumber === 3
+  const bossLabel = chapterNumber === 5
+    ? (language === 'ar' ? 'ظِلُّ الْقُنُوطِ' : language === 'en' ? 'Shadow of Weariness' : 'Ombre du Découragement')
+    : chapterNumber === 4
+    ? (language === 'ar' ? 'ظِلُّ الْجُحُودِ' : language === 'en' ? 'Shadow of Ingratitude' : "Ombre de l'Ingratitude")
+    : chapterNumber === 3
     ? (language === 'ar' ? 'وسواس الهجران' : language === 'en' ? 'Waswas of Despair' : "Waswâs de l'Abandon")
     : (language === 'ar' ? 'الوسواس الأكبر' : language === 'en' ? 'Grand Waswas' : 'Grand Waswâs');
 

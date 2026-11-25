@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { getChapter1Scenes, getChapter1Quizzes, getChapter1RealActions, getDay2PoteauBeats } from './data/chapter1';
 import { CHAPTER_2_SCENES, CHAPTER_2_QUIZZES, CHAPTER_2_REAL_ACTIONS } from './data/chapter2';
 import { CHAPTER_3_SCENES, CHAPTER_3_QUIZZES, CHAPTER_3_REAL_ACTIONS } from './data/chapter3';
+import { CHAPTER_4_SCENES, CHAPTER_4_QUIZZES, CHAPTER_4_REAL_ACTIONS } from './data/chapter4';
+import { CHAPTER_5_SCENES, CHAPTER_5_QUIZZES, CHAPTER_5_REAL_ACTIONS } from './data/chapter5';
 import { useLanguage } from './context/LanguageContext';
 import { useTheme } from './context/ThemeContext';
 import { KNOWLEDGE_ITEMS } from './data/knowledge';
@@ -249,9 +251,17 @@ export default function App() {
   const currentCh1Actions = getChapter1RealActions(language);
   const currentDay2Beats = getDay2PoteauBeats(language);
 
-  const ALL_SCENES = [...currentCh1Scenes, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES];
-  const ALL_QUIZZES = { ...currentCh1Quizzes, ...CHAPTER_2_QUIZZES, ...CHAPTER_3_QUIZZES };
-  const ALL_ACTIONS = { ...currentCh1Actions, ...CHAPTER_2_REAL_ACTIONS, ...CHAPTER_3_REAL_ACTIONS };
+  const ALL_SCENES = [...currentCh1Scenes, ...CHAPTER_2_SCENES, ...CHAPTER_3_SCENES, ...CHAPTER_4_SCENES, ...CHAPTER_5_SCENES];
+  const ALL_QUIZZES = { ...currentCh1Quizzes, ...CHAPTER_2_QUIZZES, ...CHAPTER_3_QUIZZES, ...CHAPTER_4_QUIZZES, ...CHAPTER_5_QUIZZES };
+  const ALL_ACTIONS = { ...currentCh1Actions, ...CHAPTER_2_REAL_ACTIONS, ...CHAPTER_3_REAL_ACTIONS, ...CHAPTER_4_REAL_ACTIONS, ...CHAPTER_5_REAL_ACTIONS };
+
+  const getChapterForSceneId = (id: number): 1 | 2 | 3 | 4 | 5 => {
+    if (id >= 40 && id <= 49) return 5;
+    if (id >= 30 && id <= 39) return 4;
+    if (id === 201 || id === 202 || (id >= 17 && id <= 25)) return 3;
+    if (id === 142 || (id >= 10 && id <= 16)) return 2;
+    return 1;
+  };
 
   const [showSplash, setShowSplash] = useState(true); // Always show Title Screen when entering game mode
   const [activeTab, setActiveTab] = useState<TabType>('adventure');
@@ -845,7 +855,7 @@ export default function App() {
         setShowSupportModal(true);
         return;
       }
-      const targetChap = targetScene.id >= 17 ? 3 : targetScene.id >= 10 ? 2 : 1;
+      const targetChap = getChapterForSceneId(targetScene.id);
       soundManager.playSceneTransition();
       setProgress((prev) => ({
         ...prev,
@@ -1390,29 +1400,45 @@ export default function App() {
                   onComplete={handleClimaxComplete}
                   onStepChange={(stepIdx) => setClimaxStep(stepIdx)}
                   onOpenHilmQuiz={() => {
-                    setQuizCategoryPreference(currentScene.id >= 17 ? 'Tawakkul & Patience' : 'Hilm & Maîtrise de Soi');
+                    const ch = getChapterForSceneId(currentScene.id);
+                    setQuizCategoryPreference(ch === 4 ? 'Comportement & Sagesse' : ch === 3 ? 'Tawakkul & Patience' : 'Hilm & Maîtrise de Soi');
                     setShowQuiz(true);
                   }}
                   customAssets={customAssets}
-                  chapterNumber={currentScene.id >= 17 ? 3 : currentScene.id >= 10 ? 2 : 1}
+                  chapterNumber={getChapterForSceneId(currentScene.id)}
                 />
               )}
 
               {!contemplationState && !sceneTransition && currentBeat.type === 'chapter_end' && (
                 <ChapterEnd
-                  chapterNumber={currentScene.id >= 17 ? 3 : currentScene.id >= 10 ? 2 : 1}
+                  chapterNumber={getChapterForSceneId(currentScene.id)}
                   xpTotal={progress.xp}
                   traits={progress.traits}
                   isSupporter={isSupporter}
                   onReplay={() => {
-                    if (currentScene.id >= 17) {
+                    const ch = getChapterForSceneId(currentScene.id);
+                    if (ch === 5) {
+                      const ch5Idx = ALL_SCENES.findIndex((s) => s.id === 40);
+                      setProgress((prev) => ({
+                        ...prev,
+                        currentSceneIndex: ch5Idx !== -1 ? ch5Idx : 0,
+                        currentBeatIndex: 0
+                      }));
+                    } else if (ch === 4) {
+                      const ch4Idx = ALL_SCENES.findIndex((s) => s.id === 30);
+                      setProgress((prev) => ({
+                        ...prev,
+                        currentSceneIndex: ch4Idx !== -1 ? ch4Idx : 0,
+                        currentBeatIndex: 0
+                      }));
+                    } else if (ch === 3) {
                       const ch3Idx = ALL_SCENES.findIndex((s) => s.id === 17);
                       setProgress((prev) => ({
                         ...prev,
                         currentSceneIndex: ch3Idx !== -1 ? ch3Idx : 0,
                         currentBeatIndex: 0
                       }));
-                    } else if (currentScene.id >= 10) {
+                    } else if (ch === 2) {
                       const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
                       setProgress((prev) => ({
                         ...prev,
@@ -1425,16 +1451,37 @@ export default function App() {
                     setActiveTab('adventure');
                   }}
                   onContinueAdventure={() => {
-                    if (currentScene.id >= 17) {
-                      // Chapter 3 completed -> open travel map to contemplate or choose chapters
+                    const ch = getChapterForSceneId(currentScene.id);
+                    if (ch === 5) {
                       setProgress((prev) => ({
                         ...prev,
                         completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
-                        selectedChapter: 3
+                        selectedChapter: 5
                       }));
                       setActiveTab('travel');
-                    } else if (currentScene.id >= 10) {
-                      // Chapter 2 completed -> jump to Chapter 3 (Scene 17) only if supporter
+                    } else if (ch === 4) {
+                      const ch5Idx = ALL_SCENES.findIndex((s) => s.id === 40);
+                      setProgress((prev) => ({
+                        ...prev,
+                        completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
+                        dayNumber: 5,
+                        currentSceneIndex: ch5Idx !== -1 ? ch5Idx : prev.currentSceneIndex,
+                        currentBeatIndex: 0,
+                        selectedChapter: 5
+                      }));
+                      setActiveTab('adventure');
+                    } else if (ch === 3) {
+                      const ch4Idx = ALL_SCENES.findIndex((s) => s.id === 30);
+                      setProgress((prev) => ({
+                        ...prev,
+                        completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
+                        dayNumber: 4,
+                        currentSceneIndex: ch4Idx !== -1 ? ch4Idx : prev.currentSceneIndex,
+                        currentBeatIndex: 0,
+                        selectedChapter: 4
+                      }));
+                      setActiveTab('adventure');
+                    } else if (ch === 2) {
                       if (!isSupporter) {
                         setSupportModalReason('chapter_end');
                         setShowSupportModal(true);
@@ -1451,13 +1498,11 @@ export default function App() {
                       }));
                       setActiveTab('adventure');
                     } else {
-                      // Chapter 1 completed -> STRICTLY require isSupporter (no XP bypass)
                       if (!isSupporter) {
                         setSupportModalReason('chapter_end');
                         setShowSupportModal(true);
                         return;
                       }
-                      // jump to Chapter 2 (Scene 10)
                       const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
                       setProgress((prev) => ({
                         ...prev,
@@ -1472,13 +1517,34 @@ export default function App() {
                   }}
                   onSaveAndExit={() => {
                     soundManager.playXpHarvest();
-                    if (currentScene.id >= 17) {
+                    const ch = getChapterForSceneId(currentScene.id);
+                    if (ch === 5) {
                       setProgress((prev) => ({
                         ...prev,
                         completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
-                        selectedChapter: 3
+                        selectedChapter: 5
                       }));
-                    } else if (currentScene.id >= 10) {
+                    } else if (ch === 4) {
+                      const ch5Idx = ALL_SCENES.findIndex((s) => s.id === 40);
+                      setProgress((prev) => ({
+                        ...prev,
+                        completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
+                        dayNumber: 5,
+                        currentSceneIndex: ch5Idx !== -1 ? ch5Idx : prev.currentSceneIndex,
+                        currentBeatIndex: 0,
+                        selectedChapter: 5
+                      }));
+                    } else if (ch === 3) {
+                      const ch4Idx = ALL_SCENES.findIndex((s) => s.id === 30);
+                      setProgress((prev) => ({
+                        ...prev,
+                        completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
+                        dayNumber: 4,
+                        currentSceneIndex: ch4Idx !== -1 ? ch4Idx : prev.currentSceneIndex,
+                        currentBeatIndex: 0,
+                        selectedChapter: 4
+                      }));
+                    } else if (ch === 2) {
                       const ch3Idx = ALL_SCENES.findIndex((s) => s.id === 17);
                       setProgress((prev) => ({
                         ...prev,
@@ -1643,7 +1709,7 @@ export default function App() {
             setActiveTab('adventure');
           }}
           onSelectChapter={(chapter) => {
-            const targetSceneId = chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
+            const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
             const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
             trackGameStarted(false, progress.level, progress.xp);
             setProgress((prev) => ({

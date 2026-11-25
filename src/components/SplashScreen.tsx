@@ -20,7 +20,7 @@ interface SplashScreenProps {
   };
   onContinue: () => void;
   onNewGame: () => void;
-  onSelectChapter?: (chapter: 1 | 2 | 3) => void;
+  onSelectChapter?: (chapter: 1 | 2 | 3 | 4 | 5) => void;
   onOpenLanding?: () => void;
 }
 
@@ -167,7 +167,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     finalizeAction(actionType);
   };
 
-  const handleSelectChapter = (chapter: 1 | 2 | 3) => {
+  const handleSelectChapter = (chapter: 1 | 2 | 3 | 4 | 5) => {
     if (isFadingOut) return;
     try {
       soundManager.playSelect();
@@ -337,8 +337,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 { id: 1, title: "Vaincre la Solitude", subtitle: "Le premier pas", status: "playable", image: "/game-assets/title_screen_bg.jpg" },
                 { id: 2, title: "Le chemin du Hilm", subtitle: "La maîtrise de la colère", status: "playable", image: bgCh2 },
                 { id: 3, title: "Le chemin du Tawakkul", subtitle: "La confiance face à l'épreuve", status: "playable", image: bgCh3 },
-                { id: 4, title: "Ce que tu as encore", subtitle: "La bonté envers les parents", status: "soon", image: bgCh4 },
-                { id: 5, title: "Le Sommet de la Persévérance", subtitle: "La persévérance (Sabr)", status: "soon", image: bgCh5 },
+                { id: 4, title: "Ce que tu as encore", subtitle: "La bonté envers les parents", status: "playable", image: bgCh4 },
+                { id: 5, title: "Le Sommet de la Persévérance", subtitle: "La persévérance (Sabr)", status: "playable", image: bgCh5 },
               ].map((ch) => (
                 <div key={ch.id} className={`relative flex items-stretch gap-3 sm:gap-4 p-2 sm:p-3 rounded-2xl border ${ch.status === 'playable' ? 'border-amber-500/50 bg-amber-900/20' : 'border-white/10 bg-black/40 opacity-90'} overflow-hidden`}>
                   {/* Thumbnail */}
@@ -363,8 +363,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                     {ch.status === 'playable' ? (
                       <button 
                         onClick={() => {
-                           if (ch.id === 2 || ch.id === 3) {
-                             handleSelectChapter(ch.id as 2 | 3);
+                           if (ch.id === 2 || ch.id === 3 || ch.id === 4 || ch.id === 5) {
+                             handleSelectChapter(ch.id as 2 | 3 | 4 | 5);
                            } else if (hasSavedGame && ch.id === 1) {
                              setShowNewGameConfirm(true);
                            } else {

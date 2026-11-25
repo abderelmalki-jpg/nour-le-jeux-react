@@ -3,6 +3,8 @@ import { Language } from '../i18n/translations';
 import { CHAPTER_1_TRANSLATIONS, Chapter1TranslationSet } from '../i18n/chapter1Translations';
 import { CHAPTER_2_TRANSLATIONS } from '../i18n/chapter2Translations';
 import { CHAPTER_3_TRANSLATIONS } from '../i18n/chapter3Translations';
+import { CHAPTER_4_TRANSLATIONS } from '../i18n/chapter4Translations';
+import { CHAPTER_5_TRANSLATIONS } from '../i18n/chapter5Translations';
 import { CHAPTER_1_PATCH } from '../i18n/chapter1Patch';
 
 // Jeux de traductions fusionnés : les identifiants (répliques, choix, quiz, actions) sont uniques
@@ -20,8 +22,8 @@ const mergeSets = (...sets: Chapter1TranslationSet[]): Chapter1TranslationSet =>
 
 const NARRATIVE_TRANSLATIONS: Record<Language, Chapter1TranslationSet> = {
   fr: CHAPTER_1_TRANSLATIONS.fr,
-  en: mergeSets(CHAPTER_1_TRANSLATIONS.en, CHAPTER_1_PATCH.en, CHAPTER_2_TRANSLATIONS.en, CHAPTER_3_TRANSLATIONS.en),
-  ar: mergeSets(CHAPTER_1_TRANSLATIONS.ar, CHAPTER_1_PATCH.ar, CHAPTER_2_TRANSLATIONS.ar, CHAPTER_3_TRANSLATIONS.ar)
+  en: mergeSets(CHAPTER_1_TRANSLATIONS.en, CHAPTER_1_PATCH.en, CHAPTER_2_TRANSLATIONS.en, CHAPTER_3_TRANSLATIONS.en, CHAPTER_4_TRANSLATIONS.en, CHAPTER_5_TRANSLATIONS.en),
+  ar: mergeSets(CHAPTER_1_TRANSLATIONS.ar, CHAPTER_1_PATCH.ar, CHAPTER_2_TRANSLATIONS.ar, CHAPTER_3_TRANSLATIONS.ar, CHAPTER_4_TRANSLATIONS.ar, CHAPTER_5_TRANSLATIONS.ar)
 };
 
 
