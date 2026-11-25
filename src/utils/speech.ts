@@ -1,5 +1,5 @@
 // Accessible Speech Manager for Nour : Le Jeu
-// Plays recorded MP3 audio files from /audio/ch{N}/{beatId}.mp3 (FR) or /audio/ar/ch{N}/{beatId}.mp3 (AR).
+// Plays recorded MP3 audio files from /audio/ch{N}/{beatId}.mp3 (FR), /audio/en/ch{N}/{beatId}.mp3 (EN) or /audio/ar/ch{N}/{beatId}.mp3 (AR).
 import { AVAILABLE_AUDIO_FILES } from './audioManifest';
 
 export type SpeakerRole =
@@ -316,14 +316,18 @@ class SpeechManager {
     lang?: string;
   }): string | null {
     if (!beat.id || isSilentSpeaker(beat.speaker)) return null;
-    if (beat.lang && beat.lang !== 'fr' && beat.lang !== 'ar') return null;
+    if (beat.lang && beat.lang !== 'fr' && beat.lang !== 'ar' && beat.lang !== 'en') return null;
 
     let chapterNum = beat.chapter;
     if (!chapterNum) {
       const match = beat.id.match(/^s(\d+)/);
       if (match) {
         const sId = parseInt(match[1], 10);
-        if (sId === 142 || (sId >= 10 && sId <= 16)) {
+        if (sId >= 40 && sId <= 49) {
+          chapterNum = 5;
+        } else if (sId >= 30 && sId <= 39) {
+          chapterNum = 4;
+        } else if (sId === 142 || (sId >= 10 && sId <= 16)) {
           chapterNum = 2;
         } else if (sId === 201 || sId === 202 || (sId >= 17 && sId <= 25)) {
           chapterNum = 3;
@@ -335,9 +339,12 @@ class SpeechManager {
       }
     }
 
-    const audioUrl = beat.lang === 'ar'
-      ? `/audio/ar/ch${chapterNum}/${beat.id}.mp3`
-      : `/audio/ch${chapterNum}/${beat.id}.mp3`;
+    const audioUrl =
+      beat.lang === 'ar'
+        ? `/audio/ar/ch${chapterNum}/${beat.id}.mp3`
+        : beat.lang === 'en'
+        ? `/audio/en/ch${chapterNum}/${beat.id}.mp3`
+        : `/audio/ch${chapterNum}/${beat.id}.mp3`;
 
     return AVAILABLE_AUDIO_FILES.has(audioUrl) ? audioUrl : null;
   }

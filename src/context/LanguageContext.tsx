@@ -11,12 +11,24 @@ interface LanguageContextType {
 const STORAGE_KEY = 'nour_preferred_lang';
 
 /**
- * Detect the best matching language based on user's browser settings.
- * Priority: 
- * 1. Saved localStorage preference
- * 2. Navigator languages (Arabic -> 'ar', French -> 'fr', Default/All others -> 'en')
+ * Default language: Arabic ('ar').
+ * Priority:
+ * 1. Explicit URL parameter (?lang=ar|fr|en)
+ * 2. Saved localStorage preference (manual user selection)
+ * 3. Default to Arabic ('ar') for all new visitors
  */
-function detectBrowserLanguage(): Language {
+function detectInitialLanguage(): Language {
+  if (typeof window !== 'undefined') {
+    try {
+      const urlLang = new URLSearchParams(window.location.search).get('lang')?.toLowerCase();
+      if (urlLang === 'fr' || urlLang === 'en' || urlLang === 'ar') {
+        return urlLang;
+      }
+    } catch {
+      // ignore URL parsing errors
+    }
+  }
+
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'fr' || saved === 'en' || saved === 'ar') {
@@ -26,29 +38,13 @@ function detectBrowserLanguage(): Language {
     // localStorage might be unavailable in some private browsing modes
   }
 
-  const browserLangs = navigator.languages || [navigator.language || ''];
-  for (const rawLang of browserLangs) {
-    if (!rawLang) continue;
-    const lower = rawLang.toLowerCase();
-    if (lower.startsWith('ar')) {
-      return 'ar';
-    }
-    if (lower.startsWith('fr')) {
-      return 'fr';
-    }
-    if (lower.startsWith('en')) {
-      return 'en';
-    }
-  }
-
-  // Default international language
-  return 'fr';
+  return 'ar';
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => detectBrowserLanguage());
+  const [language, setLanguageState] = useState<Language>(() => detectInitialLanguage());
 
   const setLanguage = (newLang: Language) => {
     setLanguageState(newLang);

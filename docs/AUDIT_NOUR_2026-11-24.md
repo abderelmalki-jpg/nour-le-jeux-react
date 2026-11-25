@@ -617,3 +617,21 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - `src/components/screens/TravelMapScreen.tsx` : numérotation relative par chapitre (`1..N` au lieu des IDs globaux `30..45`), détection `SOMMET` étendue aux scènes `35` et `44`, et localisation intégrale FR/EN/AR + RTL de l'en-tête, des onglets, des nœuds, de la fiche d'étape et des boutons d'action.
 - `src/components/DialogueBox.tsx` : ajout des noms d'orateurs `pere` (`LE PÈRE` / `FATHER` / `الْأَبُ`) et `grand_pere` (`GRAND-PÈRE` / `GRANDFATHER` / `الْجَدُّ`), et localisation FR/EN/AR du bouton `Passer` et du bandeau `+X Doute`.
 - `src/components/ChapterEnd.tsx` & `src/components/SplashScreen.tsx` : localisation FR/EN/AR des boutons `JOUER`, `BLOQUÉ`, de la modale « Nouvelle Partie » et de l'écran de fin de chapitre.
+
+---
+
+## Treizième vague (2026-11-25) — Voix anglaises complètes (Chapitres 1 à 5)
+
+**Fait**
+- Génération de **257 fichiers MP3 anglais** (`public/audio/en/ch1/` à `ch5/`) via voix neurales Microsoft (`edge-tts`) différenciées par personnage (`en-GB-RyanNeural` pour le Vieux Sage, `en-GB-SoniaNeural` pour Noura, `en-US-BrianNeural` pour Othmân, `en-US-GuyNeural` pour le Père, `en-GB-ThomasNeural` pour le Grand-Père, `en-US-ChristopherNeural` pour le Marchand, `en-US-EricNeural` pour le Jeune, `en-US-AnaNeural` pour l'Enfant), en gardant le Waswâs strictement muet.
+- Extension de `src/utils/speech.ts` (`getAudioUrlForBeat`) pour prendre en charge `lang === 'en'` et les chapitres 4 & 5 (`s30`–`s49`).
+- Régénération de `src/utils/audioManifest.ts` (583 fichiers audio recensés : FR + AR + EN).
+
+---
+
+## Quatorzième vague (2026-11-25) — Arabe par défaut & voix arabes complètes (Chapitres 1 à 5)
+
+**Fait**
+- Passage de la langue par défaut à l'**Arabe (`ar` + RTL)** dans `src/context/LanguageContext.tsx` (tout en respectant le choix enregistré en `localStorage` et le paramètre `?lang=fr|en|ar`).
+- Génération des **228 voix arabes manquantes** (`public/audio/ar/ch1/` à `ch5/`) via voix neurales arabe littéraire (`edge-tts` : `ar-SA-HamedNeural`, `ar-SA-ZariyahNeural`, `ar-AE-HamdanNeural`, `ar-QA-MoazNeural`, `ar-JO-TaimNeural`, `ar-KW-FahedNeural`, `ar-AE-FatimaNeural`), portant le total à **257/257 répliques doublées en arabe** (29 existantes conservées + 228 générées, 0 échec).
+- Régénération de `src/utils/audioManifest.ts` (**811 fichiers MP3** recensés au total : FR + EN + AR).
