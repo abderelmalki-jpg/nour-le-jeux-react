@@ -71,3 +71,20 @@
 ## Nommage des fichiers à déposer dans `art_incoming/lot_e/`
 
 `E1_arbre_racines`, `E2_halte_the`, `E3_verger_lanterne`, `E4_waswas_bg`, `E5_carrefour_sac`, `E6_village_accueillant`, `E7_marche_grenades`, `E8_affiche_og` (format PNG, JPG ou WebP — je les optimiserai et les installerai sous leurs noms cibles).
+
+---
+
+## Résultat (2026-11-25)
+
+Les 8 images ont été générées dans Google Flow (modèle **Nano Banana 2.1**, téléchargées en **2K Améliorée** dans `art_incoming/lot_e/`), optimisées en JPEG `mozjpeg` qualité 82 % (1920×1080 pour E1–E7, 1024×1024 pour E8) et installées :
+
+| Image | Fichier(s) remplacé(s) | Poids | Statut |
+|---|---|---|---|
+| E1 Arbre aux racines anciennes | `src/assets/images/bg_arbre_racines_anciennes.jpg` | 330 Ko | ✅ installé |
+| E2 Halte du thé & apaisement | `src/assets/images/bg_halte_the_apaisement.jpg` | 350 Ko | ✅ installé |
+| E3 Verger fleur & lanterne | `src/assets/images/bg_verger_fleur_lanterne.jpg` | 378 Ko | ✅ installé |
+| E4 Fond Waswâs (brume violette) | `public/game-assets/waswas_bg.jpg` | 201 Ko | ✅ installé |
+| E5 Carrefour avec sac (sans texte) | `src/assets/images/bg_carrefour_sac_pose.jpg` | 277 Ko | ✅ installé |
+| E6 Village accueillant (sans foules masquées) | `src/assets/images/bg_village_accueillant.jpg`, `public/game-assets/village_accueillant.jpg` | 362 Ko | ✅ installé |
+| E7 Marché des grenades (sans visages) | `public/game-assets/marche.jpg` | 312 Ko | ✅ installé |
+| E8 Affiche partage OG / WhatsApp 1:1 (sans texte) | `public/affiche_nour_whatsapp.jpg` | 136 Ko | ✅ installé |

@@ -569,3 +569,21 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Alignement de la question 18 (`quiz_hilm_colere_remede`) sur les deux hadiths cités (Bukhari 3282, Abu Dawud 4782) sans présenter les ablutions comme règle de la Sunnah (cohérence avec le chapitre 2).
 - Localisation complète de l'interface de `src/components/IslamicQuizModal.tsx` (FR / EN / AR + mise en page RTL).
 - Création du dossier unique de relecture religieuse et arabe (`docs/RELECTURE_RELIGIEUSE_ET_ARABE.md`) listant automatiquement toutes les références (versets, hadiths, invocations) des chapitres 1–3, des 18 quiz libres et du Livre du Savoir, avec cases à cocher pour le savant et le relecteur arabophone.
+
+---
+
+## Huitième vague (2026-11-25) — Performances (découpage bundle + vidéos) & derniers libellés EN/AR
+
+**Fait**
+- Découpage du bundle dans `vite.config.ts` : ajout du chunk `i18n-data` pour `src/i18n/` afin d'alléger le bundle principal `index-*.js`.
+- Optimisation du chargement des vidéos sur la page d'accueil : `preload="metadata"` sur la vidéo Hero (`HeroSection.tsx`, avec poster) et `preload="none"` sur la section vidéo sous la ligne de flottaison (`GameplayVideoSection.tsx`).
+- Localisation FR/EN/AR des derniers boutons restés en français dans `DialogueBox.tsx` (« Déjà lues », « Voix coupée », « Réécouter »).
+
+---
+
+## Neuvième vague (2026-11-25) — Lot E : 8 derniers décors & corrections visuelles (Google Flow Nano Banana 2.1)
+
+**Fait**
+- Génération en 2K Améliorée dans Google Flow (Nano Banana 2.1), optimisation `mozjpeg` 82 % (1920×1080 / 1024×1024) et installation des 8 visuels du Lot E (`docs/ART_PROMPTS_LOT_E.md`) :
+  - 4 derniers décors pixel-art repeints : `bg_arbre_racines_anciennes.jpg`, `bg_halte_the_apaisement.jpg`, `bg_verger_fleur_lanterne.jpg`, `public/game-assets/waswas_bg.jpg`.
+  - 4 corrections prioritaires : `bg_carrefour_sac_pose.jpg` (variante réelle avec sac, panneaux vierges), `bg_village_accueillant.jpg` + `public/game-assets/village_accueillant.jpg` (sans foules masquées), `public/game-assets/marche.jpg` (sans visages), `public/affiche_nour_whatsapp.jpg` (1:1 sans texte incrusté).

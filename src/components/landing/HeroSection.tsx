@@ -253,7 +253,7 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
                       loop
                       muted
                       playsInline
-                      preload="auto"
+                      preload="metadata"
                       onPlay={() => setIsHeroPlaying(true)}
                       onPause={() => setIsHeroPlaying(false)}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"

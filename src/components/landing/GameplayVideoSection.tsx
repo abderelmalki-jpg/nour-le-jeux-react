@@ -237,7 +237,7 @@ export const GameplayVideoSection: React.FC<GameplayVideoSectionProps> = ({ onOp
                 src={videoSources[selectedVideo].src}
                 poster={videoSources[selectedVideo].poster}
                 playsInline
-                preload="metadata"
+                preload="none"
                 muted={isMuted}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}

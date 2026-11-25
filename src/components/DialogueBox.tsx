@@ -505,7 +505,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                   aria-label="Passer les répliques déjà lues"
                 >
                   <SkipForward className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  Déjà lues
+                  {language === 'ar' ? 'تخطّي المقروء' : language === 'en' ? 'Skip seen' : 'Déjà lues'}
                 </button>
               )}
 
@@ -543,7 +543,9 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                     ) : (
                       <>
                         <VolumeX className="w-3 h-3 text-red-400" />
-                        <span className="text-red-300 font-extrabold">Voix Coupée (Activer)</span>
+                        <span className="text-red-300 font-extrabold">
+                          {language === 'ar' ? 'الصوت مكتوم' : language === 'en' ? 'Voice Muted' : 'Voix Coupée (Activer)'}
+                        </span>
                       </>
                     )}
                   </button>
@@ -561,7 +563,9 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                       title="Réécouter la réplique"
                     >
                       <RotateCcw className="w-2.5 h-2.5" />
-                      <span className="hidden xs:inline">Réécouter</span>
+                      <span className="hidden xs:inline">
+                        {language === 'ar' ? 'إعادة' : language === 'en' ? 'Replay' : 'Réécouter'}
+                      </span>
                     </button>
                   )}
                 </>

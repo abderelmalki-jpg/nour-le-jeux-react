@@ -45,6 +45,9 @@ export default defineConfig(() => {
             if (id.includes('src/data/locales')) {
               return 'locales-data';
             }
+            if (id.includes('src/i18n/')) {
+              return 'i18n-data';
+            }
           },
         },
       },
