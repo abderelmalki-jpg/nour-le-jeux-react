@@ -72,10 +72,11 @@ export default function Footer({ onOpenGame }: FooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackApkDownloadClick('footer_main')}
-                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-emerald-800/90 hover:bg-emerald-700 border border-emerald-400/50 text-emerald-100 font-cinzel font-bold text-sm tracking-wide transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2 shadow-lg"
+                style={{ color: '#ffffff' }}
+                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-emerald-700 hover:bg-emerald-600 border border-emerald-300/60 text-white font-cinzel font-bold text-sm tracking-wide transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2 shadow-lg"
               >
-                <Download className="w-4 h-4 text-emerald-300" />
-                <span>{t.footer.downloadApk}</span>
+                <Download className="w-4 h-4" style={{ color: '#a7f3d0' }} />
+                <span style={{ color: '#ffffff' }}>{t.footer.downloadApk}</span>
               </a>
 
               <button
@@ -193,7 +194,7 @@ export default function Footer({ onOpenGame }: FooterProps) {
 
         {/* Sub-Footer Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-400">
-          <p>© {new Date().getFullYear()} {t.footer.copyright}</p>
+          <p>{t.footer.copyright}</p>
           <div className="flex items-center gap-6">
             <a href={GAME_URL} target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">
               {t.footer.playGame}

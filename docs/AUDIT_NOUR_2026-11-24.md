@@ -549,3 +549,13 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Suppression du tableau inutilisé `TESTIMONIALS` (témoignages fictifs) dans `src/data/gameData.ts`.
 - Alignement de la gratuité (Chapitres 1 à 3 gratuits, retrait de la promesse « Pack Fondateur 4,99 € pour débloquer les chapitres 2 et 3 » dans les FAQ FR/EN/AR, `index.html`, `llms.txt`, `gameData.ts`).
 - Adoucissement des promesses religieuses (« quiz vérifiés » / « Hadiths sûrs » / « savoirs authentiques » → « sources citées » / « savoirs sourcés ») et voix (« comédiens de doublage » / « voix studio » → « voix françaises intégrées »).
+
+---
+
+## Sixième vague (2026-11-25) — Audio UX, Footer UI et alignement version iOS/Android
+
+**Fait**
+- Manifeste audio statique (`src/utils/audioManifest.ts`, 326 fichiers MP3 FR/AR) + `speechManager.hasVoiceForBeat()` dans `src/utils/speech.ts`.
+- Masquage automatique des boutons « Voix active » et « Réécouter » dans `src/components/DialogueBox.tsx` lorsque la réplique n'a pas de fichier audio (anglais, arabe hors scène 1, répliques du Waswâs), évitant aussi tout 404 audio inutile.
+- Correctifs Footer (`src/components/landing/Footer.tsx`) : suppression du doublon `© 2026 © 2026` et amélioration du contraste du bouton « Télécharger l'APK Android » (`!text-white` sur fond émeraude).
+- Alignement des versions natives : Android `1.0.6` (`versionCode 7`) et iOS `MARKETING_VERSION = 1.0.6`.

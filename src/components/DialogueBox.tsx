@@ -509,59 +509,62 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                 </button>
               )}
 
-              {/* Voice toggle button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const newState = speechManager.toggleVoice();
-                  setIsVoiceEnabled(newState);
-                  if (newState) {
-                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
-                  } else {
-                    speechManager.stop();
-                  }
-                }}
-                className={`flex items-center gap-1 text-[9px] sm:text-[10px] font-bold transition-all px-2 py-0.5 rounded-lg border shadow-xs cursor-pointer ${
-                  isVoiceEnabled
-                    ? 'bg-[#0f2d1e]/90 text-[#6ee7b7] border-[#059669] ring-1 ring-[#10b981]/40 shadow-[0_0_8px_rgba(16,185,129,0.3)]'
-                    : 'bg-red-950/70 text-red-300 border-red-500/50 hover:bg-red-900/80 shadow-[0_0_8px_rgba(239,68,68,0.3)]'
-                }`}
-                title={isVoiceEnabled ? "Désactiver la lecture vocale" : "Cliquer pour activer la lecture vocale"}
-                aria-label={isVoiceEnabled ? "Désactiver la voix" : "Activer la voix"}
-              >
-                {isVoiceEnabled ? (
-                  <>
-                    <Volume2 className={`w-3 h-3 text-[#34d399] ${isSpeaking ? 'animate-pulse' : ''}`} />
-                    <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).voiceOn}</span>
-                    {isSpeaking && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-ping" />
+              {/* Voice toggle & replay buttons (masqués quand la réplique n'a pas de fichier audio) */}
+              {speechManager.hasVoiceForBeat({ id: beat.id, speaker: beat.speaker, lang: language }) && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const newState = speechManager.toggleVoice();
+                      setIsVoiceEnabled(newState);
+                      if (newState) {
+                        speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
+                      } else {
+                        speechManager.stop();
+                      }
+                    }}
+                    className={`flex items-center gap-1 text-[9px] sm:text-[10px] font-bold transition-all px-2 py-0.5 rounded-lg border shadow-xs cursor-pointer ${
+                      isVoiceEnabled
+                        ? 'bg-[#0f2d1e]/90 text-[#6ee7b7] border-[#059669] ring-1 ring-[#10b981]/40 shadow-[0_0_8px_rgba(16,185,129,0.3)]'
+                        : 'bg-red-950/70 text-red-300 border-red-500/50 hover:bg-red-900/80 shadow-[0_0_8px_rgba(239,68,68,0.3)]'
+                    }`}
+                    title={isVoiceEnabled ? "Désactiver la lecture vocale" : "Cliquer pour activer la lecture vocale"}
+                    aria-label={isVoiceEnabled ? "Désactiver la voix" : "Activer la voix"}
+                  >
+                    {isVoiceEnabled ? (
+                      <>
+                        <Volume2 className={`w-3 h-3 text-[#34d399] ${isSpeaking ? 'animate-pulse' : ''}`} />
+                        <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).voiceOn}</span>
+                        {isSpeaking && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-ping" />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <VolumeX className="w-3 h-3 text-red-400" />
+                        <span className="text-red-300 font-extrabold">Voix Coupée (Activer)</span>
+                      </>
                     )}
-                  </>
-                ) : (
-                  <>
-                    <VolumeX className="w-3 h-3 text-red-400" />
-                    <span className="text-red-300 font-extrabold">Voix Coupée (Activer)</span>
-                  </>
-                )}
-              </button>
+                  </button>
 
-              {/* Replay speech button (always accessible for non-silent characters) */}
-              {!isSilent && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    speechManager.setVoiceEnabled(true);
-                    setIsVoiceEnabled(true);
-                    speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
-                  }}
-                  className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-1.5 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
-                  title="Réécouter la réplique"
-                >
-                  <RotateCcw className="w-2.5 h-2.5" />
-                  <span className="hidden xs:inline">Réécouter</span>
-                </button>
+                  {!isSilent && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        speechManager.setVoiceEnabled(true);
+                        setIsVoiceEnabled(true);
+                        speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
+                      }}
+                      className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-1.5 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
+                      title="Réécouter la réplique"
+                    >
+                      <RotateCcw className="w-2.5 h-2.5" />
+                      <span className="hidden xs:inline">Réécouter</span>
+                    </button>
+                  )}
+                </>
               )}
 
               {/* Skip typewriter button */}

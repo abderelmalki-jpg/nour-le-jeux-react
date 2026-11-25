@@ -1,6 +1,6 @@
-// Accessible Hybrid Speech Manager for Nour : Le Jeu
-// 1. Plays Studio MP3 audio file if present in /audio/ch{N}/{beatId}.mp3
-// 2. Automatically falls back to native Web Speech API if MP3 is missing (0 MB footprint)
+// Accessible Speech Manager for Nour : Le Jeu
+// Plays recorded MP3 audio files from /audio/ch{N}/{beatId}.mp3 (FR) or /audio/ar/ch{N}/{beatId}.mp3 (AR).
+import { AVAILABLE_AUDIO_FILES } from './audioManifest';
 
 export type SpeakerRole =
   | 'personnage'
@@ -306,7 +306,53 @@ class SpeechManager {
   }
 
   /**
-   * Hybrid playback: tries MP3 first, falls back to native Web Speech API
+   * Resolves the MP3 path for a beat if it exists in public/audio/.
+   * Returns null if the speaker is silent, the language has no recordings, or no file exists.
+   */
+  public getAudioUrlForBeat(beat: {
+    id?: string;
+    speaker: SpeakerRole;
+    chapter?: number;
+    lang?: string;
+  }): string | null {
+    if (!beat.id || isSilentSpeaker(beat.speaker)) return null;
+    if (beat.lang && beat.lang !== 'fr' && beat.lang !== 'ar') return null;
+
+    let chapterNum = beat.chapter;
+    if (!chapterNum) {
+      const match = beat.id.match(/^s(\d+)/);
+      if (match) {
+        const sId = parseInt(match[1], 10);
+        if (sId === 142 || (sId >= 10 && sId <= 16)) {
+          chapterNum = 2;
+        } else if (sId === 201 || sId === 202 || (sId >= 17 && sId <= 25)) {
+          chapterNum = 3;
+        } else {
+          chapterNum = 1;
+        }
+      } else {
+        chapterNum = 1;
+      }
+    }
+
+    const audioUrl = beat.lang === 'ar'
+      ? `/audio/ar/ch${chapterNum}/${beat.id}.mp3`
+      : `/audio/ch${chapterNum}/${beat.id}.mp3`;
+
+    return AVAILABLE_AUDIO_FILES.has(audioUrl) ? audioUrl : null;
+  }
+
+  public hasVoiceForBeat(beat: {
+    id?: string;
+    speaker: SpeakerRole;
+    chapter?: number;
+    lang?: string;
+  }): boolean {
+    return this.getAudioUrlForBeat(beat) !== null;
+  }
+
+  /**
+   * Speaks a narrative beat using recorded MP3 when available.
    */
   public speakBeat(
     beat: { id?: string; speaker: SpeakerRole; text: string; chapter?: number; lang?: string },
@@ -315,15 +361,8 @@ class SpeechManager {
     if (!this.isEnabled && !options?.force) return;
     this.stop();
 
-    // Waswâs (inward whisper/passing thought) and Narration (scene descriptions) are strictly silent
-    if (isSilentSpeaker(beat.speaker)) {
-      options?.onEnd?.();
-      return;
-    }
-
-    // Voix studio : français (dossier /audio/chN) et arabe (dossier /audio/ar/chN, en cours d'enregistrement).
-    // Jamais de voix française sous un texte anglais : silence tant qu'il n'y a pas d'enregistrement.
-    if (beat.lang && beat.lang !== 'fr' && beat.lang !== 'ar') {
+    const audioUrl = this.getAudioUrlForBeat(beat);
+    if (!audioUrl) {
       options?.onEnd?.();
       return;
     }
@@ -337,71 +376,47 @@ class SpeechManager {
     const beatId = beat.id || `beat_${Date.now()}`;
     this.currentBeatId = beatId;
 
-    // Try playing MP3 if beat.id is present
-    if (beat.id) {
-      let chapterNum = beat.chapter;
-      if (!chapterNum) {
-        const match = beat.id.match(/^s(\d+)/);
-        if (match) {
-          const sId = parseInt(match[1], 10);
-          if (sId === 142 || (sId >= 10 && sId <= 16)) {
-            chapterNum = 2;
-          } else if (sId === 201 || sId === 202 || (sId >= 17 && sId <= 25)) {
-            chapterNum = 3;
-          } else {
-            chapterNum = 1;
-          }
-        } else {
-          chapterNum = 1;
+    try {
+      const audio = new Audio(audioUrl);
+      audio.preload = 'auto';
+      // Immediately assign currentAudio so any stop() call can stop it immediately
+      this.currentAudio = audio;
+
+      audio.onplay = () => {
+        if (this.currentAudio !== audio) {
+          audio.pause();
+          return;
         }
-      }
+        this.notifySpeaking(true);
+      };
 
-      const audioUrl = beat.lang === 'ar'
-        ? `/audio/ar/ch${chapterNum}/${beat.id}.mp3`
-        : `/audio/ch${chapterNum}/${beat.id}.mp3`;
+      audio.onended = () => {
+        if (this.currentAudio === audio) {
+          this.notifySpeaking(false);
+          this.currentAudio = null;
+          options?.onEnd?.();
+        }
+      };
 
-      try {
-        const audio = new Audio(audioUrl);
-        audio.preload = 'auto';
-        // Immediately assign currentAudio so any stop() call can stop it immediately
-        this.currentAudio = audio;
+      audio.onerror = (e) => {
+        console.warn(`[SpeechManager] MP3 non trouvé ou inaccessible: ${audioUrl}`, e);
+        if (this.currentAudio === audio) {
+          this.currentAudio = null;
+          this.notifySpeaking(false);
+          options?.onEnd?.();
+        }
+      };
 
-        audio.onplay = () => {
-          if (this.currentAudio !== audio) {
-            audio.pause();
-            return;
-          }
-          this.notifySpeaking(true);
-        };
-
-        audio.onended = () => {
-          if (this.currentAudio === audio) {
-            this.notifySpeaking(false);
-            this.currentAudio = null;
-            options?.onEnd?.();
-          }
-        };
-
-        audio.onerror = (e) => {
-          console.warn(`[SpeechManager] MP3 non trouvé ou inaccessible: ${audioUrl}`, e);
-          if (this.currentAudio === audio) {
-            this.currentAudio = null;
-            this.notifySpeaking(false);
-            options?.onEnd?.();
-          }
-        };
-
-        audio.play().catch((err) => {
-          console.warn(`[SpeechManager] Autoplay restreint ou erreur pour ${audioUrl}:`, err?.message || err);
-          if (this.currentAudio === audio) {
-            // Autoplay blocked: wait for user gesture on this specific beat WITHOUT triggering native TTS simultaneously!
-            this.armUserGestureResume(beatId, audio);
-          }
-        });
-        return;
-      } catch (e) {
-        console.warn(`[SpeechManager] Exception Audio:`, e);
-      }
+      audio.play().catch((err) => {
+        console.warn(`[SpeechManager] Autoplay restreint ou erreur pour ${audioUrl}:`, err?.message || err);
+        if (this.currentAudio === audio) {
+          // Autoplay blocked: wait for user gesture on this specific beat WITHOUT triggering native TTS simultaneously!
+          this.armUserGestureResume(beatId, audio);
+        }
+      });
+      return;
+    } catch (e) {
+      console.warn(`[SpeechManager] Exception Audio:`, e);
     }
 
     // If no audio file, silently finish without robotic TTS interruption
