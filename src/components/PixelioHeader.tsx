@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BookOpen, Zap, Compass, Sparkles, Globe, Sun, Moon } from 'lucide-react';
+import { BookOpen, Award, SlidersHorizontal, Sun, Moon, Pause, MessageSquare, Save, Check } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 import { PIXEL_ASSETS, CustomAssetsConfig } from '../utils/assets';
 import { useLanguage } from '../context/LanguageContext';
@@ -19,6 +19,7 @@ interface PixelioHeaderProps {
   onOpenKnowledge?: () => void;
   onOpenQuiz?: () => void;
   onOpenLanding?: () => void;
+  onReturnToMenu?: () => void;
   customAssets?: CustomAssetsConfig;
   hasSpiritualGatePending?: boolean;
 }
@@ -33,6 +34,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
   onOpenKnowledge,
   onOpenQuiz,
   onOpenLanding,
+  onReturnToMenu,
   customAssets,
   hasSpiritualGatePending = false
 }) => {
@@ -127,6 +129,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
   const tNav = gameTranslations[language]?.nav || gameTranslations.fr.nav;
 
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -301,127 +304,9 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
         </div>
       </div>
 
-      {/* Right: Actions (Theme Switcher, Language Switcher, Carte, Quiz, Savoir) */}
-      <div className="header-actions flex items-center gap-1 sm:gap-1.5 shrink-0">
-        {/* Theme Toggle Button (☀️ Parchemin / 🌙 Nuit) */}
-        <button
-          onClick={() => {
-            soundManager.playSelect();
-            toggleTheme();
-          }}
-          title={isParchment ? "Passer en mode Nuit (Sombre)" : "Passer en mode Parchemin (Clair / Or)"}
-          aria-label="Basculer thème clair/sombre"
-          className={`px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-xl border transition-all cursor-pointer shadow-sm flex items-center gap-1 active:scale-95 text-[10px] sm:text-xs shrink-0 ${
-            isParchment
-              ? 'bg-[#eddcc3] hover:bg-[#e4ceb0] border-[#c5a059] text-[#5a401d] shadow-[0_0_8px_rgba(212,175,55,0.3)] font-bold'
-              : 'bg-black/40 hover:bg-black/60 border-amber-400/40 hover:border-amber-400 text-amber-200'
-          }`}
-        >
-          {isParchment ? (
-            <Sun className="w-3.5 h-3.5 text-amber-700 fill-amber-500/40" />
-          ) : (
-            <Moon className="w-3.5 h-3.5 text-amber-300" />
-          )}
-          <span className="font-mono text-[9px] sm:text-[10px] hidden md:inline font-bold">
-            {isParchment
-              ? language === 'ar'
-                ? 'فاتح'
-                : language === 'en'
-                ? 'Parchment'
-                : 'Parchemin'
-              : language === 'ar'
-              ? 'ليلي'
-              : language === 'en'
-              ? 'Night'
-              : 'Nuit'}
-          </span>
-        </button>
-
-        {/* In-Game Language Switcher */}
-        <div className="relative" ref={langMenuRef}>
-          <button
-            onClick={() => {
-              soundManager.playSelect();
-              setShowLangMenu(!showLangMenu);
-            }}
-            title={t.language}
-            className={`px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-xl border transition-all cursor-pointer shadow-sm flex items-center gap-1 active:scale-95 text-[10px] sm:text-xs shrink-0 ${
-              isParchment
-                ? 'bg-[#eddcc3] hover:bg-[#e4ceb0] border-[#c5a059] text-[#5a401d] font-bold'
-                : 'bg-black/40 hover:bg-black/60 border-amber-400/40 hover:border-amber-400 text-amber-200'
-            }`}
-          >
-            <RealFlag lang={language} className="w-4 h-3 rounded-[2px]" />
-            <span className="font-bold uppercase font-mono text-[10px] sm:text-[11px]">{language}</span>
-          </button>
-
-          {showLangMenu && (
-            <div className={`absolute top-full mt-1.5 ${isRtl ? 'left-0' : 'right-0'} bg-[#2d1b0e] border-2 border-amber-400/60 rounded-xl p-1.5 shadow-2xl flex flex-col gap-1 z-50 min-w-[110px] animate-in zoom-in-95 duration-150`}>
-              <button
-                onClick={() => {
-                  setLanguage('fr');
-                  setShowLangMenu(false);
-                  soundManager.playSelect();
-                }}
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-left w-full ${
-                  language === 'fr' ? 'bg-amber-500 text-amber-950 font-black' : 'text-amber-100 hover:bg-amber-900/60'
-                }`}
-              >
-                <RealFlag lang="fr" className="w-4 h-3" />
-                <span>Français</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setLanguage('en');
-                  setShowLangMenu(false);
-                  soundManager.playSelect();
-                }}
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-left w-full ${
-                  language === 'en' ? 'bg-amber-500 text-amber-950 font-black' : 'text-amber-100 hover:bg-amber-900/60'
-                }`}
-              >
-                <RealFlag lang="en" className="w-4 h-3" />
-                <span>English</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setLanguage('ar');
-                  setShowLangMenu(false);
-                  soundManager.playSelect();
-                }}
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-left w-full ${
-                  language === 'ar' ? 'bg-amber-500 text-amber-950 font-black' : 'text-amber-100 hover:bg-amber-900/60'
-                }`}
-              >
-                <RealFlag lang="ar" className="w-4 h-3" />
-                <span className="font-cairo">العربية</span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Carte Button (Shown on sm: screens since Voyage is permanent in BottomNavBar) */}
-        {onOpenMap && (
-          <button
-            onClick={() => {
-              soundManager.playSelect();
-              onOpenMap();
-            }}
-            title={tNav.map}
-            className={`hidden sm:flex px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border-2 font-bold transition-all cursor-pointer shadow-md items-center gap-1.5 active:scale-95 font-cinzel text-[10px] sm:text-xs tracking-wider backdrop-blur-sm shrink-0 ${
-              isParchment
-                ? 'bg-[#eddcc3] hover:bg-[#e4ceb0] border-[#b07d3c] text-[#3a2312]'
-                : 'bg-amber-500/25 hover:bg-amber-500/40 border-amber-400/60 text-amber-200 hover:text-white'
-            }`}
-          >
-            <Compass className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isParchment ? 'text-[#b45309]' : 'text-amber-400'}`} />
-            <span>{tNav.map}</span>
-          </button>
-        )}
-
-        {/* Dedicated Islamic Quiz (+XP) Button */}
+      {/* Right: Streamlined Actions (Quiz, Savoir, unified Menu/Settings) */}
+      <div className="header-actions flex items-center gap-1.5 shrink-0">
+        {/* Dedicated Islamic Quiz Button */}
         {onOpenQuiz && (
           <button
             onClick={() => {
@@ -429,19 +314,22 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               onOpenQuiz();
             }}
             title={
-              hasSpiritualGatePending
+              language === 'ar'
+                ? 'اختبارات وتحدّيات (+XP)'
+                : language === 'en'
+                ? 'Quiz & Challenges (+XP)'
+                : hasSpiritualGatePending
                 ? 'Savoir requis pour la suite du voyage ! Réponds aux Quiz (+XP)'
                 : 'Quiz & Défis (+XP)'
             }
-            className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl border-2 transition-all cursor-pointer shadow-md flex items-center gap-1 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0 ${
+            className={`px-2.5 py-1.5 rounded-xl border-2 transition-all cursor-pointer shadow-sm flex items-center gap-1.5 active:scale-95 font-cinzel text-[11px] sm:text-xs shrink-0 ${
               hasSpiritualGatePending
                 ? 'bg-[#2d6a4f] hover:bg-[#387f5e] border-amber-400 text-amber-200 font-black ring-2 ring-amber-400/70 animate-pulse shadow-[0_0_12px_rgba(245,158,11,0.6)]'
-                : 'bg-[#2d6a4f]/90 hover:bg-[#387f5e] border-[#52b788]/60 text-emerald-100 font-bold'
+                : 'bg-[#2d6a4f] hover:bg-[#387f5e] border-[#52b788]/70 text-emerald-50 font-bold'
             }`}
           >
-            <Zap className={`w-3.5 h-3.5 shrink-0 ${hasSpiritualGatePending ? 'fill-amber-300 text-amber-300 animate-bounce' : 'fill-amber-300 text-amber-300'}`} />
+            <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
             <span>{language === 'ar' ? 'اختبار' : 'Quiz'}</span>
-            <span className="hidden xs:inline text-[9px] font-mono text-amber-300">+XP</span>
           </button>
         )}
 
@@ -452,28 +340,191 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               soundManager.playSelect();
               onOpenKnowledge();
             }}
-            title="Livre du Savoir (Sagesse)"
-            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-amber-600/90 border-2 border-amber-400/60 hover:bg-amber-500 text-white font-bold transition-all cursor-pointer shadow-md flex items-center gap-1 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0"
+            title={language === 'ar' ? 'كتاب العلم والحكمة' : language === 'en' ? 'Book of Wisdom' : 'Livre du Savoir'}
+            className="px-2.5 py-1.5 rounded-xl bg-amber-600/95 border-2 border-amber-400/70 hover:bg-amber-500 text-white font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1.5 active:scale-95 font-cinzel text-[11px] sm:text-xs shrink-0"
           >
             <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-            <span className="hidden xs:inline">{language === 'ar' ? 'العلم' : language === 'en' ? 'Wisdom' : 'Savoir'}</span>
+            <span className="hidden sm:inline">{language === 'ar' ? 'العلم' : language === 'en' ? 'Wisdom' : 'Savoir'}</span>
           </button>
         )}
 
-        {/* Landing Page & Tester Questionnaire Button */}
-        {onOpenLanding && (
+        {/* Unified Settings & Pause Menu (Language, Theme, Feedback, Pause) */}
+        <div className="relative" ref={langMenuRef}>
           <button
             onClick={() => {
               soundManager.playSelect();
-              onOpenLanding();
+              setShowLangMenu(!showLangMenu);
             }}
-            title="Questionnaire Bêta-Testeur"
-            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-[#ebdfc8] hover:bg-[#ebdcc4] border-2 border-[#3a2312] text-[#3a2312] font-black transition-all cursor-pointer shadow-xs hidden min-[400px]:flex items-center gap-1 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0"
+            title={language === 'ar' ? 'القائمة والإعدادات' : language === 'en' ? 'Menu & Settings' : 'Menu & Réglages'}
+            aria-label={language === 'ar' ? 'القائمة والإعدادات' : language === 'en' ? 'Menu & Settings' : 'Menu & Réglages'}
+            className={`px-2 py-1.5 rounded-xl border-2 transition-all cursor-pointer shadow-sm flex items-center gap-1.5 active:scale-95 text-[11px] sm:text-xs shrink-0 ${
+              isParchment
+                ? 'bg-[#eddcc3] hover:bg-[#e4ceb0] border-[#c5a059] text-[#3a2312] font-bold'
+                : 'bg-black/45 hover:bg-black/65 border-amber-400/45 hover:border-amber-400 text-amber-100'
+            }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#d97c27] fill-[#d97c27] shrink-0" />
-            <span className="hidden xs:inline">{language === 'ar' ? 'رأي' : language === 'en' ? 'Feedback' : 'Avis'}</span>
+            <RealFlag lang={language} className="w-4 h-3 rounded-[2px]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 shrink-0" />
           </button>
-        )}
+
+          {showLangMenu && (
+            <div
+              className={`absolute top-full mt-2 ${isRtl ? 'left-0' : 'right-0'} w-56 rounded-2xl p-2 shadow-2xl flex flex-col gap-1.5 z-50 border-2 animate-in zoom-in-95 duration-150 ${
+                isParchment
+                  ? 'bg-[#fbf7ee] border-[#3a2312] text-[#3a2312]'
+                  : 'bg-[#23150b] border-amber-400/60 text-amber-100'
+              }`}
+            >
+              {/* Section Langue */}
+              <div className={`px-2 pt-1 text-[10px] font-black uppercase tracking-wider font-cinzel ${isParchment ? 'text-[#8c5a2b]' : 'text-amber-300/80'}`}>
+                {language === 'ar' ? 'اللغة' : language === 'en' ? 'Language' : 'Langue'}
+              </div>
+              <div className="grid grid-cols-3 gap-1">
+                {(['ar', 'fr', 'en'] as Language[]).map((langCode) => {
+                  const active = language === langCode;
+                  const label = langCode === 'ar' ? 'عربي' : langCode === 'fr' ? 'FR' : 'EN';
+                  return (
+                    <button
+                      key={langCode}
+                      onClick={() => {
+                        setLanguage(langCode);
+                        setShowLangMenu(false);
+                        soundManager.playSelect();
+                      }}
+                      className={`flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                        active
+                          ? 'bg-amber-500 text-amber-950 font-black shadow-xs'
+                          : isParchment
+                          ? 'bg-[#efe4d0] hover:bg-[#e5d5b7] text-[#3a2312]'
+                          : 'bg-white/5 hover:bg-amber-900/50 text-amber-100'
+                      }`}
+                    >
+                      <RealFlag lang={langCode} className="w-3.5 h-2.5" />
+                      <span>{label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className={`h-px my-0.5 ${isParchment ? 'bg-[#d9c7aa]' : 'bg-amber-500/20'}`} />
+
+              {/* Section Thème */}
+              <button
+                onClick={() => {
+                  soundManager.playSelect();
+                  toggleTheme();
+                }}
+                className={`flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer w-full ${
+                  isParchment
+                    ? 'hover:bg-[#efe4d0] text-[#3a2312]'
+                    : 'hover:bg-amber-900/50 text-amber-100'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  {isParchment ? (
+                    <Sun className="w-4 h-4 text-amber-700" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-amber-300" />
+                  )}
+                  <span>
+                    {language === 'ar' ? 'المظهر' : language === 'en' ? 'Theme' : 'Thème'}
+                  </span>
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md ${isParchment ? 'bg-[#e8d8bc] text-[#5a3b18]' : 'bg-black/40 text-amber-300'}`}>
+                  {isParchment
+                    ? language === 'ar'
+                      ? 'فاتح'
+                      : language === 'en'
+                      ? 'Parchment'
+                      : 'Parchemin'
+                    : language === 'ar'
+                    ? 'ليلي'
+                    : language === 'en'
+                    ? 'Night'
+                    : 'Nuit'}
+                </span>
+              </button>
+
+              {/* Section Avis / À propos */}
+              {onOpenLanding && (
+                <button
+                  onClick={() => {
+                    soundManager.playSelect();
+                    setShowLangMenu(false);
+                    onOpenLanding();
+                  }}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer w-full ${
+                    isParchment
+                      ? 'hover:bg-[#efe4d0] text-[#3a2312]'
+                      : 'hover:bg-amber-900/50 text-amber-100'
+                  }`}
+                >
+                  <MessageSquare className={`w-4 h-4 ${isParchment ? 'text-[#8c5a2b]' : 'text-amber-300'}`} />
+                  <span>
+                    {language === 'ar' ? 'إرسال رأيي' : language === 'en' ? 'Send Feedback' : 'Donner mon avis'}
+                  </span>
+                </button>
+              )}
+
+              {/* Section Sauvegarder */}
+              <div className={`h-px my-0.5 ${isParchment ? 'bg-[#d9c7aa]' : 'bg-amber-500/20'}`} />
+              <button
+                onClick={() => {
+                  soundManager.playXpHarvest();
+                  setJustSaved(true);
+                  setTimeout(() => setJustSaved(false), 2000);
+                }}
+                className={`flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer w-full ${
+                  justSaved
+                    ? 'bg-emerald-600 text-white'
+                    : isParchment
+                    ? 'hover:bg-[#efe4d0] text-[#2d6a4f]'
+                    : 'hover:bg-emerald-900/40 text-emerald-300'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  {justSaved ? <Check className="w-4 h-4 shrink-0" /> : <Save className="w-4 h-4 shrink-0" />}
+                  <span>
+                    {justSaved
+                      ? language === 'ar'
+                        ? 'تَمَّ الْحِفْظُ!'
+                        : language === 'en'
+                        ? 'Game saved!'
+                        : 'Partie sauvegardée !'
+                      : language === 'ar'
+                      ? 'حِفْظُ التَّقَدُّمِ'
+                      : language === 'en'
+                      ? 'Save Progress'
+                      : 'Sauvegarder la partie'}
+                  </span>
+                </span>
+              </button>
+
+              {/* Section Pause / Menu principal */}
+              {onReturnToMenu && (
+                <>
+                  <button
+                    onClick={() => {
+                      soundManager.playSelect();
+                      setShowLangMenu(false);
+                      onReturnToMenu();
+                    }}
+                    className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer w-full ${
+                      isParchment
+                        ? 'hover:bg-[#efe4d0] text-[#8c2b2b]'
+                        : 'hover:bg-amber-900/50 text-amber-200'
+                    }`}
+                  >
+                    <Pause className="w-4 h-4 shrink-0" />
+                    <span>
+                      {language === 'ar' ? 'إيقاف مؤقت / القائمة' : language === 'en' ? 'Pause / Main Menu' : 'Pause / Menu principal'}
+                    </span>
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -635,3 +635,12 @@ Ces points du plan P0 sont **faits dans le code** (build et vérification de typ
 - Passage de la langue par défaut à l'**Arabe (`ar` + RTL)** dans `src/context/LanguageContext.tsx` (tout en respectant le choix enregistré en `localStorage` et le paramètre `?lang=fr|en|ar`).
 - Génération des **228 voix arabes manquantes** (`public/audio/ar/ch1/` à `ch5/`) via voix neurales arabe littéraire (`edge-tts` : `ar-SA-HamedNeural`, `ar-SA-ZariyahNeural`, `ar-AE-HamdanNeural`, `ar-QA-MoazNeural`, `ar-JO-TaimNeural`, `ar-KW-FahedNeural`, `ar-AE-FatimaNeural`), portant le total à **257/257 répliques doublées en arabe** (29 existantes conservées + 228 générées, 0 échec).
 - Régénération de `src/utils/audioManifest.ts` (**811 fichiers MP3** recensés au total : FR + EN + AR).
+
+---
+
+## Quinzième vague (2026-11-26) — Header allégé & voix françaises Chapitres 4–5 (CAMB.AI Theo)
+
+**Fait**
+- Allègement du header en jeu (`src/components/PixelioHeader.tsx`) : regroupement de Langue, Thème (Parchemin/Nuit), Avis, Sauvegarder la partie (avec confirmation visuelle) et Pause/Menu principal dans un seul bouton Réglages ; retrait du doublon *Chemin* et des icônes `Sparkles` (header & `BottomNavBar.tsx`).
+- Génération des **37 voix françaises des Chapitres 4 et 5** (`public/audio/ch4/` et `public/audio/ch5/`) via **CAMB.AI** (`mars-flash`, voix **Theo Michaud**, ID `170834`, 0 échec).
+- Régénération de `src/utils/audioManifest.ts` (**848 fichiers MP3** : 100 % des 5 chapitres doublés en FR, EN et AR).

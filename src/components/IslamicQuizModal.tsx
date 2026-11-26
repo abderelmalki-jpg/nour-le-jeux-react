@@ -16,6 +16,8 @@ import {
 import { soundManager } from '../utils/audio';
 import { speechManager } from '../utils/speech';
 import { useLanguage } from '../context/LanguageContext';
+import { Quiz } from '../types';
+import { getLocalizedQuiz } from '../utils/narrativeI18n';
 
 interface IslamicQuizModalProps {
   completedQuizIds?: string[];
@@ -24,6 +26,8 @@ interface IslamicQuizModalProps {
   onClose: () => void;
   currentXp?: number;
   initialCategory?: string;
+  storyQuizzes?: Record<string, Quiz>;
+  standalone?: boolean;
 }
 
 export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
@@ -31,15 +35,47 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   onCompleteQuiz,
   onWaswasMistake,
   onClose,
-  initialCategory
+  initialCategory,
+  storyQuizzes,
+  standalone = false
 }) => {
   const { language, isRtl } = useLanguage();
-  const quizzes = useMemo(() => getLocalizedIslamicQuizzes(language), [language]);
+  const quizzes = useMemo(() => {
+    const baseQuizzes = getLocalizedIslamicQuizzes(language);
+    if (!storyQuizzes) return baseQuizzes;
+
+    const existingIds = new Set(baseQuizzes.map((q) => q.id));
+    const convertedStoryQuizzes: LocalizedIslamicQuizQuestion[] = (Object.values(storyQuizzes) as Quiz[])
+      .filter((q) => !existingIds.has(q.id))
+      .map((rawQuiz) => {
+        const q = getLocalizedQuiz(rawQuiz, language);
+        const correctIdx = Math.max(
+          0,
+          q.options.findIndex((o) => o.isCorrect || o.id === q.correctOptionId)
+        );
+        return {
+          id: q.id,
+          question: q.question,
+          category: q.topic,
+          difficulty: 'moyen',
+          arabic: q.reference?.arabic,
+          options: q.options.map((o) => o.text),
+          correctIndex: correctIdx,
+          explanation: q.explanation,
+          hadithOrQuranRef: q.reference
+            ? `${q.reference.reference}${q.reference.citationText ? ` — ${q.reference.citationText}` : ''}`
+            : undefined,
+          xpReward: 25
+        };
+      });
+
+    return [...baseQuizzes, ...convertedStoryQuizzes];
+  }, [language, storyQuizzes]);
 
   const ui = useMemo(() => {
     if (language === 'ar') {
       return {
-        title: 'الِاخْتِبَارَاتُ وَالتَّحَدِّيَاتُ',
+        title: standalone ? 'الِاخْتِبَارَاتُ الْإِسْلَامِيَّةُ' : 'الِاخْتِبَارَاتُ وَالتَّحَدِّيَاتُ',
         xpToWin: (xp: number) => `+${xp} XP لِلرِّبْحِ`,
         close: 'إِغْلَاقٌ',
         prev: 'السَّابِقُ',
@@ -60,7 +96,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     }
     if (language === 'en') {
       return {
-        title: 'Quizzes & Challenges',
+        title: standalone ? 'Islamic Quizzes' : 'Quizzes & Challenges',
         xpToWin: (xp: number) => `+${xp} XP to earn`,
         close: 'Close',
         prev: 'Prev',
@@ -80,7 +116,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
       };
     }
     return {
-      title: 'Quiz & Défis',
+      title: standalone ? 'Quiz Islamiques' : 'Quiz & Défis',
       xpToWin: (xp: number) => `+${xp} XP à gagner`,
       close: 'Fermer',
       prev: 'Préc.',
@@ -202,7 +238,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   const optionLetters = ['A', 'B', 'C', 'D'];
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 select-none">
+    <div className="fixed inset-0 z-[130] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 select-none">
       <div
         dir={isRtl ? 'rtl' : 'ltr'}
         className="bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl w-full max-w-lg shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden max-h-[94vh] sm:max-h-[90vh]"

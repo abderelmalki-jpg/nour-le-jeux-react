@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Compass, ScrollText, Backpack, User } from 'lucide-react';
+import { Feather, Compass, ScrollText, Backpack, User } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 import { useLanguage } from '../context/LanguageContext';
 import { gameTranslations } from '../i18n/gameTranslations';
@@ -24,7 +24,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
     {
       id: 'adventure',
       label: t.adventure,
-      icon: <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+      icon: <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
     },
     {
       id: 'travel',
