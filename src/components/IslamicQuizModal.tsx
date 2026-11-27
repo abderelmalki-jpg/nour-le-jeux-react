@@ -150,7 +150,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
         diffAll: 'جَمِيعُ الْأَسْئِلَةِ',
         exactBadge: 'صَحِيحٌ!',
         wrongBadge: 'خَطَأٌ!',
-        backToThemes: '← الْمَوَاضِيعُ',
+        backToThemes: '→ الْمَوَاضِيعُ',
         prev: 'السَّابِقُ',
         next: 'التَّالِي',
         questionOf: (c: number, t: number) => `السُّؤَالُ ${c} / ${t}`,
@@ -671,7 +671,13 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
           <div className="flex items-center gap-1.5">
             <button
               onClick={toggleQuizMute}
-              aria-label={isQuizMuted ? 'Activer le son' : 'Couper le son'}
+              aria-label={
+                language === 'ar'
+                  ? isQuizMuted ? 'تَشْغِيلُ الصَّوْتِ' : 'كَتْمُ الصَّوْتِ'
+                  : language === 'en'
+                    ? isQuizMuted ? 'Unmute sound' : 'Mute sound'
+                    : isQuizMuted ? 'Activer le son' : 'Couper le son'
+              }
               className="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-400/40 text-amber-200 flex items-center justify-center cursor-pointer transition-colors"
             >
               {isQuizMuted ? <VolumeX className="w-4 h-4 text-red-300" /> : <Volume2 className="w-4 h-4" />}
@@ -1059,7 +1065,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                     className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#d97c27] to-[#b45309] hover:from-[#e68a32] hover:to-[#c4600f] text-white font-cinzel font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-[#3a2312] shadow-[0_3px_0_#3a2312] active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>{trainIdx < trainingPool.length - 1 ? ui.next : ui.backToThemes}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
               )}
