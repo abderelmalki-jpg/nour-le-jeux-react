@@ -18,7 +18,8 @@ import {
   User,
   Volume2,
   VolumeX,
-  Send
+  Send,
+  Lock
 } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 import { speechManager } from '../utils/speech';
@@ -32,8 +33,14 @@ import {
   loadPlayerStats,
   recordPlayerGame,
   savePseudo,
+  loadCompletedQuizIds,
+  saveCompletedQuizId,
+  loadQuizStreak,
+  touchQuizStreak,
+  getPlayerMasteryRank,
   LeaderboardEntry,
-  PlayerQuizStats
+  PlayerQuizStats,
+  QuizStreak
 } from '../utils/quizLeaderboard';
 
 interface IslamicQuizModalProps {
@@ -358,6 +365,17 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     refreshLeaderboard();
   }, []);
 
+  // Persisted completed IDs & daily streak (for retention)
+  const [localCompletedIds, setLocalCompletedIds] = useState<string[]>(() => {
+    const stored = loadCompletedQuizIds();
+    return Array.from(new Set([...completedQuizIds, ...stored]));
+  });
+  const [streak, setStreak] = useState<QuizStreak>(() => loadQuizStreak());
+  const masteryRank = useMemo(
+    () => getPlayerMasteryRank(localCompletedIds.length, language),
+    [localCompletedIds.length, language]
+  );
+
   // --- TRAINING MODE STATE ---
   const categories = useMemo(() => {
     const map = new Map<string, LocalizedIslamicQuizQuestion[]>();
@@ -369,9 +387,9 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     return Array.from(map.entries()).map(([name, items]) => ({
       name,
       items,
-      completedCount: items.filter((it) => completedQuizIds.includes(it.id)).length,
+      completedCount: items.filter((it) => localCompletedIds.includes(it.id)).length,
     }));
-  }, [quizzes, completedQuizIds]);
+  }, [quizzes, localCompletedIds]);
 
   const [selectedTheme, setSelectedTheme] = useState<string | null>(() => {
     if (!initialCategory) return null;
@@ -398,7 +416,6 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [localCompletedIds, setLocalCompletedIds] = useState<string[]>(completedQuizIds);
 
   const currentTrainQuiz = trainingPool[trainIdx] || trainingPool[0];
   const isAlreadyCompleted = currentTrainQuiz ? localCompletedIds.includes(currentTrainQuiz.id) : false;
@@ -445,12 +462,14 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     if (hasSubmitted || !currentTrainQuiz) return;
     setSelectedOption(origIdx);
     setHasSubmitted(true);
+    setStreak(touchQuizStreak());
     if (origIdx === currentTrainQuiz.correctIndex) {
       setIsCorrect(true);
       setTrainScoreCount((c) => c + 1);
       soundManager.playQuizSuccess();
       if (!isAlreadyCompleted) {
-        setLocalCompletedIds((prev) => [...prev, currentTrainQuiz.id]);
+        const updated = saveCompletedQuizId(currentTrainQuiz.id);
+        setLocalCompletedIds((prev) => Array.from(new Set([...prev, ...updated])));
       }
     } else {
       setIsCorrect(false);
@@ -541,6 +560,7 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
     const { stats: updatedStats, isNewRecord: rec } = recordPlayerGame(finalPseudo, compScore, compCorrect, compTotal);
     setStats(updatedStats);
     setIsNewRecord(rec);
+    setStreak(touchQuizStreak());
     await submitLeaderboardScore({
       pseudo: finalPseudo,
       score: compScore,
@@ -636,11 +656,15 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
               <span className="font-cinzel font-black text-sm sm:text-base tracking-widest text-amber-200 leading-none">
                 {ui.brand}
               </span>
-              {stats.bestScore > 0 && (
-                <span className="text-[10px] font-mono text-amber-300/80 mt-0.5">
-                  🏆 {stats.bestScore.toLocaleString()} pts {playerRank ? `• #${playerRank}` : ''}
-                </span>
-              )}
+              <span className="text-[10px] font-mono text-amber-300/90 mt-0.5 flex items-center gap-1.5">
+                <span>{masteryRank.badge} {masteryRank.title}</span>
+                {streak.current > 0 && (
+                  <span className="text-orange-300 font-bold">• 🔥 {streak.current}{language === 'ar' ? ' ي' : language === 'en' ? 'd' : 'j'}</span>
+                )}
+                {stats.bestScore > 0 && (
+                  <span>• 🏆 {stats.bestScore.toLocaleString()}</span>
+                )}
+              </span>
             </div>
           </div>
 
@@ -823,34 +847,103 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                 </span>
               </div>
 
-              <h3 className="font-cinzel font-black text-base text-[#3a2312] uppercase tracking-wider mt-1">
+              <h3 className="inline-block px-4 py-1 rounded-full bg-[#2b180b]/85 border border-amber-400/40 font-cinzel font-black text-sm sm:text-base text-amber-100 uppercase tracking-wider mt-1 shadow-sm">
                 {ui.chooseLevel}
               </h3>
 
               <div className="w-full max-w-md flex flex-col gap-3">
-                {(
-                  [
-                    { id: 'facile', label: ui.diffEasy, count: themePool.filter((q) => q.difficulty === 'facile').length, style: 'from-[#2d6a4f] to-[#1b4332] text-white border-[#0f291e]' },
-                    { id: 'moyen', label: ui.diffMedium, count: themePool.filter((q) => q.difficulty === 'moyen').length, style: 'from-[#0e7490] to-[#155e75] text-white border-[#083344]' },
-                    { id: 'difficile', label: ui.diffHard, count: themePool.filter((q) => q.difficulty === 'difficile').length, style: 'from-[#9f1239] to-[#881337] text-white border-[#4c0519]' },
-                    { id: 'all', label: ui.diffAll, count: themePool.length, style: 'from-[#d97c27] to-[#b45309] text-white border-[#5c2706]' },
-                  ] as const
-                )
-                  .filter((lvl) => lvl.id === 'all' || lvl.count > 0)
-                  .map((lvl) => (
+                {(() => {
+                  const easyQs = themePool.filter((q) => q.difficulty === 'facile');
+                  const medQs = themePool.filter((q) => q.difficulty === 'moyen');
+                  const hardQs = themePool.filter((q) => q.difficulty === 'difficile');
+                  const easyDone = easyQs.filter((q) => localCompletedIds.includes(q.id)).length;
+                  const medDone = medQs.filter((q) => localCompletedIds.includes(q.id)).length;
+                  const hardDone = hardQs.filter((q) => localCompletedIds.includes(q.id)).length;
+
+                  const easyNeededForMed = easyQs.length > 0 ? Math.max(1, Math.ceil(easyQs.length * 0.6)) : 0;
+                  const medNeededForHard = medQs.length > 0 ? Math.max(1, Math.ceil(medQs.length * 0.7)) : 0;
+
+                  const isMedUnlocked = easyDone >= easyNeededForMed;
+                  const isHardUnlocked = isMedUnlocked && medDone >= medNeededForHard;
+
+                  const unlockHint = (done: number, needed: number, prevLabel: string) => {
+                    const rem = Math.max(1, needed - done);
+                    if (language === 'ar') return `أَجِبْ عَنْ ${rem} أَسْئِلَةٍ فِي «${prevLabel}» لِفَتْحِهِ (${done}/${needed})`;
+                    if (language === 'en') return `${rem} more correct in ${prevLabel} to unlock (${done}/${needed})`;
+                    return `Encore ${rem} bonne${rem > 1 ? 's' : ''} réponse${rem > 1 ? 's' : ''} en ${prevLabel} (${done}/${needed})`;
+                  };
+
+                  const levels = [
+                    {
+                      id: 'facile' as const,
+                      label: ui.diffEasy,
+                      count: easyQs.length,
+                      done: easyDone,
+                      unlocked: true,
+                      hint: '',
+                      style: 'from-[#2d6a4f] to-[#1b4332] text-white border-[#0f291e]',
+                    },
+                    {
+                      id: 'moyen' as const,
+                      label: ui.diffMedium,
+                      count: medQs.length,
+                      done: medDone,
+                      unlocked: isMedUnlocked,
+                      hint: isMedUnlocked ? '' : unlockHint(easyDone, easyNeededForMed, ui.diffEasy),
+                      style: 'from-[#0e7490] to-[#155e75] text-white border-[#083344]',
+                    },
+                    {
+                      id: 'difficile' as const,
+                      label: ui.diffHard,
+                      count: hardQs.length,
+                      done: hardDone,
+                      unlocked: isHardUnlocked,
+                      hint: isHardUnlocked
+                        ? ''
+                        : !isMedUnlocked
+                          ? unlockHint(easyDone, easyNeededForMed, ui.diffEasy)
+                          : unlockHint(medDone, medNeededForHard, ui.diffMedium),
+                      style: 'from-[#9f1239] to-[#881337] text-white border-[#4c0519]',
+                    },
+                    {
+                      id: 'all' as const,
+                      label: ui.diffAll,
+                      count: themePool.length,
+                      done: themePool.filter((q) => localCompletedIds.includes(q.id)).length,
+                      unlocked: true,
+                      hint: '',
+                      style: 'from-[#d97c27] to-[#b45309] text-white border-[#5c2706]',
+                    },
+                  ].filter((lvl) => lvl.id === 'all' || lvl.count > 0);
+
+                  return levels.map((lvl) => (
                     <button
                       key={lvl.id}
-                      onClick={() => startTrainingLevel(lvl.id)}
-                      className={`w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r ${lvl.style} border-2 shadow-[0_4px_0_rgba(58,35,18,0.65)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-between`}
+                      disabled={!lvl.unlocked}
+                      onClick={() => lvl.unlocked && startTrainingLevel(lvl.id)}
+                      className={`w-full py-3.5 px-5 rounded-2xl border-2 transition-all flex items-center justify-between gap-2 ${
+                        lvl.unlocked
+                          ? `bg-gradient-to-r ${lvl.style} shadow-[0_4px_0_rgba(58,35,18,0.65)] hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer`
+                          : 'bg-[#2b180b]/85 border-[#5c3a21] text-amber-200/70 opacity-85 cursor-not-allowed'
+                      }`}
                     >
-                      <span className="font-cinzel font-black text-sm sm:text-base tracking-wide">
-                        {lvl.label}
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-lg bg-black/25 font-mono text-xs font-bold">
-                        {lvl.count}
+                      <div className="flex flex-col items-start text-start">
+                        <span className="font-cinzel font-black text-sm sm:text-base tracking-wide flex items-center gap-2">
+                          {!lvl.unlocked && <Lock className="w-4 h-4 text-amber-400 shrink-0" />}
+                          <span>{lvl.label}</span>
+                        </span>
+                        {!lvl.unlocked && lvl.hint && (
+                          <span className="text-[11px] font-medium text-amber-300/90 mt-0.5">
+                            {lvl.hint}
+                          </span>
+                        )}
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-lg bg-black/25 font-mono text-xs font-bold shrink-0">
+                        {lvl.done}/{lvl.count}
                       </span>
                     </button>
-                  ))}
+                  ));
+                })()}
               </div>
             </div>
           )}
@@ -942,19 +1035,19 @@ export const IslamicQuizModal: React.FC<IslamicQuizModalProps> = ({
                 </div>
               ) : (
                 <div className="flex flex-col gap-2.5 animate-in fade-in duration-150">
-                  {/* Correct answer highlight bar (like screenshot 8) */}
-                  <div className="w-full py-3 px-4 rounded-2xl bg-emerald-600 text-white border-2 border-emerald-800 font-bold text-xs sm:text-sm text-center shadow-sm flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4 shrink-0" />
-                    <span>{currentTrainQuiz.options[currentTrainQuiz.correctIndex]}</span>
-                  </div>
-
-                  {/* Explanation & Cited Source */}
-                  <div className="bg-[#f3ebd9] border-2 border-[#3a2312]/40 rounded-2xl p-3.5 flex flex-col gap-1.5 text-center">
-                    <p className="text-xs text-[#3a2312] font-medium leading-relaxed">
+                  {/* Compact Green Explanation Card (no redundant green answer bar when EXACT!) */}
+                  <div className="bg-emerald-700/95 border-2 border-emerald-900 rounded-2xl p-3.5 flex flex-col gap-2 text-center shadow-md">
+                    {!isCorrect && (
+                      <div className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-950/45 border border-emerald-300/40 text-emerald-100 font-bold text-xs sm:text-sm">
+                        <CheckCircle className="w-4 h-4 shrink-0 text-emerald-300" />
+                        <span>{currentTrainQuiz.options[currentTrainQuiz.correctIndex]}</span>
+                      </div>
+                    )}
+                    <p className="text-xs sm:text-sm text-white font-medium leading-relaxed">
                       {currentTrainQuiz.explanation}
                     </p>
                     {currentTrainQuiz.hadithOrQuranRef && (
-                      <p className="text-[11px] font-black text-[#1b4332] bg-emerald-100/90 px-3 py-1 rounded-xl border border-emerald-300">
+                      <p className="text-[11px] font-bold text-emerald-50 bg-emerald-950/35 px-3 py-1 rounded-xl border border-emerald-300/35">
                         {currentTrainQuiz.hadithOrQuranRef}
                       </p>
                     )}

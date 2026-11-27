@@ -1,5 +1,7 @@
 import { IslamicQuizQuestion } from '../types';
 import { ISLAMIC_QUIZZES } from '../data/islamicQuizzes';
+import { QUIZ_BANK_PART_1, TrilingualQuizEntry } from '../data/quizBank/bankPart1';
+import { QUIZ_BANK_PART_2 } from '../data/quizBank/bankPart2';
 
 interface QuizLocalePatch {
   question: string;
@@ -408,19 +410,75 @@ export type LocalizedIslamicQuizQuestion = Omit<IslamicQuizQuestion, 'category'>
   category: string;
 };
 
+const ALL_BANK_ENTRIES: TrilingualQuizEntry[] = [...QUIZ_BANK_PART_1, ...QUIZ_BANK_PART_2];
+
+// Normalise les anciens thèmes des 18 questions historiques dans les 8 grands thèmes unifiés
+function normalizeLegacyCategory(cat: string, language: string): string {
+  const c = cat.toLowerCase();
+  if (language === 'ar') {
+    if (c.includes('صلاة') || c.includes('عباد')) return 'الصَّلَاةُ وَالطَّهَارَةُ';
+    if (c.includes('إيمان') || c.includes('أركان') || c.includes('عقيد')) return 'الْعَقِيدَةُ وَالتَّوْحِيدُ';
+    if (c.includes('قرآن') || c.includes('سور')) return 'الْقُرْآنُ وَالسُّوَرُ';
+    if (c.includes('رمضان') || c.includes('صيام') || c.includes('حج')) return 'الصِّيَامُ وَالزَّكَاةُ وَالْحَجُّ';
+    if (c.includes('سيرة')) return 'السِّيرَةُ النَّبَوِيَّةُ';
+    if (c.includes('أنبياء') || c.includes('تاريخ')) return 'الْأَنْبِيَاءُ وَالرُّسُلُ';
+    return 'الْأَخْلَاقُ وَالْأَذْكَارُ';
+  }
+  if (language === 'en') {
+    if (c.includes('prayer') || c.includes('worship')) return 'Prayer & Purification';
+    if (c.includes('pillar') || c.includes('faith') || c.includes('creed')) return 'Creed & Tawhīd';
+    if (c.includes('quran') || c.includes('surah')) return 'Quran & Surahs';
+    if (c.includes('ramadan') || c.includes('fast') || c.includes('hajj')) return 'Fasting, Zakāt & Hajj';
+    if (c.includes('biography') || c.includes('sirah')) return 'Prophet’s Biography';
+    if (c.includes('prophet') || c.includes('history')) return 'Prophets & Messengers';
+    return 'Manners & Adhkār';
+  }
+  if (c.includes('prière') || c.includes('adoration')) return 'Prière & Purification';
+  if (c.includes('pilier') || c.includes('foi') || c.includes('croyance')) return 'Croyance & Tawhîd';
+  if (c.includes('coran') || c.includes('sourate')) return 'Coran & Sourates';
+  if (c.includes('ramadan') || c.includes('jeûne') || c.includes('hajj')) return 'Jeûne, Zakât & Hajj';
+  if (c.includes('sîrah') || c.includes('vie du prophète')) return 'Vie du Prophète ﷺ';
+  if (c.includes('prophète') || c.includes('histoire')) return 'Prophètes & Messagers';
+  return 'Éthique & Invocations';
+}
+
 export function getLocalizedIslamicQuizzes(language: string): LocalizedIslamicQuizQuestion[] {
-  if (language === 'fr') return ISLAMIC_QUIZZES;
+  const langKey: 'fr' | 'ar' | 'en' = language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr';
+
+  const bankQuizzes: LocalizedIslamicQuizQuestion[] = ALL_BANK_ENTRIES.map((entry) => {
+    const loc = entry[langKey];
+    return {
+      id: entry.id,
+      question: loc.question,
+      category: loc.category,
+      difficulty: entry.difficulty,
+      arabic: entry.arabic,
+      options: [...loc.options],
+      correctIndex: entry.correctIndex,
+      explanation: loc.explanation,
+      hadithOrQuranRef: loc.ref,
+      xpReward: entry.difficulty === 'difficile' ? 35 : entry.difficulty === 'moyen' ? 25 : 20,
+    };
+  });
+
   const dict = language === 'ar' ? ISLAMIC_QUIZZES_AR : ISLAMIC_QUIZZES_EN;
-  return ISLAMIC_QUIZZES.map((q) => {
+  const legacyQuizzes: LocalizedIslamicQuizQuestion[] = ISLAMIC_QUIZZES.map((q) => {
+    if (language === 'fr') {
+      return { ...q, category: normalizeLegacyCategory(q.category, 'fr') };
+    }
     const patch = dict[q.id];
-    if (!patch) return q;
+    if (!patch) {
+      return { ...q, category: normalizeLegacyCategory(q.category, langKey) };
+    }
     return {
       ...q,
       question: patch.question,
-      category: patch.category,
+      category: normalizeLegacyCategory(patch.category, langKey),
       options: patch.options,
       explanation: patch.explanation,
-      hadithOrQuranRef: patch.hadithOrQuranRef ?? q.hadithOrQuranRef
+      hadithOrQuranRef: patch.hadithOrQuranRef ?? q.hadithOrQuranRef,
     };
   });
+
+  return [...bankQuizzes, ...legacyQuizzes];
 }

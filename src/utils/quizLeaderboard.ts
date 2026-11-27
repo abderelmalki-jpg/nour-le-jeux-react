@@ -22,8 +22,123 @@ export interface PlayerQuizStats {
 const PSEUDO_KEY = 'nour_quiz_pseudo_v1';
 const STATS_KEY = 'nour_quiz_stats_v1';
 const LOCAL_BOARD_KEY = 'nour_quiz_local_board_v1';
+const COMPLETED_KEY = 'nour_quiz_completed_v1';
+const STREAK_KEY = 'nour_quiz_streak_v1';
 const COLLECTION_NAME = 'quiz_leaderboard';
 const FEEDBACK_COLLECTION = 'quiz_feedback';
+
+export interface QuizStreak {
+  current: number;
+  best: number;
+  lastDate: string; // YYYY-MM-DD
+}
+
+export interface MasteryRank {
+  title: string;
+  badge: string;
+  nextAt: number | null;
+}
+
+function getTodayKey(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function getYesterdayKey(): string {
+  const dt = new Date();
+  dt.setDate(dt.getDate() - 1);
+  const y = dt.getFullYear();
+  const m = String(dt.getMonth() + 1).padStart(2, '0');
+  const d = String(dt.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+export function loadCompletedQuizIds(): string[] {
+  try {
+    const raw = localStorage.getItem(COMPLETED_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed.filter((x) => typeof x === 'string');
+    }
+  } catch {
+    // ignore
+  }
+  return [];
+}
+
+export function saveCompletedQuizId(quizId: string): string[] {
+  const prev = loadCompletedQuizIds();
+  if (prev.includes(quizId)) return prev;
+  const next = [...prev, quizId];
+  try {
+    localStorage.setItem(COMPLETED_KEY, JSON.stringify(next));
+  } catch {
+    // ignore
+  }
+  return next;
+}
+
+export function loadQuizStreak(): QuizStreak {
+  try {
+    const raw = localStorage.getItem(STREAK_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const today = getTodayKey();
+      const yesterday = getYesterdayKey();
+      const lastDate = typeof parsed.lastDate === 'string' ? parsed.lastDate : '';
+      const storedCurrent = Number(parsed.current) || 0;
+      const current = lastDate === today || lastDate === yesterday ? storedCurrent : 0;
+      return {
+        current,
+        best: Math.max(current, Number(parsed.best) || 0),
+        lastDate,
+      };
+    }
+  } catch {
+    // ignore
+  }
+  return { current: 0, best: 0, lastDate: '' };
+}
+
+export function touchQuizStreak(): QuizStreak {
+  const today = getTodayKey();
+  const yesterday = getYesterdayKey();
+  const prev = loadQuizStreak();
+  if (prev.lastDate === today && prev.current > 0) {
+    return prev;
+  }
+  const current = prev.lastDate === yesterday ? prev.current + 1 : 1;
+  const next: QuizStreak = {
+    current,
+    best: Math.max(prev.best, current),
+    lastDate: today,
+  };
+  try {
+    localStorage.setItem(STREAK_KEY, JSON.stringify(next));
+  } catch {
+    // ignore
+  }
+  return next;
+}
+
+export function getPlayerMasteryRank(completedCount: number, lang: string): MasteryRank {
+  const tiers = [
+    { min: 0, nextAt: 10, badge: '🌱', fr: 'Curieux', ar: 'مُبْتَدِئُ الطَّرِيقِ', en: 'Seeker' },
+    { min: 10, nextAt: 30, badge: '📖', fr: 'Apprenti', ar: 'مُتَعَلِّمٌ', en: 'Apprentice' },
+    { min: 30, nextAt: 60, badge: '🏮', fr: 'Chercheur', ar: 'بَاحِثٌ عَنِ الْحَقِّ', en: 'Researcher' },
+    { min: 60, nextAt: 100, badge: '🎓', fr: 'Étudiant en Science', ar: 'طَالِبُ عِلْمٍ', en: 'Student of Knowledge' },
+    { min: 100, nextAt: null, badge: '👑', fr: 'Gardien du Savoir', ar: 'حَافِظُ الْعِلْمِ', en: 'Guardian of Knowledge' },
+  ];
+  let chosen = tiers[0];
+  for (const t of tiers) {
+    if (completedCount >= t.min) chosen = t;
+  }
+  const title = lang === 'ar' ? chosen.ar : lang === 'en' ? chosen.en : chosen.fr;
+  return { title, badge: chosen.badge, nextAt: chosen.nextAt };
+}
 
 // Quelques scores repères initiaux pour stimuler le joueur même hors-ligne dès le premier jour
 const SEED_ENTRIES: LeaderboardEntry[] = [
