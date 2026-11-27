@@ -72,9 +72,8 @@ export const QuizModal: React.FC<QuizModalProps> = ({
   };
   const promptSpeaker = activeQuiz?.promptSpeaker || 'noura';
 
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [mistakeReported, setMistakeReported] = useState(false);
+  const [wrongOptionIds, setWrongOptionIds] = useState<string[]>([]);
+  const [isSolved, setIsSolved] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,52 +83,58 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     };
   }, []);
 
+  // XP dégressif selon le nombre d'erreurs : 0 faute = 40 XP, 1 = 25 XP, 2 = 15 XP, 3+ = 5 XP
+  const xpReward =
+    wrongOptionIds.length === 0 ? 40 : wrongOptionIds.length === 1 ? 25 : wrongOptionIds.length === 2 ? 15 : 5;
+
   const handleSelectOption = (optionId: 'A' | 'B' | 'C' | 'D') => {
+    if (isSolved || wrongOptionIds.includes(optionId)) return;
     speechManager.stop();
-    setSelectedOptionId(optionId);
-    setIsAnswered(true);
 
     const isOptionCorrect = optionId === correctOptionId;
     if (isOptionCorrect) {
+      setIsSolved(true);
       soundManager.playQuizSuccess();
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTo({
+            top: scrollContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
     } else {
       soundManager.playSelect();
-      if (!mistakeReported && onWaswasMistake) {
-        onWaswasMistake(15, `Doute nourri : Le Waswâs prend de la force !`);
-        setMistakeReported(true);
+      setWrongOptionIds((prev) => [...prev, optionId]);
+      if (onWaswasMistake) {
+        const reason =
+          language === 'ar'
+            ? 'غُذِّيَ الشَّكُّ: الْوَسْوَاسُ يَزْدَادُ قُوَّةً!'
+            : language === 'en'
+              ? 'Doubt fed: The Waswas grows stronger!'
+              : 'Doute nourri : Le Waswâs prend de la force !';
+        onWaswasMistake(12, reason);
       }
     }
-
-    // Smoothly scroll down to reveal explanation on mobile/small screens
-    setTimeout(() => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollTo({
-          top: scrollContainerRef.current.scrollHeight,
-          behavior: 'smooth'
-        });
-      }
-    }, 100);
   };
 
-  const isCorrect = selectedOptionId === correctOptionId;
-
   const hintText = language === 'ar'
-    ? '💡 اختر الإجابة التي تراها صحيحة'
+    ? 'اختر الإجابة الصحيحة (من المحاولة الأولى: +40 نقطة)'
     : language === 'en'
-    ? '💡 Select the answer you think is correct'
-    : '💡 Sélectionne la réponse qui te semble juste';
+    ? 'Choose the right answer (1st try: +40 XP)'
+    : 'Choisis la bonne réponse (du 1er coup : +40 XP)';
 
   const wrongWarning = language === 'ar'
-    ? 'ليست الإجابة الصحيحة (قَوِيَ الوسواس قليلاً).'
+    ? `ليست الإجابة الصحيحة — ازداد الوسواس قوة (+12) ! حاول مرة أخرى (المكافأة الحالية: +${xpReward} XP)`
     : language === 'en'
-    ? 'Not the right answer (the Waswas grew stronger).'
-    : "Ce n'est pas la bonne réponse (le Waswâs s'est renforcé).";
+    ? `Not the right answer — the Waswas grew stronger (+12)! Try again (current reward: +${xpReward} XP)`
+    : `Ce n’est pas la bonne réponse — le Waswâs augmente (+12) ! Essaie encore (gain actuel : +${xpReward} XP)`;
 
   const harvestLabel = language === 'ar'
-    ? 'احصل على +25 نقطة إيمان!'
+    ? `احصل على +${xpReward} نقطة إيمان`
     : language === 'en'
-    ? 'COLLECT MY +25 XP!'
-    : 'RÉCOLTER MES +25 XP !';
+    ? `COLLECT MY +${xpReward} XP`
+    : `RÉCOLTER MES +${xpReward} XP`;
 
   return (
     <div
@@ -149,7 +154,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                   {t.modalTitle}
                 </span>
                 <span className="text-[9px] font-black text-[#2d6a4f] bg-[#d8f3dc] px-1.5 py-0.2 rounded-md border border-[#74c69d]">
-                  +25 XP
+                  +{xpReward} XP
                 </span>
               </div>
               <h3 className="text-xs sm:text-sm font-bold text-[#3a2312] font-cinzel line-clamp-1">
@@ -187,23 +192,25 @@ export const QuizModal: React.FC<QuizModalProps> = ({
             </div>
           </div>
 
-          {/* 4 Options Grid */}
+          {/* 4 Options Grid — wrong attempts are crossed out WITHOUT revealing the right answer until found */}
           <div className="grid grid-cols-1 gap-2.5 shrink-0">
             {normalizedOptions.map((option) => {
-              const isSelected = selectedOptionId === option.id;
-              const resolvedStyle = isAnswered
-                ? option.isCorrect
+              const isWrongTried = wrongOptionIds.includes(option.id);
+              const isSolvedCorrect = isSolved && option.isCorrect;
+              const resolvedStyle = isSolvedCorrect
                 ? 'bg-[#ebf5e9] border-[#4a804d] text-[#2d522f] shadow-[0_2px_0_#3a2312] font-bold'
-                  : isSelected
-                  ? 'bg-[#fde8e8] border-[#c53030] text-[#9b2c2c] shadow-[0_2px_0_#3a2312]'
-                  : 'bg-[#ebdfc8]/50 border-[#b89f81] text-[#8c6b4e] opacity-60'
-                : 'bg-[#f3ebd9] border-[#3a2312] text-[#3a2312] hover:bg-[#ebdcc4] shadow-[0_2px_0_#3a2312]';
+                : isWrongTried
+                  ? 'bg-[#fde8e8] border-[#c53030] text-[#9b2c2c] opacity-75 line-through cursor-not-allowed'
+                  : isSolved
+                    ? 'bg-[#ebdfc8]/50 border-[#b89f81] text-[#8c6b4e] opacity-55 cursor-default'
+                    : 'bg-[#f3ebd9] border-[#3a2312] text-[#3a2312] hover:bg-[#ebdcc4] shadow-[0_2px_0_#3a2312] cursor-pointer';
 
               return (
                 <button
                   key={option.id}
+                  disabled={isSolved || isWrongTried}
                   onClick={() => handleSelectOption(option.id)}
-                  className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border-2 transition-all font-bold cursor-pointer ${
+                  className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border-2 transition-all font-bold ${
                     isRtl ? 'text-right font-amiri text-base sm:text-lg leading-[1.8]' : 'text-left text-sm sm:text-base'
                   } ${resolvedStyle}`}
                 >
@@ -211,10 +218,10 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                     {option.id}
                   </span>
                   <span className="flex-1 leading-snug">{option.text}</span>
-                  {isAnswered && option.isCorrect && (
+                  {isSolvedCorrect && (
                     <CheckCircle2 className="w-5 h-5 text-[#4a804d] shrink-0" />
                   )}
-                  {isAnswered && isSelected && !option.isCorrect && (
+                  {isWrongTried && (
                     <XCircle className="w-5 h-5 text-[#c53030] shrink-0" />
                   )}
                 </button>
@@ -222,33 +229,16 @@ export const QuizModal: React.FC<QuizModalProps> = ({
             })}
           </div>
 
-          {/* Explanation & Verified Source Card */}
-          {isAnswered && (
+          {/* Explanation & Verified Source Card (ONLY revealed once the player finds the correct answer!) */}
+          {isSolved && (
             <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300 pb-1">
-              <div
-                className={`p-3.5 sm:p-4 rounded-2xl border-2 ${
-                  isCorrect
-                    ? 'bg-[#ebf5e9] border-[#4a804d] text-[#2d522f]'
-                    : 'bg-[#fde8e8] border-[#c53030] text-[#9b2c2c]'
-                }`}
-              >
+              <div className="p-3.5 sm:p-4 rounded-2xl border-2 bg-[#ebf5e9] border-[#4a804d] text-[#2d522f]">
                 <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-[#3a2312]/15">
                   <div className="flex items-center gap-1.5">
-                    {isCorrect ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a804d]" />
-                        <span className="text-xs sm:text-sm font-bold text-[#2d522f] font-cinzel">
-                          {t.correctAnswer}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#c53030]" />
-                        <span className="text-xs sm:text-sm font-bold text-[#9b2c2c] font-cinzel">
-                          {t.wrongAnswer}
-                        </span>
-                      </>
-                    )}
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a804d]" />
+                    <span className="text-xs sm:text-sm font-bold text-[#2d522f] font-cinzel">
+                      {t.correctAnswer}
+                    </span>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -259,7 +249,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 </div>
 
                 <p className={`text-[#3a2312] ${isRtl ? 'font-amiri text-base sm:text-lg leading-[1.85] text-right font-medium' : 'text-xs sm:text-sm leading-relaxed font-sans font-medium'}`}>
-                  {quiz.explanation}
+                  {activeQuiz.explanation}
                 </p>
 
                 {/* Reference Excerpt */}
@@ -288,7 +278,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
         {/* Pinned Sticky Bottom Footer */}
         <div className="p-3 sm:p-4 bg-[#f3ebd9] border-t-2 border-[#3a2312] shrink-0 z-10">
           <div className="flex flex-col gap-2">
-            {!isAnswered && (
+            {!isSolved && wrongOptionIds.length === 0 && (
               <div className="text-center py-1">
                 <span className="text-xs text-[#8c5a2b] font-bold font-cinzel">
                   {hintText}
@@ -296,38 +286,20 @@ export const QuizModal: React.FC<QuizModalProps> = ({
               </div>
             )}
 
-            {isAnswered && !isCorrect && (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-[#b91c1c] font-bold">
-                    {wrongWarning}
-                  </span>
-                  <button
-                    onClick={() => {
-                      soundManager.playSelect();
-                      setIsAnswered(false);
-                      setSelectedOptionId(null);
-                    }}
-                    style={{
-                      backgroundColor: '#e69138',
-                      backgroundImage: 'linear-gradient(135deg, #e69138 0%, #f0a04b 100%)',
-                      color: '#1a1209'
-                    }}
-                    className="px-4 py-2.5 text-[#1a1209] font-black text-xs sm:text-sm rounded-xl transition-all cursor-pointer shrink-0 flex items-center gap-1.5 font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 hover:brightness-105"
-                  >
-                    <RotateCcw className="w-4 h-4 text-[#1a1209]" />
-                    <span>{t.tryAgain}</span>
-                  </button>
-                </div>
+            {!isSolved && wrongOptionIds.length > 0 && (
+              <div className="text-center py-1 px-2 rounded-xl bg-[#fde8e8] border border-[#c53030]/40">
+                <span className="text-xs text-[#9b2c2c] font-bold">
+                  {wrongWarning}
+                </span>
               </div>
             )}
 
-            {isAnswered && isCorrect && (
+            {isSolved && (
               <button
                 type="button"
                 onClick={(e) => {
                   if (onHarvestXp) {
-                    onHarvestXp(25, `Quiz réussi : ${quiz.topic}`, e.clientX, e.clientY);
+                    onHarvestXp(xpReward, `${activeQuiz.topic} (+${xpReward} XP)`, e.clientX, e.clientY);
                   } else {
                     soundManager.playQuizSuccess();
                   }
@@ -342,7 +314,6 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 }}
                 className="w-full py-3.5 px-4 rounded-2xl text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 border-2 border-[#0d281e] shadow-[0_4px_0_#0d281e] active:translate-y-0.5 transition-all cursor-pointer font-cinzel uppercase tracking-wider hover:brightness-110"
               >
-                <Sparkles className="w-5 h-5 text-amber-300 fill-amber-300" />
                 <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{harvestLabel}</span>
                 <ArrowRight className={`w-5 h-5 text-amber-300 ${isRtl ? 'rotate-180' : ''}`} />
               </button>

@@ -5,6 +5,7 @@ import { speechManager } from '../utils/speech';
 import { useLanguage } from '../context/LanguageContext';
 import { UI_EXTRAS, CHAPTER_LABELS } from '../i18n/uiExtras';
 import { SupportModal } from './SupportModal';
+import { PixelFlag } from './PixelFlag';
 
 import bgCh2 from '../assets/images/bg_marche_fruits_renverses.jpg';
 import bgCh3 from '../assets/images/bg_mosquee_marches_attelle.jpg';
@@ -194,10 +195,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         {/* Voile de clarté très léger pour faire ressortir les tuiles sans assombrir le paysage */}
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-sky-400/10 via-transparent to-amber-950/20" />
 
-        {/* Barre Supérieure : Sélecteur de langue & Raccourcis discrets */}
-        <div className="relative z-20 w-full max-w-lg flex items-center justify-between px-2 pt-1 pointer-events-auto">
-          {/* Sélecteur de langue rétro tuiles */}
-          <div className="flex items-center gap-1.5 bg-[#fbf7ee]/90 p-1 rounded-md border-2 border-[#3c2311] shadow-[0_3px_0_#241407]">
+        {/* Barre Supérieure : Sélecteur de langue centré au-dessus du logo NOUR */}
+        <div className="relative z-20 w-full max-w-lg flex items-center justify-center px-2 pt-1 pointer-events-auto">
+          {/* Sélecteur de langue rétro tuiles avec petits drapeaux pixel-art */}
+          <div className="flex items-center gap-1 bg-[#fbf7ee]/95 p-1 rounded-md border-2 border-[#3c2311] shadow-[0_3px_0_#241407]">
             {(['fr', 'ar', 'en'] as const).map((l) => (
               <button
                 key={l}
@@ -205,31 +206,17 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   soundManager.playSelect();
                   setLanguage(l);
                 }}
-                className={`px-2 py-0.5 font-pixel text-xs font-bold rounded transition-all cursor-pointer ${
+                className={`px-2.5 py-1 font-pixel text-xs font-bold rounded transition-all cursor-pointer flex items-center gap-1.5 ${
                   uiLang === l
                     ? 'bg-[#d97c27] text-white shadow-xs scale-105'
                     : 'text-[#5c3a21] hover:bg-[#ebdcc0]'
                 }`}
               >
-                {l.toUpperCase()}
+                <PixelFlag lang={l} className="w-4 h-3" />
+                <span>{l === 'en' ? 'US' : l.toUpperCase()}</span>
               </button>
             ))}
           </div>
-
-          {/* Bouton Cinématique / Prologue */}
-          <button
-            onClick={() => {
-              soundManager.playSelect();
-              setShowCinematic(true);
-            }}
-            className="pixel-tile-btn px-2.5 py-1 text-xs font-bold flex items-center gap-1.5"
-            title="Voir le prologue"
-          >
-            <Film className="w-3.5 h-3.5 text-[#d97c27]" />
-            <span className="hidden xs:inline">
-              {uiLang === 'ar' ? 'المشهد' : uiLang === 'en' ? 'Prologue' : 'Cinématique'}
-            </span>
-          </button>
         </div>
 
         {/* CENTRE : TITRE EN PIXEL ART & MENUS TUILES CLAIRES */}
@@ -483,11 +470,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                         soundManager.playSelect();
                         setLanguage(l);
                       }}
-                      className={`py-1.5 font-pixel text-xs font-bold rounded border-2 border-[#3c2311] cursor-pointer ${
+                      className={`py-1.5 px-1 font-pixel text-xs font-bold rounded border-2 border-[#3c2311] cursor-pointer flex items-center justify-center gap-1.5 ${
                         uiLang === l ? 'bg-[#d97c27] text-white shadow-xs' : 'bg-[#fbf7ee] text-[#3c2311]'
                       }`}
                     >
-                      {l === 'fr' ? 'Français' : l === 'ar' ? 'العربية' : 'English'}
+                      <PixelFlag lang={l} className="w-4 h-3" />
+                      <span>{l === 'fr' ? 'FR' : l === 'ar' ? 'AR' : 'US'}</span>
                     </button>
                   ))}
                 </div>

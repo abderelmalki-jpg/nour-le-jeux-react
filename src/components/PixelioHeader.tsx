@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, Award, SlidersHorizontal, Sun, Moon, Pause, MessageSquare, Save, Check } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { PixelFlag } from './PixelFlag';
 import { PIXEL_ASSETS, CustomAssetsConfig } from '../utils/assets';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
@@ -363,7 +364,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
                 : 'bg-black/45 hover:bg-black/65 border-amber-400/45 hover:border-amber-400 text-amber-100'
             }`}
           >
-            <RealFlag lang={language} className="w-4 h-3 rounded-[2px]" />
+            <PixelFlag lang={language} className="w-4 h-3" />
             <SlidersHorizontal className="w-3.5 h-3.5 shrink-0" />
           </button>
 
@@ -380,9 +381,9 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
                 {language === 'ar' ? 'اللغة' : language === 'en' ? 'Language' : 'Langue'}
               </div>
               <div className="grid grid-cols-3 gap-1">
-                {(['ar', 'fr', 'en'] as Language[]).map((langCode) => {
+                {(['fr', 'ar', 'en'] as Language[]).map((langCode) => {
                   const active = language === langCode;
-                  const label = langCode === 'ar' ? 'عربي' : langCode === 'fr' ? 'FR' : 'EN';
+                  const label = langCode === 'ar' ? 'AR' : langCode === 'fr' ? 'FR' : 'US';
                   return (
                     <button
                       key={langCode}
@@ -399,7 +400,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
                           : 'bg-white/5 hover:bg-amber-900/50 text-amber-100'
                       }`}
                     >
-                      <RealFlag lang={langCode} className="w-3.5 h-2.5" />
+                      <PixelFlag lang={langCode} className="w-4 h-3" />
                       <span>{label}</span>
                     </button>
                   );

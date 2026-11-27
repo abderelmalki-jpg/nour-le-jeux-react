@@ -429,14 +429,14 @@ export const CHAPTER_1_SCENES: Scene[] = [
         id: 's1_noura_push',
         type: 'dialogue',
         speaker: 'noura',
-        text: 'Tu l’as entendu ? Ne lui donne pas plus de place qu’il n’en mérite. On ne combat pas le doute en restant assis. Par quoi veux-tu commencer ?',
+        text: 'Je vois le doute sur ton visage, mon fils. Ne laisse pas ces pensées prendre plus de place qu’elles n’en méritent. On ne combat pas le doute en restant assis. Par quoi veux-tu commencer ?',
         emotion: 'smiling'
       },
       {
         id: 's1_choice_morning',
         type: 'choice',
-        speaker: 'personnage',
-        text: '« Que fait Othmân avant de partir ? »',
+        speaker: 'narration',
+        text: 'Que ferais-tu à la place d’Othmân ?',
         choices: [
           {
             id: 'c_ordre',
@@ -673,15 +673,19 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's1_door_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân respire profondément et pousse la poignée :',
+        speaker: 'narration',
+        text: 'Othmân respire profondément devant la porte. Que ferais-tu à sa place ?',
         choices: [
           {
             id: 'c_door_push',
-            label: '✨ « BISMILLÂH — AVANCER »',
+            label: '« Bismillâh » — Ouvrir la porte et sortir',
             badge: 'Premier Pas',
             traitGains: { sabr: 5, discipline: 4 },
             habitMessage: 'Courage • Othmân franchit le seuil.'
+          },
+          {
+            id: 'c_door_retreat',
+            label: 'Céder à l’hésitation et retourner s’asseoir sur le lit'
           }
         ]
       },
@@ -765,17 +769,13 @@ export const CHAPTER_1_SCENES: Scene[] = [
           {
             id: 'c4',
             label: '👨‍👩‍👧 Chapitre 4 : « Ce que tu as encore » — La bonté envers les parents & la reconnaissance (Birr al-Wālidayn)',
-            disabled: true,
-            badge: 'Bientôt • Chapitre 4',
-            disabledReason: 'Aujourd’hui, Othmân apprend l’importance capitale des parents, le devoir de leur obéir avec amour et de prendre soin d’eux au quotidien (Birr al-Wālidayn).',
+            badge: 'Disponible • Chapitre 4',
             interactiveSpot: { x: '75%', y: '60%' }
           },
           {
             id: 'c5',
             label: '⛰️ Chapitre 5 : « Le Sommet de la Persévérance » — La persévérance (Sabr) face à l’épreuve',
-            disabled: true,
-            badge: 'Bientôt • Chapitre 5',
-            disabledReason: 'Aujourd’hui, Othmân apprend à agir avec une intention sincère uniquement pour Allah et à surmonter les grandes épreuves avec foi (Niyyah).',
+            badge: 'Disponible • Chapitre 5',
             interactiveSpot: { x: '85%', y: '45%' }
           }
         ]
@@ -1061,8 +1061,8 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's4_approach_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: '« Vers où Othmân décide-t-il de diriger ses pas dans le village ? »',
+        speaker: 'narration',
+        text: 'À la place d’Othmân, vers où dirigerais-tu tes pas dans le village ?',
         choices: [
           {
             id: 'c_place',
@@ -1280,8 +1280,8 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's6_refus_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Le jeune artisan répond sèchement. Comment réagit Othmân ?',
+        speaker: 'narration',
+        text: 'Le jeune artisan répond sèchement. Que ferais-tu à la place d’Othmân ?',
         choices: [
           {
             id: 'c_silence_sabr',
@@ -1509,8 +1509,8 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's7_aid_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Comment Othmân intervient-il pour aider le paysan ?',
+        speaker: 'narration',
+        text: 'Que ferais-tu à la place d’Othmân pour aider le paysan ?',
         choices: [
           {
             id: 'c_aide_humaine',
@@ -1915,8 +1915,8 @@ export const CHAPTER_1_SCENES: Scene[] = [
       {
         id: 's9_ordeal_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Face aux sifflements du Grand Waswas, quelle certitude Othmân brandit-il ?',
+        speaker: 'narration',
+        text: 'Face aux sifflements du Grand Waswas, quelle certitude choisirais-tu à la place d’Othmân ?',
         choices: [
           {
             id: 'c_verite_sabr',

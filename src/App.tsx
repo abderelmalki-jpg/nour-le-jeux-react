@@ -33,6 +33,8 @@ import { SceneTransitionModal } from './components/SceneTransitionModal';
 import { AldwinGuideModal } from './components/AldwinGuideModal';
 import { ContemplationOverlay } from './components/ContemplationOverlay';
 import { SplashScreen } from './components/SplashScreen';
+import { IntroPrologue } from './components/IntroPrologue';
+import { PauseMenuModal } from './components/PauseMenuModal';
 import { XpHarvestOverlay } from './components/XpHarvestOverlay';
 import { SupportModal } from './components/SupportModal';
 // Chargée à la demande : les joueurs qui arrivent sur /play ne téléchargent pas la landing
@@ -201,6 +203,11 @@ export default function App() {
   };
 
   const [viewMode, setViewMode] = useState<'landing' | 'game'>(getInitialViewMode);
+  const [showDoorRetreatModal, setShowDoorRetreatModal] = useState(false);
+  const [choiceResetKey, setChoiceResetKey] = useState(0);
+  const [bossReadyModal, setBossReadyModal] = useState<{ chapter: number; bossIdx: number } | null>(null);
+  const [showWaswasGameOver, setShowWaswasGameOver] = useState(false);
+  const promptedBossChaptersRef = useRef<Set<number>>(new Set());
 
   // Sync with browser navigation (Back / Forward buttons)
   useEffect(() => {
@@ -264,6 +271,8 @@ export default function App() {
   };
 
   const [showSplash, setShowSplash] = useState(true); // Always show Title Screen when entering game mode
+  const [showPauseMenu, setShowPauseMenu] = useState(false); // In-game Pause / Menu overlay
+  const [introPrologueChapter, setIntroPrologueChapter] = useState<1 | 2 | 3 | 4 | 5 | null>(null); // Chapter opening cinematic
   const [activeTab, setActiveTab] = useState<TabType>('adventure');
   const [customAssets, setCustomAssets] = useState<CustomAssetsConfig>(() => loadCustomAssets());
 
@@ -864,6 +873,9 @@ export default function App() {
         currentBeatIndex: 0
       }));
       setClimaxStep(0);
+      if (sceneId === 10 || sceneId === 17 || sceneId === 30 || sceneId === 40) {
+        setIntroPrologueChapter(targetChap);
+      }
       setActiveTab('adventure');
     }
   };
@@ -958,6 +970,14 @@ export default function App() {
   };
 
   const handleSelectChoice = (choice: DialogueChoice) => {
+    // Soft gentle "Game Over" when Othman retreats before opening the door in Scene 1
+    if (choice.id === 'c_door_retreat') {
+      speechManager.stop();
+      soundManager.playSelect();
+      setShowDoorRetreatModal(true);
+      return;
+    }
+
     // 0. Character Traits & Habits progression
     if (choice.traitGains) {
       setProgress((prev) => {
@@ -1065,15 +1085,9 @@ export default function App() {
       setActiveTab('adventure');
       return;
     }
-    if (choice.id === 'c2_chap2') {
-      if (!isSupporter) {
-        soundManager.playSelect();
-        setSupportModalReason('chapter_end');
-        setShowSupportModal(true);
-        return;
-      }
+    if (choice.id === 'c2' || choice.id === 'c2_chap2') {
       soundManager.playSelect();
-      const targetSceneId = currentScene.id === 10 ? 11 : 11;
+      const targetSceneId = currentScene.id === 10 ? 11 : 10;
       const ch2Idx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
       if (ch2Idx !== -1) {
         setProgress((prev) => ({
@@ -1082,19 +1096,14 @@ export default function App() {
           currentSceneIndex: ch2Idx,
           currentBeatIndex: 0,
           selectedChapter: 2,
-          completedScenes: Array.from(new Set([...prev.completedScenes, 10]))
+          completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
         }));
+        setIntroPrologueChapter(2);
         setActiveTab('adventure');
         return;
       }
     }
-    if (choice.id === 'c3_chap3' || choice.id === 'c5_chap5') {
-      if (!isSupporter) {
-        soundManager.playSelect();
-        setSupportModalReason('chapter_end');
-        setShowSupportModal(true);
-        return;
-      }
+    if (choice.id === 'c3' || choice.id === 'c3_chap3') {
       soundManager.playSelect();
       const ch3Idx = ALL_SCENES.findIndex((s) => s.id === 17);
       if (ch3Idx !== -1) {
@@ -1104,7 +1113,40 @@ export default function App() {
           currentSceneIndex: ch3Idx,
           currentBeatIndex: 0,
           selectedChapter: 3,
-          completedScenes: Array.from(new Set([...prev.completedScenes, 10]))
+          completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
+        }));
+        setIntroPrologueChapter(3);
+        setActiveTab('adventure');
+        return;
+      }
+    }
+    if (choice.id === 'c4' || choice.id === 'c4_chap4') {
+      soundManager.playSelect();
+      const ch4Idx = ALL_SCENES.findIndex((s) => s.id === 30);
+      if (ch4Idx !== -1) {
+        setProgress((prev) => ({
+          ...prev,
+          dayNumber: 4,
+          currentSceneIndex: ch4Idx,
+          currentBeatIndex: 0,
+          selectedChapter: 4,
+          completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
+        }));
+        setActiveTab('adventure');
+        return;
+      }
+    }
+    if (choice.id === 'c5' || choice.id === 'c5_chap5') {
+      soundManager.playSelect();
+      const ch5Idx = ALL_SCENES.findIndex((s) => s.id === 40);
+      if (ch5Idx !== -1) {
+        setProgress((prev) => ({
+          ...prev,
+          dayNumber: 5,
+          currentSceneIndex: ch5Idx,
+          currentBeatIndex: 0,
+          selectedChapter: 5,
+          completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
         }));
         setActiveTab('adventure');
         return;
@@ -1142,6 +1184,39 @@ export default function App() {
     nextSceneToUnlock && progress.xp < (nextSceneToUnlock.requiredXp || 0)
   );
 
+  // Auto-trigger celebratory transition overlay the first time Othman reaches enough XP to challenge the chapter's Great Waswas Boss
+  useEffect(() => {
+    if (showSplash || viewMode === 'landing' || activeTab !== 'adventure' || !currentScene) return;
+    const ch = getChapterForSceneId(currentScene.id);
+    if (promptedBossChaptersRef.current.has(ch)) return;
+    const bossMap: Record<number, { sceneId: number; xpNeeded: number }> = {
+      1: { sceneId: 9, xpNeeded: 220 },
+      2: { sceneId: 16, xpNeeded: 550 },
+      3: { sceneId: 25, xpNeeded: 900 },
+      4: { sceneId: 34, xpNeeded: 1250 },
+      5: { sceneId: 44, xpNeeded: 1600 },
+    };
+    const cfg = bossMap[ch];
+    if (!cfg || currentScene.id === cfg.sceneId || progress.xp < cfg.xpNeeded) return;
+    if (currentBeat?.type === 'quiz' || currentBeat?.type === 'climax_combat') return;
+    const bossIdx = ALL_SCENES.findIndex((s) => s.id === cfg.sceneId);
+    if (bossIdx !== -1) {
+      promptedBossChaptersRef.current.add(ch);
+      soundManager.playChapterComplete();
+      setBossReadyModal({ chapter: ch, bossIdx });
+    }
+  }, [progress.xp, currentScene?.id, currentBeat?.type, activeTab, showSplash, viewMode]);
+
+  // Trigger gentle Waswas Game Over if Waswas pressure reaches 100/100
+  useEffect(() => {
+    if (showSplash || viewMode === 'landing' || activeTab !== 'adventure') return;
+    if ((progress.waswasXp || 0) >= 100 && !showWaswasGameOver) {
+      speechManager.stop();
+      soundManager.playSelect();
+      setShowWaswasGameOver(true);
+    }
+  }, [progress.waswasXp, showSplash, viewMode, activeTab, showWaswasGameOver]);
+
   if (viewMode === 'landing') {
     return (
       <Suspense fallback={<div className="min-h-screen bg-[#f6ebd7]" />}>
@@ -1166,6 +1241,10 @@ export default function App() {
         onOpenKnowledge={() => setShowKnowledge(true)}
         onOpenQuiz={() => setShowQuiz(true)}
         onOpenLanding={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
+        onReturnToMenu={() => {
+          speechManager.stop();
+          setShowPauseMenu(true);
+        }}
         customAssets={customAssets}
         hasSpiritualGatePending={hasSpiritualGatePending}
       />
@@ -1316,7 +1395,20 @@ export default function App() {
 
         {/* Narrative Adventure Mode (Dialogue, Quiz, Combat, Real Actions) */}
         {activeTab === 'adventure' && !showSplash && (
-          <div className="relative w-full h-full flex flex-col justify-between overflow-hidden bg-[#181422]">
+          <div
+            onClick={() => {
+              // Tap anywhere on screen to advance dialogue if active
+              if (
+                !introPrologueChapter &&
+                !contemplationState &&
+                !sceneTransition &&
+                (currentBeat.type === 'dialogue' || currentBeat.type === 'memory_fragments')
+              ) {
+                advanceBeat();
+              }
+            }}
+            className="relative w-full h-full flex flex-col justify-between overflow-hidden bg-[#181422] cursor-pointer"
+          >
             {/* Visual Environment Canvas */}
             <SceneBackground
               scene={currentScene}
@@ -1351,13 +1443,68 @@ export default function App() {
 
 
 
+            {/* Fast-track Boss Challenge Button when player earns enough XP in current chapter */}
+            {(() => {
+              const ch = getChapterForSceneId(currentScene.id);
+              const bossMap: Record<number, { sceneId: number; xpNeeded: number }> = {
+                1: { sceneId: 9, xpNeeded: 220 },
+                2: { sceneId: 16, xpNeeded: 550 },
+                3: { sceneId: 25, xpNeeded: 900 },
+                4: { sceneId: 34, xpNeeded: 1250 },
+                5: { sceneId: 44, xpNeeded: 1600 },
+              };
+              const cfg = bossMap[ch];
+              if (
+                !cfg ||
+                currentScene.id === cfg.sceneId ||
+                progress.xp < cfg.xpNeeded ||
+                introPrologueChapter ||
+                contemplationState ||
+                sceneTransition ||
+                currentBeat.type === 'quiz' ||
+                currentBeat.type === 'climax_combat'
+              ) {
+                return null;
+              }
+              const bossIdx = ALL_SCENES.findIndex((s) => s.id === cfg.sceneId);
+              if (bossIdx === -1) return null;
+              return (
+                <div className="relative z-30 flex justify-center pt-2 px-3 pointer-events-auto">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      soundManager.playQuizSuccess();
+                      speechManager.stop();
+                      setProgress((prev) => ({
+                        ...prev,
+                        currentSceneIndex: bossIdx,
+                        currentBeatIndex: 0
+                      }));
+                    }}
+                    className="px-4 py-1.5 rounded-full bg-gradient-to-r from-[#5b21b6] via-[#7c3aed] to-[#b45309] hover:brightness-110 text-amber-100 font-cinzel font-black text-[11px] sm:text-xs tracking-wide border-2 border-amber-300/80 shadow-[0_3px_12px_rgba(124,58,237,0.5)] cursor-pointer flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-300"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                    <span>
+                      {language === 'ar'
+                        ? 'نِقَاطُكَ كَافِيَةٌ! وَاجِهِ الْوَسْوَاسَ الْأَكْبَرَ مُبَاشَرَةً'
+                        : language === 'en'
+                          ? 'Enough XP! Challenge the Great Waswas Directly'
+                          : 'XP suffisant ! Affronter le Grand Waswâs directement'}
+                    </span>
+                  </button>
+                </div>
+              );
+            })()}
+
             {/* Central / Interactive Beat Controller (flex-1 min-h-0: fits comfortably without pushing the bottom bar) */}
             <div className="relative z-30 w-full flex-1 min-h-0 flex flex-col items-center justify-end pb-1 sm:pb-2 overflow-y-auto sm:overflow-visible">
-              {!contemplationState && !sceneTransition &&
+              {!introPrologueChapter && !contemplationState && !sceneTransition &&
                 (currentBeat.type === 'dialogue' ||
                   currentBeat.type === 'choice' ||
                   currentBeat.type === 'memory_fragments') && (
                 <DialogueBox
+                  key={`${currentBeat.id}_${choiceResetKey}`}
                   beat={currentBeat}
                   onNext={advanceBeat}
                   onSelectChoice={handleSelectChoice}
@@ -1621,8 +1768,10 @@ export default function App() {
         <IslamicQuizModal
           completedQuizIds={progress.completedIslamicQuizIds || []}
           onCompleteQuiz={handleCompleteIslamicQuiz}
-          onWaswasMistake={handleWaswasMistake}
+          onWaswasMistake={showSplash ? undefined : handleWaswasMistake}
           initialCategory={quizCategoryPreference}
+          storyQuizzes={ALL_QUIZZES}
+          standalone={showSplash}
           onClose={() => {
             setShowQuiz(false);
             setQuizCategoryPreference(undefined);
@@ -1671,33 +1820,43 @@ export default function App() {
         />
       )}
 
-      {/* Wake up cinematic for the very first scene */}
-      {viewMode === 'game' && activeTab === 'adventure' && !showSplash && progress.currentSceneIndex === 0 && progress.currentBeatIndex === 0 && progress.completedScenes.length === 0 && (
-        <div 
-          className="fixed inset-0 z-[140] bg-black pointer-events-none"
-          style={{ animation: 'wakeUpFade 4s ease-out forwards' }}
-        >
-          <style>{`
-            @keyframes wakeUpFade {
-              0% { opacity: 1; }
-              25% { opacity: 1; }
-              100% { opacity: 0; }
-            }
-          `}</style>
-        </div>
+      {/* In-Game Pause Menu Overlay (Resume, Audio, Return to Main Menu) */}
+      {showPauseMenu && !showSplash && (
+        <PauseMenuModal
+          sceneTitle={getLocalizedScene(currentScene, language).title}
+          onResume={() => setShowPauseMenu(false)}
+          onReturnToMenu={() => {
+            speechManager.stop();
+            soundManager.stopAmbient();
+            setShowPauseMenu(false);
+            setIntroPrologueChapter(null);
+            setContemplationState(null);
+            setSceneTransition(null);
+            setShowSplash(true);
+          }}
+        />
       )}
 
-      {/* Splash Screen Intro with Continue & New Game */}
+      {/* Intro Prologue (Ch. 1 : éveil paupières ; Ch. 2-5 : phrase d'accroche + carton de chapitre) */}
+      {viewMode === 'game' && activeTab === 'adventure' && !showSplash && introPrologueChapter && (
+        <IntroPrologue
+          chapter={introPrologueChapter}
+          onComplete={() => setIntroPrologueChapter(null)}
+        />
+      )}
+
+      {/* Splash Screen Intro with Story Mode & Standalone Quiz */}
       {showSplash && (
         <SplashScreen
           hasSavedGame={progress.xp > 0 || progress.completedScenes.length > 0}
           savedSummary={{
             level: progress.level,
             xp: progress.xp,
-            sceneTitle: currentScene.title
+            sceneTitle: getLocalizedScene(currentScene, language).title
           }}
           onContinue={() => {
             trackGameStarted(false, progress.level, progress.xp);
+            setIntroPrologueChapter(null);
             setShowSplash(false);
             setActiveTab('adventure');
           }}
@@ -1705,9 +1864,11 @@ export default function App() {
             localStorage.removeItem(STORAGE_KEY);
             trackGameStarted(true, 1, 0);
             setProgress(INITIAL_PROGRESS);
+            setIntroPrologueChapter(1);
             setShowSplash(false);
             setActiveTab('adventure');
           }}
+          onOpenQuiz={() => setShowQuiz(true)}
           onSelectChapter={(chapter) => {
             const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
             const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
@@ -1720,6 +1881,7 @@ export default function App() {
               currentBeatIndex: 0
             }));
             setClimaxStep(0);
+            setIntroPrologueChapter(chapter);
             setShowSplash(false);
             setActiveTab('adventure');
           }}
@@ -1762,13 +1924,254 @@ export default function App() {
         />
       )}
 
+      {/* Cinematic Black Screen — Waswas 100/100 Soft Game Over (matches IntroPrologue aesthetic) */}
+      {showWaswasGameOver && (
+        <div
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
+          className="fixed inset-0 z-[190] bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
+        >
+          <div
+            className="pointer-events-none absolute rounded-full blur-3xl"
+            style={{
+              width: '22rem',
+              height: '22rem',
+              background:
+                'radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, rgba(88, 28, 135, 0.12) 50%, rgba(0, 0, 0, 0) 75%)',
+            }}
+          />
+
+          <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-purple-300/85 font-cinzel font-bold">
+              {language === 'ar'
+                ? 'ضَغْطُ الْوَسْوَاسِ ١٠٠ / ١٠٠'
+                : language === 'en'
+                  ? 'WASWAS PRESSURE 100 / 100'
+                  : 'PRESSION DU WASWÂS 100 / 100'}
+            </span>
+
+            <h2
+              className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_18px_rgba(245,158,11,0.35)] ${
+                language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
+              }`}
+            >
+              {language === 'ar'
+                ? 'تَغَلَّبَ الْوَسْوَاسُ هَذِهِ الْمَرَّةَ…'
+                : language === 'en'
+                  ? 'The Waswas prevailed this time…'
+                  : 'Le Waswâs a pris le dessus cette fois…'}
+            </h2>
+
+            <p
+              className={`text-[#f7ecd7]/90 leading-relaxed whitespace-pre-line ${
+                language === 'ar'
+                  ? 'font-amiri text-lg sm:text-2xl leading-loose'
+                  : 'font-cinzel text-sm sm:text-lg tracking-wide'
+              }`}
+            >
+              {language === 'ar'
+                ? 'كَثُرَتِ الشُّكُوكُ حَتَّى أَثْقَلَتْ قَلْبَ عُثْمَانَ.\nلَا تَيْأَسْ… اِسْتَعِذْ بِاللَّهِ وَابْدَأِ الْفَصْلَ مِنْ جَدِيدٍ بِقَلْبٍ صَافٍ.'
+                : language === 'en'
+                  ? 'The whispers grew too heavy for Othman’s heart.\nDo not despair… seek refuge in Allah and begin this chapter anew with a clearer heart.'
+                  : 'Les murmures du doute sont devenus trop lourds pour le cœur d’Othmân.\nNe te décourage pas… cherche refuge auprès d’Allah et reprends ce chapitre depuis le début.'}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => {
+                soundManager.playSelect();
+                const ch = getChapterForSceneId(currentScene.id);
+                const chapterStartSceneId = ch === 5 ? 40 : ch === 4 ? 30 : ch === 3 ? 17 : ch === 2 ? 10 : 1;
+                const startIdx = ALL_SCENES.findIndex((s) => s.id === chapterStartSceneId);
+                setShowWaswasGameOver(false);
+                setProgress((prev) => ({
+                  ...prev,
+                  waswasXp: 10,
+                  currentSceneIndex: startIdx !== -1 ? startIdx : 0,
+                  currentBeatIndex: 0
+                }));
+                setChoiceResetKey((k) => k + 1);
+              }}
+              className="mt-3 px-7 py-3 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+            >
+              {language === 'ar'
+                ? 'إِعَادَةُ الْفَصْلِ مِنَ الْبِدَايَةِ ↺'
+                : language === 'en'
+                  ? 'Restart Chapter ↺'
+                  : 'Recommencer le chapitre ↺'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Cinematic Black Screen — Othman gained enough XP to challenge the Great Waswas Boss directly! */}
+      {bossReadyModal && (
+        <div
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
+          className="fixed inset-0 z-[185] bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
+        >
+          <div
+            className="pointer-events-none absolute rounded-full blur-3xl"
+            style={{
+              width: '26rem',
+              height: '26rem',
+              background:
+                'radial-gradient(circle, rgba(251, 191, 36, 0.36) 0%, rgba(217, 119, 6, 0.14) 45%, rgba(0, 0, 0, 0) 75%)',
+            }}
+          />
+
+          <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-amber-300/85 font-cinzel font-bold">
+              {language === 'ar'
+                ? `الْفَصْلُ ${bossReadyModal.chapter} • اكْتِمَالُ الْيَقِينِ`
+                : language === 'en'
+                  ? `CHAPTER ${bossReadyModal.chapter} • WISDOM AWAKENED`
+                  : `CHAPITRE ${bossReadyModal.chapter} • GRANDE EXPÉRIENCE ACQUISE`}
+            </span>
+
+            <h2
+              className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_20px_rgba(245,158,11,0.45)] ${
+                language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
+              }`}
+            >
+              {language === 'ar'
+                ? 'اكْتَسَبَ عُثْمَانُ خِبْرَةً عَظِيمَةً…'
+                : language === 'en'
+                  ? 'Othman has gained great experience…'
+                  : 'Othmân a acquis une grande expérience…'}
+            </h2>
+
+            <p
+              className={`text-[#fff7e6]/90 leading-relaxed whitespace-pre-line ${
+                language === 'ar'
+                  ? 'font-amiri text-lg sm:text-2xl leading-loose'
+                  : 'font-cinzel text-sm sm:text-lg tracking-wide'
+              }`}
+            >
+              {language === 'ar'
+                ? 'بِفَضْلِ إِجَابَاتِكَ الصَّحِيحَةِ، امْتَلَأَ قَلْبُ عُثْمَانَ نُورًا.\nيُمْكِنُهُ الْآنَ مُوَاجَهَةُ الْوَسْوَاسِ الْأَكْبَرِ مُبَاشَرَةً!'
+                : language === 'en'
+                  ? 'Through your accurate answers, Othman’s heart has filled with light.\nHe is now ready to confront the Great Waswas directly.'
+                  : 'Grâce à tes bonnes réponses, le cœur d’Othmân s’est rempli de lumière.\nIl est désormais prêt à affronter directement le Grand Waswâs.'}
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-3 w-full">
+              <button
+                type="button"
+                onClick={() => {
+                  soundManager.playQuizSuccess();
+                  speechManager.stop();
+                  const targetIdx = bossReadyModal.bossIdx;
+                  setBossReadyModal(null);
+                  setProgress((prev) => ({
+                    ...prev,
+                    currentSceneIndex: targetIdx,
+                    currentBeatIndex: 0
+                  }));
+                }}
+                className="w-full sm:w-auto px-7 py-3 rounded-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-300/80 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.16em] cursor-pointer transition-all shadow-[0_0_24px_rgba(251,191,36,0.28)]"
+              >
+                {language === 'ar'
+                  ? 'مُوَاجَهَةُ الْوَسْوَاسِ الْأَكْبَرِ الْآنَ'
+                  : language === 'en'
+                    ? 'Confront the Great Waswas'
+                    : 'Affronter le Grand Waswâs'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  soundManager.playSelect();
+                  setBossReadyModal(null);
+                }}
+                className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/25 text-[#f7ecd7]/85 font-cinzel font-bold text-xs uppercase tracking-[0.14em] cursor-pointer transition-colors"
+              >
+                {language === 'ar'
+                  ? 'مُتَابَعَةُ الْقِصَّةِ أَوَّلًا'
+                  : language === 'en'
+                    ? 'Continue story first'
+                    : 'Continuer l’histoire d’abord'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cinematic Black Screen — Scene 1 Door Retreat Soft Game Over (matches IntroPrologue aesthetic) */}
+      {showDoorRetreatModal && (
+        <div
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
+          className="fixed inset-0 z-[180] bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
+        >
+          <div
+            className="pointer-events-none absolute rounded-full blur-3xl"
+            style={{
+              width: '20rem',
+              height: '20rem',
+              background:
+                'radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(180, 83, 9, 0.08) 50%, rgba(0, 0, 0, 0) 75%)',
+            }}
+          />
+
+          <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-amber-300/80 font-cinzel font-bold">
+              {language === 'ar'
+                ? 'صَبَاحٌ جَدِيدٌ يَنْتَظِرُكَ'
+                : language === 'en'
+                  ? 'A NEW MORNING AWAITS'
+                  : 'UN NOUVEAU MATIN T’ATTEND'}
+            </span>
+
+            <h2
+              className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_18px_rgba(245,158,11,0.4)] ${
+                language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
+              }`}
+            >
+              {language === 'ar'
+                ? 'غَلَبَ التَّرَدُّدُ هَذِهِ الْمَرَّةَ…'
+                : language === 'en'
+                  ? 'Doubt won this time…'
+                  : 'Le doute a gagné cette fois…'}
+            </h2>
+
+            <p
+              className={`text-[#f7ecd7]/90 leading-relaxed whitespace-pre-line ${
+                language === 'ar'
+                  ? 'font-amiri text-lg sm:text-2xl leading-loose'
+                  : 'font-cinzel text-sm sm:text-lg tracking-wide'
+              }`}
+            >
+              {language === 'ar'
+                ? 'لَمْ يَسْتَطِعْ عُثْمَانُ تَجَاوُزَ الْوَسْوَاسِ الْيَوْمَ، فَعَادَ إِلَى فِرَاشِهِ.\nلَكِنَّ كُلَّ صَبَاحٍ جَدِيدٍ هُوَ فُرْصَةٌ يَمْنَحُهَا اللَّهُ… سَيُحَاوِلُ غَدًا.'
+                : language === 'en'
+                  ? 'Othman could not overcome the whisper of doubt today and returned to his bed.\nYet every new dawn is a fresh chance from Allah… he will try again tomorrow.'
+                  : 'Othmân n’a pas réussi à vaincre son Waswâs aujourd’hui et est retourné s’asseoir sur son lit.\nMais chaque nouveau matin est une chance offerte par Allah… il réessaiera demain.'}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => {
+                soundManager.playSelect();
+                setShowDoorRetreatModal(false);
+                setChoiceResetKey((k) => k + 1);
+              }}
+              className="mt-3 px-7 py-3 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+            >
+              {language === 'ar'
+                ? 'الْمُحَاوَلَةُ فِي الْغَدِ ↺'
+                : language === 'en'
+                  ? 'Try again tomorrow ↺'
+                  : 'Réessayer le lendemain ↺'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Subtle Habit & Moral Trait Notification Banner */}
       {habitToast && (
         <div className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-[#fbf7ee]/95 border-2 border-[#8c5a2b] shadow-[0_4px_12px_rgba(0,0,0,0.25)] flex items-center gap-2.5 max-w-[90vw] sm:max-w-md animate-in fade-in slide-in-from-top-3 duration-300 pointer-events-none backdrop-blur-xs">
           <span className="text-lg shrink-0">🌱</span>
           <div className="flex flex-col text-left">
             <span className="text-[10px] font-black uppercase text-[#8c5a2b] font-cinzel tracking-wider leading-none">
-              Habitude & Caractère
+              {language === 'ar' ? 'الْعَادَةُ وَالْخُلُقُ' : language === 'en' ? 'Habit & Character' : 'Habitude & Caractère'}
             </span>
             <span className="text-xs font-bold text-[#3a2312] leading-tight mt-0.5 font-cinzel">
               {habitToast}

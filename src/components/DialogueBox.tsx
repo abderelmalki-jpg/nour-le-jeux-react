@@ -419,14 +419,10 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
             ? handleSkipOrNext
             : undefined
         }
-        className={`w-full relative z-20 border ${
-          isParchment
-            ? beat.isPontDeNour
-              ? 'bg-[#f4faef]/55 backdrop-blur-[3px] border-2 border-emerald-600 shadow-[0_12px_36px_rgba(45,106,79,0.3)] ring-2 ring-emerald-400/40 text-[#1b3d2b]'
-              : 'bg-[#fdfaf2]/55 backdrop-blur-[3px] border-2 border-[#c5a059] shadow-[0_12px_36px_rgba(100,70,20,0.25)] ring-1 ring-[#c5a059]/40 text-[#241a12]'
-            : beat.isPontDeNour
-            ? 'bg-black/35 sm:bg-black/30 border-emerald-400/70 ring-2 ring-[#52b788]/60 shadow-[0_8px_32px_rgba(45,106,79,0.5)] text-[#ffffff]'
-            : 'bg-black/35 sm:bg-black/30 border-amber-400/50 shadow-[0_8px_32px_rgba(0,0,0,0.6)] ring-1 ring-white/10 text-[#ffffff]'
+        className={`w-full relative z-20 border-3 ${
+          beat.isPontDeNour
+            ? 'bg-[#f4faef] border-emerald-700 shadow-[0_6px_0_#1b4332] text-[#1b3d2b]'
+            : 'bg-[#fbf7ee]/95 backdrop-blur-md border-[#3c2311] shadow-[0_6px_0_#241407] text-[#3c2311]'
         } rounded-2xl sm:rounded-3xl pt-3.5 pb-2.5 px-3.5 sm:pt-5 sm:pb-4 sm:px-5 transition-all duration-200 cursor-pointer group`}
       >
         {/* Floating Waswâs Info Banner in purple directly above the dialogue box */}
@@ -637,16 +633,18 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
               </div>
             )}
 
-            {/* Main Dialogue Text lines */}
+            {/* Main Dialogue Text lines — framed with a golden border when presenting a choice question */}
             <div
-              className={`whitespace-pre-line min-h-[32px] sm:min-h-[44px] ${
-                isParchment
-                  ? 'text-[#2b2118] font-semibold tracking-normal'
-                  : 'text-[#ffffff] [text-shadow:_0_1px_4px_rgb(0_0_0_/_95%),_0_2px_8px_rgb(0_0_0_/_85%)] font-medium'
+              className={`whitespace-pre-line min-h-[32px] sm:min-h-[44px] text-[#3c2311] ${
+                beat.choices && beat.choices.length > 0
+                  ? 'bg-[#fdf7e7] border-2 border-[#d4a24c] rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(180,120,30,0.12)] font-cinzel font-black'
+                  : 'font-pixel font-bold'
               } ${
                 isRtl
                   ? 'font-amiri text-base sm:text-lg md:text-xl leading-[1.9] text-right'
-                  : 'text-xs sm:text-sm md:text-base leading-snug sm:leading-relaxed'
+                  : beat.choices && beat.choices.length > 0
+                    ? 'text-sm sm:text-base md:text-[17px] leading-snug text-center'
+                    : 'text-xs sm:text-sm md:text-base leading-snug sm:leading-relaxed'
               }`}
             >
               {displayedText}
@@ -655,47 +653,36 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
               )}
             </div>
 
-            {/* Click to continue prompt */}
+            {/* Click to continue prompt - Style Evoland indicateur ▶ */}
             {!isTyping && (!beat.choices || beat.choices.length === 0) && (
-              <div className={`flex justify-end items-center gap-1.5 text-[11px] sm:text-xs font-bold font-cinzel pt-1 animate-pulse select-none ${
-                isParchment ? 'text-amber-800' : 'text-amber-300 [text-shadow:_0_1px_4px_rgb(0_0_0_/_95%)]'
-              }`}>
+              <div className="flex justify-end items-center gap-1.5 text-xs font-pixel font-bold pt-1 select-none text-[#3c2311] animate-pulse">
                 <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).next}</span>
-                <CornerDownLeft className={`w-3.5 h-3.5 ${isParchment ? 'text-amber-800' : 'text-amber-300'}`} />
+                <span className="text-sm font-black text-[#3c2311]">▶</span>
               </div>
             )}
 
-            {/* Zelda-Style Response Menu with Arrow Indicator */}
+            {/* Clean, refined Choice Tiles (no trait badges, no emojis, no leading blue arrow; traits remain active under the hood) */}
             {beat.choices && beat.choices.length > 0 && !isTyping && (
-              <div className={`mt-2 pt-2 border-t flex flex-col gap-2 animate-in fade-in duration-300 ${
-                isParchment ? 'border-[#c5a059]/40' : 'border-white/15'
-              }`}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] sm:text-[11px] font-bold font-cinzel uppercase tracking-wider flex items-center gap-1 ${
-                      isParchment ? 'text-amber-900' : 'text-amber-300 [text-shadow:_0_1px_4px_rgb(0_0_0_/_95%)]'
-                    }`}>
-                      <span>✦</span>
-                      <span>Réponse :</span>
+              <div className="mt-2.5 flex flex-col gap-2 animate-in fade-in duration-300">
+                {selectedChoiceId && (
+                  <div className="flex justify-end">
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-700 text-white border border-emerald-800 shadow-xs">
+                      {language === 'ar' ? 'تَمَّ الِاخْتِيَارُ ✓' : language === 'en' ? 'Selected ✓' : 'Choix validé ✓'}
                     </span>
                   </div>
-                  {selectedChoiceId && (
-                    <span className={`text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full font-bold shadow-md ${
-                      isParchment
-                        ? 'bg-emerald-700 text-white border border-emerald-800'
-                        : 'bg-emerald-950/90 text-emerald-300 border border-emerald-500/60'
-                    }`}>
-                      Choix validé ✓
-                    </span>
-                  )}
-                </div>
-                
-                {/* Vertical Stacked Choice Capsules */}
-                <div className="flex flex-col gap-1.5 sm:gap-2">
+                )}
+
+                {/* Vertical Stacked Clean Choice Tiles */}
+                <div className="flex flex-col gap-2">
                   {beat.choices.map((choice, idx) => {
                     const isSelected = selectedChoiceId === choice.id;
                     const isCursorActive = cursorIndex === idx;
                     const isStripeDisabled = choice.disabled;
+                    const rawLabel = getLocalizedChoiceLabel(choice, language);
+                    const cleanLabel = rawLabel
+                      .replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '')
+                      .replace(/\s{2,}/g, ' ')
+                      .trim();
 
                     if (isStripeDisabled) {
                       return (
@@ -718,114 +705,26 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                               discountRate: choice.discountRate
                             });
                           }}
-                          className={`flex items-center justify-between p-2.5 sm:p-3 rounded-2xl border transition-all cursor-pointer text-left relative ${
-                            isParchment
-                              ? isCursorActive
-                                ? 'bg-[#ebd8af] border-amber-600 text-amber-950 shadow-[0_0_12px_rgba(217,119,6,0.3)] translate-x-1 font-bold'
-                                : 'bg-[#f4ebd7]/95 border-[#c5a059]/60 text-[#4a3525] hover:bg-[#ede0c8]'
-                              : isCursorActive
-                              ? 'bg-amber-950/40 border-amber-400/80 text-amber-100 shadow-[0_0_14px_rgba(251,191,36,0.25)] translate-x-1'
-                              : 'bg-black/35 border-white/10 text-stone-300 hover:bg-black/55'
+                          className={`flex items-center justify-between px-4 py-3 rounded-2xl border-2 transition-all cursor-pointer text-start relative ${
+                            isCursorActive
+                              ? 'bg-[#f4e6c8] border-[#c89238] text-[#3c2311] shadow-sm font-bold'
+                              : 'bg-[#f7efe0] border-[#d4b886] text-[#4a3525] hover:bg-[#f2e5cb]'
                           }`}
                         >
-                          <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                            {/* Zelda Pointer Arrow */}
-                            <span className={`text-sm sm:text-base font-black transition-all ${
-                              isCursorActive
-                                ? isParchment ? 'text-amber-700 opacity-100 animate-pulse' : 'text-amber-400 opacity-100 animate-pulse drop-shadow-[0_0_8px_rgba(251,191,36,0.9)]'
-                                : 'opacity-0 w-2'
-                            }`}>
-                              ▶
-                            </span>
-                            <span className={`text-xs sm:text-sm font-semibold leading-snug line-clamp-2 ${
-                              isParchment ? 'text-[#36271a]' : '[text-shadow:_0_1px_3px_rgb(0_0_0_/_90%)]'
-                            }`}>
-                              {getLocalizedChoiceLabel(choice, language)}
-                            </span>
-                          </div>
-                          
-                          <div className="flex items-center gap-2 shrink-0 ml-2">
+                          <span className={`text-xs sm:text-sm font-semibold leading-snug line-clamp-2 ${isRtl ? 'font-amiri text-base' : ''}`}>
+                            {cleanLabel}
+                          </span>
+                          <div className="flex items-center gap-2 shrink-0 ms-2">
                             {getLocalizedChoiceBadge(choice, language) && (
-                              <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-[#dc2626] text-white font-cinzel shadow-xs animate-pulse">
+                              <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-[#dc2626] text-white font-cinzel shadow-xs">
                                 {getLocalizedChoiceBadge(choice, language)}
                               </span>
                             )}
-                            <Lock className={`w-3.5 h-3.5 shrink-0 ${isParchment ? 'text-amber-800' : 'text-amber-400'}`} />
+                            <Lock className="w-3.5 h-3.5 shrink-0 text-amber-800" />
                           </div>
                         </button>
                       );
                     }
-
-                    // Check if choice has trait gains
-                    const traitKeys = choice.traitGains ? (Object.keys(choice.traitGains) as (keyof CharacterTraits)[]) : [];
-
-                    // Thematic border & glow styling based on primary moral virtue (Hilm, Sabr, Adab, Ilm, Discipline)
-                    const primaryTrait = traitKeys.length > 0
-                      ? traitKeys.reduce((max, key) => ((choice.traitGains?.[key] || 0) > (choice.traitGains?.[max] || 0) ? key : max), traitKeys[0])
-                      : null;
-
-                    const getVirtueChoiceTheme = () => {
-                      if (!primaryTrait) {
-                        return {
-                          border: isParchment ? 'border-[#c5a059]/60' : 'border-white/20',
-                          hoverBorder: isParchment ? 'border-amber-600' : 'border-amber-400',
-                          activeBg: isParchment ? 'bg-[#ebd8af]' : 'bg-amber-950/50',
-                          selectedBg: isParchment ? 'bg-emerald-100 border-emerald-600' : 'bg-emerald-950/70 border-emerald-400',
-                          glow: 'shadow-[0_0_14px_rgba(251,191,36,0.35)]',
-                          badgeBg: 'bg-black/40 text-stone-300 border-white/20'
-                        };
-                      }
-                      switch (primaryTrait) {
-                        case 'hilm':
-                          return {
-                            border: isParchment ? 'border-sky-600/70' : 'border-sky-400/50',
-                            hoverBorder: isParchment ? 'border-sky-700' : 'border-sky-300',
-                            activeBg: isParchment ? 'bg-sky-50' : 'bg-sky-950/60',
-                            selectedBg: isParchment ? 'bg-sky-100 border-sky-600' : 'bg-sky-950/80 border-sky-400',
-                            glow: 'shadow-[0_0_16px_rgba(56,189,248,0.4)]',
-                            badgeBg: 'bg-sky-950/80 text-sky-200 border-sky-400/60'
-                          };
-                        case 'sabr':
-                          return {
-                            border: isParchment ? 'border-emerald-600/70' : 'border-emerald-400/50',
-                            hoverBorder: isParchment ? 'border-emerald-700' : 'border-emerald-300',
-                            activeBg: isParchment ? 'bg-emerald-50' : 'bg-emerald-950/60',
-                            selectedBg: isParchment ? 'bg-emerald-100 border-emerald-600' : 'bg-emerald-950/80 border-emerald-400',
-                            glow: 'shadow-[0_0_16px_rgba(52,211,153,0.4)]',
-                            badgeBg: 'bg-emerald-950/80 text-emerald-200 border-emerald-400/60'
-                          };
-                        case 'adab':
-                          return {
-                            border: isParchment ? 'border-amber-600/70' : 'border-amber-400/60',
-                            hoverBorder: isParchment ? 'border-amber-700' : 'border-amber-300',
-                            activeBg: isParchment ? 'bg-amber-50' : 'bg-amber-950/60',
-                            selectedBg: isParchment ? 'bg-amber-100 border-amber-600' : 'bg-amber-950/80 border-amber-400',
-                            glow: 'shadow-[0_0_16px_rgba(251,191,36,0.45)]',
-                            badgeBg: 'bg-amber-950/80 text-amber-200 border-amber-400/60'
-                          };
-                        case 'ilm':
-                          return {
-                            border: isParchment ? 'border-indigo-600/70' : 'border-indigo-400/50',
-                            hoverBorder: isParchment ? 'border-indigo-700' : 'border-indigo-300',
-                            activeBg: isParchment ? 'bg-indigo-50' : 'bg-indigo-950/60',
-                            selectedBg: isParchment ? 'bg-indigo-100 border-indigo-600' : 'bg-indigo-950/80 border-indigo-400',
-                            glow: 'shadow-[0_0_16px_rgba(129,140,248,0.4)]',
-                            badgeBg: 'bg-indigo-950/80 text-indigo-200 border-indigo-400/60'
-                          };
-                        case 'discipline':
-                        default:
-                          return {
-                            border: isParchment ? 'border-orange-600/70' : 'border-orange-400/50',
-                            hoverBorder: isParchment ? 'border-orange-700' : 'border-orange-300',
-                            activeBg: isParchment ? 'bg-orange-50' : 'bg-orange-950/60',
-                            selectedBg: isParchment ? 'bg-orange-100 border-orange-600' : 'bg-orange-950/80 border-orange-400',
-                            glow: 'shadow-[0_0_16px_rgba(251,146,60,0.4)]',
-                            badgeBg: 'bg-orange-950/80 text-orange-200 border-orange-400/60'
-                          };
-                      }
-                    };
-
-                    const virtueTheme = getVirtueChoiceTheme();
 
                     return (
                       <button
@@ -840,64 +739,35 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                             if (onSelectChoice) onSelectChoice(choice);
                           }, 350);
                         }}
-                        className={`flex items-center justify-between p-2.5 sm:p-3 rounded-2xl border-2 transition-all cursor-pointer text-left relative ${
-                          isParchment
-                            ? isSelected
-                              ? `${virtueTheme.selectedBg} text-[#1c1917] shadow-lg scale-[1.01] font-bold`
-                              : isCursorActive
-                              ? `${virtueTheme.activeBg} ${virtueTheme.hoverBorder} text-amber-950 ${virtueTheme.glow} translate-x-1 sm:translate-x-1.5 font-bold`
-                              : `bg-[#f4ebd7]/95 hover:bg-[#ede0c8] ${virtueTheme.border} text-[#2b2118]`
-                            : isSelected
-                            ? `${virtueTheme.selectedBg} text-white shadow-xl scale-[1.01]`
+                        className={`flex items-center justify-between gap-3 px-4 py-3 rounded-2xl border-2 transition-all cursor-pointer text-start relative ${
+                          isSelected
+                            ? 'bg-emerald-50 border-emerald-600 text-[#1b4332] shadow-[0_3px_0_#1b4332] scale-[1.01]'
                             : isCursorActive
-                            ? `${virtueTheme.activeBg} ${virtueTheme.hoverBorder} text-white ${virtueTheme.glow} translate-x-1 sm:translate-x-1.5`
-                            : `bg-black/35 hover:bg-black/55 ${virtueTheme.border} text-[#f5f0e6]`
+                            ? 'bg-[#fffaf0] border-[#d97c27] text-[#2b180b] shadow-[0_3px_0_#b8651b] -translate-y-0.5'
+                            : 'bg-[#fdf8ee] hover:bg-[#fffdf7] border-[#d4b47a] hover:border-[#d97c27] text-[#3a2312] shadow-[0_2px_0_rgba(58,35,18,0.22)]'
                         }`}
                       >
-                        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
-                          {/* Zelda Glowing Pointer Arrow */}
-                          <span className={`text-sm sm:text-base font-black transition-all shrink-0 ${
-                            isCursorActive || isSelected
-                              ? isParchment ? 'text-amber-700 opacity-100 animate-pulse' : 'text-amber-400 opacity-100 animate-pulse drop-shadow-[0_0_8px_rgba(251,191,36,0.9)]'
-                              : 'opacity-0 w-2.5'
-                          }`}>
-                            ▶
-                          </span>
+                        <span
+                          className={`leading-snug flex-1 ${
+                            isRtl
+                              ? 'font-amiri text-base sm:text-lg font-bold text-right'
+                              : 'font-serif text-xs sm:text-sm md:text-[15px] font-bold'
+                          }`}
+                        >
+                          {cleanLabel}
+                        </span>
 
-                          <span className={`text-xs sm:text-sm leading-snug ${
-                            isParchment
-                              ? isCursorActive ? 'text-amber-950 font-bold' : 'text-[#2b2118] font-semibold'
-                              : isCursorActive ? 'text-amber-100 font-bold [text-shadow:_0_1px_3px_rgb(0_0_0_/_90%)]' : 'text-[#f5f0e6] font-semibold [text-shadow:_0_1px_3px_rgb(0_0_0_/_90%)]'
-                          }`}>
-                            {getLocalizedChoiceLabel(choice, language)}
-                          </span>
-                        </div>
-                        
-                        <div className="mt-0 flex flex-wrap items-center justify-end gap-1.5 shrink-0 ml-2">
-                          {traitKeys.map((tk) => {
-                            const cfg = TRAIT_CONFIG[tk];
-                            if (!cfg) return null;
-                            return (
-                              <span
-                                key={tk}
-                                className={`text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${cfg.badgeColor} font-cinzel flex items-center gap-1 bg-black/50 shadow-xs`}
-                              >
-                                <span>{cfg.icon}</span>
-                                <span>{cfg.label}</span>
-                              </span>
-                            );
-                          })}
-
-                          {getLocalizedChoiceBadge(choice, language) && (
-                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#2d6a4f] text-[#d8f3dc] font-cinzel">
-                              {getLocalizedChoiceBadge(choice, language)}
-                            </span>
-                          )}
-
-                          <ArrowRight className={`w-3.5 h-3.5 shrink-0 transition-transform ${
-                            isCursorActive ? 'text-amber-400 translate-x-0.5' : 'text-stone-400 opacity-60'
-                          }`} />
-                        </div>
+                        <ArrowRight
+                          className={`w-4 h-4 shrink-0 transition-transform ${
+                            isRtl ? 'rotate-180' : ''
+                          } ${
+                            isSelected
+                              ? 'text-emerald-700'
+                              : isCursorActive
+                              ? 'text-[#d97c27]'
+                              : 'text-[#b08d57] opacity-75'
+                          }`}
+                        />
                       </button>
                     );
                   })}

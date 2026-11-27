@@ -404,31 +404,17 @@ export const CHAPTER_1_SCENES_EN: Scene[] = [
         waswasReason: 'The comfort zone trap and fear of being judged'
       },
       {
-        id: 's1_noura_hear',
-        type: 'dialogue',
-        speaker: 'noura',
-        text: 'Did you hear that?',
-        emotion: 'thoughtful'
-      },
-      {
-        id: 's1_othman_hear',
-        type: 'dialogue',
-        speaker: 'personnage',
-        text: '...Yes.',
-        emotion: 'worried'
-      },
-      {
         id: 's1_noura_push',
         type: 'dialogue',
         speaker: 'noura',
-        text: 'Then do not give it more room than it deserves. You cannot overcome doubt by sitting still. How would you like to begin?',
+        text: 'I can see the doubt on your face, my son. Do not give those thoughts more room than they deserve. You cannot overcome doubt by sitting still. How would you like to begin?',
         emotion: 'smiling'
       },
       {
         id: 's1_choice_morning',
         type: 'choice',
-        speaker: 'personnage',
-        text: '« What does Othman do before leaving? »',
+        speaker: 'narration',
+        text: 'What would you do in Othman’s place?',
         choices: [
           {
             id: 'c_ordre',
@@ -665,15 +651,19 @@ export const CHAPTER_1_SCENES_EN: Scene[] = [
       {
         id: 's1_door_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othman takes a deep breath and turns the handle:',
+        speaker: 'narration',
+        text: 'Othman takes a deep breath at the door. What would you do in his place?',
         choices: [
           {
             id: 'c_door_push',
-            label: '✨ « BISMILLĀH — STEP FORWARD »',
+            label: '« Bismillāh » — Open the door and step outside',
             badge: 'First Step',
             traitGains: { sabr: 5, discipline: 4 },
             habitMessage: 'Courage • Othman crosses the threshold.'
+          },
+          {
+            id: 'c_door_retreat',
+            label: 'Give in to hesitation and go back to sit on the bed'
           }
         ]
       },
@@ -744,34 +734,26 @@ export const CHAPTER_1_SCENES_EN: Scene[] = [
           },
           {
             id: 'c2',
-            label: '⚖️ Chapter 2: « Mastering Anger » — The marketplace trial & clemency (Hilm)',
-            disabled: true,
-            badge: 'Coming Soon • Chapter 2',
-            disabledReason: 'Today, facing marketplace disputes, Othman learns to stay calm, master his anger, and forgive (Hilm).',
+            label: '⚖️ Chapter 2: « The Path of Hilm » — The marketplace trial & clemency (Hilm)',
+            badge: 'Available • Chapter 2',
             interactiveSpot: { x: '50%', y: '45%' }
           },
           {
             id: 'c3',
-            label: '🍯 Chapter 3: « Facing Illness » — Prophetic remedies & trust in God (Tawakkul)',
-            disabled: true,
-            badge: 'Coming Soon • Chapter 3',
-            disabledReason: 'Today, facing pain and illness (with the boy in the arm splint), Othman discovers prophetic remedies and complete trust in God (Tawakkul).',
+            label: '🍯 Chapter 3: « The Path of Tawakkul » — Prophetic remedies & trust in Allah',
+            badge: 'Available • Chapter 3',
             interactiveSpot: { x: '65%', y: '50%' }
           },
           {
             id: 'c4',
-            label: '👨‍👩‍👧 Chapter 4: « Kindness to Parents » — Respect, love & daily care (Birr al-Walidayn)',
-            disabled: true,
-            badge: 'Coming Soon • Chapter 4',
-            disabledReason: 'Today, Othman learns the crucial importance of parents, loving obedience, and caring for them daily (Birr al-Walidayn).',
+            label: '👨‍👩‍👧 Chapter 4: « What You Still Have » — Kindness to parents & gratitude (Birr al-Wālidayn)',
+            badge: 'Available • Chapter 4',
             interactiveSpot: { x: '75%', y: '60%' }
           },
           {
             id: 'c5',
-            label: '⛰️ Chapter 5: « The Inner Mountain » — Purity of intention (Niyyah & Sincerity)',
-            disabled: true,
-            badge: 'Coming Soon • Chapter 5',
-            disabledReason: 'Today, Othman learns to act with pure intention solely for God and conquer great trials with faith (Niyyah).',
+            label: '⛰️ Chapter 5: « The Summit of Perseverance » — Steadfastness (Sabr) in the face of trial',
+            badge: 'Available • Chapter 5',
             interactiveSpot: { x: '85%', y: '45%' }
           }
         ]
@@ -1057,8 +1039,8 @@ export const CHAPTER_1_SCENES_EN: Scene[] = [
       {
         id: 's4_approach_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: '« Where does Othman decide to head inside the village? »',
+        speaker: 'narration',
+        text: 'In Othman’s place, where would you head in the village?',
         choices: [
           {
             id: 'c_place',
