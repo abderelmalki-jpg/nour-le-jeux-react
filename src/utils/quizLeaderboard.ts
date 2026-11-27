@@ -26,6 +26,133 @@ const COMPLETED_KEY = 'nour_quiz_completed_v1';
 const STREAK_KEY = 'nour_quiz_streak_v1';
 const COLLECTION_NAME = 'quiz_leaderboard';
 const FEEDBACK_COLLECTION = 'quiz_feedback';
+const XP_BOARD_COLLECTION = 'story_xp_leaderboard';
+const XP_BOARD_LOCAL_KEY = 'nour_story_xp_local_v1';
+
+export interface StoryXpEntry {
+  id: string;
+  pseudo: string;
+  xp: number;
+  level: number;
+  isCurrentUser?: boolean;
+}
+
+const SEED_XP_ENTRIES: StoryXpEntry[] = [
+  { id: 'xp_1', pseudo: 'Bilal', xp: 1840, level: 9 },
+  { id: 'xp_2', pseudo: 'Maryam', xp: 1590, level: 8 },
+  { id: 'xp_3', pseudo: 'Youssef', xp: 1320, level: 7 },
+  { id: 'xp_4', pseudo: 'Amina', xp: 1080, level: 6 },
+  { id: 'xp_5', pseudo: 'Hamza', xp: 840, level: 5 },
+  { id: 'xp_6', pseudo: 'Inès', xp: 610, level: 4 },
+];
+
+function loadLocalXpEntries(): StoryXpEntry[] {
+  try {
+    const raw = localStorage.getItem(XP_BOARD_LOCAL_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch {
+    // ignore
+  }
+  return [];
+}
+
+export async function submitStoryXpScore(params: {
+  pseudo: string;
+  xp: number;
+  level: number;
+}): Promise<void> {
+  const cleanPseudo = (params.pseudo || 'Voyageur').trim().slice(0, 20) || 'Voyageur';
+  if (params.xp <= 0) return;
+
+  const entry: StoryXpEntry = {
+    id: `local_xp_${Date.now()}`,
+    pseudo: cleanPseudo,
+    xp: Math.round(params.xp),
+    level: Math.max(1, params.level),
+  };
+
+  try {
+    const existing = loadLocalXpEntries();
+    const updated = [...existing, entry]
+      .sort((a, b) => b.xp - a.xp)
+      .slice(0, 30);
+    localStorage.setItem(XP_BOARD_LOCAL_KEY, JSON.stringify(updated));
+  } catch {
+    // ignore
+  }
+
+  try {
+    await addDoc(collection(db, XP_BOARD_COLLECTION), {
+      pseudo: entry.pseudo,
+      xp: entry.xp,
+      level: entry.level,
+      createdAt: serverTimestamp(),
+    });
+  } catch {
+    // Fallback local déjà sauvegardé
+  }
+}
+
+export async function fetchStoryXpLeaderboard(
+  currentPseudo = '',
+  currentPlayer?: { xp: number; level: number }
+): Promise<{ entries: StoryXpEntry[]; isOnline: boolean }> {
+  const local = loadLocalXpEntries();
+  if (currentPlayer && currentPlayer.xp > 0) {
+    local.push({
+      id: 'current_player',
+      pseudo: (currentPseudo || 'Toi').trim().slice(0, 20) || 'Toi',
+      xp: Math.round(currentPlayer.xp),
+      level: Math.max(1, currentPlayer.level),
+      isCurrentUser: true,
+    });
+  }
+
+  const mergeEntries = (remote: StoryXpEntry[]) => {
+    const combined = [...remote, ...local];
+    const source = combined.length >= 4 ? combined : [...combined, ...SEED_XP_ENTRIES];
+    const byPseudo = new Map<string, StoryXpEntry>();
+    const activeKey = (currentPseudo || 'Toi').trim().toLowerCase();
+
+    for (const item of source) {
+      const key = item.pseudo.trim().toLowerCase();
+      if (!key) continue;
+      const prev = byPseudo.get(key);
+      if (!prev || item.xp > prev.xp) {
+        byPseudo.set(key, {
+          ...item,
+          isCurrentUser: Boolean(item.isCurrentUser) || (Boolean(activeKey) && key === activeKey),
+        });
+      }
+    }
+    return Array.from(byPseudo.values())
+      .sort((a, b) => b.xp - a.xp)
+      .slice(0, 50);
+  };
+
+  try {
+    const q = query(collection(db, XP_BOARD_COLLECTION), orderBy('xp', 'desc'), limit(50));
+    const snap = await getDocs(q);
+    const remote: StoryXpEntry[] = [];
+    snap.forEach((doc) => {
+      const d = doc.data();
+      if (typeof d.pseudo === 'string' && typeof d.xp === 'number' && d.xp > 0) {
+        remote.push({
+          id: doc.id,
+          pseudo: d.pseudo,
+          xp: d.xp,
+          level: Number(d.level) || 1,
+        });
+      }
+    });
+    return { entries: mergeEntries(remote), isOnline: true };
+  } catch {
+    return { entries: mergeEntries([]), isOnline: false };
+  }
+}
 
 export interface QuizStreak {
   current: number;

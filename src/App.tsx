@@ -47,6 +47,10 @@ import { getSupporterStatus, setSupporterStatus, SUPPORTER_EVENT_NAME, SUPPORT_E
 import { Sparkles, Play, Compass, Shield, ChevronLeft, ChevronRight, BookOpen, ScrollText, MessageSquareQuote, FastForward, Flame } from 'lucide-react';
 import { DOCUMENT_TITLES } from './i18n/uiExtras';
 import {
+  submitStoryXpScore,
+  loadSavedPseudo
+} from './utils/quizLeaderboard';
+import {
   trackScreenView,
   trackSceneView,
   trackQuizCompleted,
@@ -1183,6 +1187,22 @@ export default function App() {
   const hasSpiritualGatePending = Boolean(
     nextSceneToUnlock && progress.xp < (nextSceneToUnlock.requiredXp || 0)
   );
+
+  // Sync player's highest XP to the Story XP Leaderboard when completing milestones
+  const lastSubmittedXpRef = useRef<number>(0);
+  useEffect(() => {
+    if (progress.xp >= 100 && progress.xp - lastSubmittedXpRef.current >= 50) {
+      lastSubmittedXpRef.current = progress.xp;
+      const savedPseudo = loadSavedPseudo();
+      if (savedPseudo) {
+        submitStoryXpScore({
+          pseudo: savedPseudo,
+          xp: progress.xp,
+          level: progress.level,
+        });
+      }
+    }
+  }, [progress.xp, progress.level]);
 
   // Auto-trigger celebratory transition overlay the first time Othman reaches enough XP to challenge the chapter's Great Waswas Boss
   useEffect(() => {

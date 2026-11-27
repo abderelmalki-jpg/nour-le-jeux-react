@@ -6,6 +6,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { UI_EXTRAS, CHAPTER_LABELS } from '../i18n/uiExtras';
 import { SupportModal } from './SupportModal';
 import { PixelFlag } from './PixelFlag';
+import {
+  fetchStoryXpLeaderboard,
+  loadSavedPseudo,
+  StoryXpEntry
+} from '../utils/quizLeaderboard';
 
 import bgCh2 from '../assets/images/bg_marche_fruits_renverses.jpg';
 import bgCh3 from '../assets/images/bg_mosquee_marches_attelle.jpg';
@@ -52,6 +57,27 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+  const [xpBoard, setXpBoard] = useState<StoryXpEntry[]>([]);
+  const [xpBoardLoading, setXpBoardLoading] = useState(false);
+  const [xpBoardOnline, setXpBoardOnline] = useState(true);
+
+  useEffect(() => {
+    if (screenMode !== 'achievements') return;
+    let cancelled = false;
+    setXpBoardLoading(true);
+    fetchStoryXpLeaderboard(
+      loadSavedPseudo(),
+      savedSummary ? { xp: savedSummary.xp, level: savedSummary.level } : undefined
+    ).then((res) => {
+      if (cancelled) return;
+      setXpBoard(res.entries);
+      setXpBoardOnline(res.isOnline);
+      setXpBoardLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [screenMode, savedSummary]);
 
   // Audio / Speech State
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => !soundManager.getMuted());
@@ -310,16 +336,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 type="button"
                 onClick={() => {
                   soundManager.playSelect();
-                  if (onOpenLanding) {
-                    onOpenLanding();
-                  } else {
-                    setShowSupportModal(true);
-                  }
+                  setShowSupportModal(true);
                 }}
                 className="pixel-tile-btn pixel-tile-menu-item py-3 px-8 text-center text-base sm:text-lg font-bold flex items-center justify-center gap-2"
               >
                 <Heart className="w-4 h-4 text-[#b91c1c] shrink-0" />
-                <span>{ux.support}</span>
+                <span>{uiLang === 'ar' ? 'حَوْلَ اللُّعْبَةِ' : uiLang === 'en' ? 'About' : 'À propos'}</span>
               </button>
             </div>
           )}
@@ -523,47 +545,71 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           {/* VUE 5 : RÉUSSITES & VERTUS DU CŒUR */}
           {/* ========================================================= */}
           {screenMode === 'achievements' && (
-            <div className="w-full flex flex-col gap-2.5 items-stretch max-w-[340px] animate-in fade-in zoom-in-95 duration-200">
+            <div
+              dir={uiLang === 'ar' ? 'rtl' : 'ltr'}
+              className="w-full flex flex-col gap-2.5 items-stretch max-w-[360px] animate-in fade-in zoom-in-95 duration-200"
+            >
               <div className="pixel-tile-frame p-3 rounded-md flex flex-col gap-2">
-                <div className="text-center font-pixel text-sm font-black text-[#3c2311] border-b-2 border-[#3c2311] pb-1">
-                  {ux.virtuesTitle}
+                <div className="flex items-center justify-between border-b-2 border-[#3c2311] pb-1.5">
+                  <span className="font-pixel text-sm font-black text-[#3c2311] flex items-center gap-1.5">
+                    <Award className="w-4 h-4 text-[#d97c27]" />
+                    <span>
+                      {uiLang === 'ar'
+                        ? 'تَرْتِيبُ نِقَاطِ الْخِبْرَةِ (XP)'
+                        : uiLang === 'en'
+                          ? 'XP Leaderboard'
+                          : 'Classement XP'}
+                    </span>
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#ebdfc8] border border-[#3c2311]/40 text-[#5c3a21]">
+                    {xpBoardOnline
+                      ? uiLang === 'ar' ? 'مُبَاشِرٌ' : uiLang === 'en' ? 'Live' : 'En ligne'
+                      : uiLang === 'ar' ? 'مَحَلِّيٌّ' : uiLang === 'en' ? 'Local' : 'Local'}
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs font-pixel">
-                  <div className="bg-[#f3ebd9] p-2 rounded border border-[#3c2311]">
-                    <div className="font-bold text-[#2d6a4f] flex items-center gap-1">
-                      <span>🕊️</span> <span>Hilm</span>
-                    </div>
-                    <div className="text-[10px] text-[#6b4728] mt-0.5">Maîtrise de soi</div>
-                  </div>
+                <p className="text-[11px] text-[#6b4728] text-center font-medium leading-snug">
+                  {uiLang === 'ar'
+                    ? 'أَعْلَى اللَّاعِبِينَ رَصِيدًا مِنْ نِقَاطِ الْخِبْرَةِ فِي مُغَامَرَةِ نُور'
+                    : uiLang === 'en'
+                      ? 'Top players with the highest XP in the NOUR adventure'
+                      : 'Les voyageurs ayant accumulé le plus d’XP dans NOUR'}
+                </p>
 
-                  <div className="bg-[#f3ebd9] p-2 rounded border border-[#3c2311]">
-                    <div className="font-bold text-[#8b4513] flex items-center gap-1">
-                      <span>🛡️</span> <span>Sabr</span>
+                <div className="max-h-52 overflow-y-auto flex flex-col gap-1.5 pr-0.5">
+                  {xpBoardLoading ? (
+                    <div className="py-6 text-center text-xs font-bold text-[#6b4728]">
+                      {uiLang === 'ar' ? 'جَارِي التَّحْمِيلُ…' : uiLang === 'en' ? 'Loading…' : 'Chargement…'}
                     </div>
-                    <div className="text-[10px] text-[#6b4728] mt-0.5">Persévérance</div>
-                  </div>
-
-                  <div className="bg-[#f3ebd9] p-2 rounded border border-[#3c2311]">
-                    <div className="font-bold text-[#1b4d3e] flex items-center gap-1">
-                      <span>📖</span> <span>'Ilm</span>
-                    </div>
-                    <div className="text-[10px] text-[#6b4728] mt-0.5">Savoir & Sagesse</div>
-                  </div>
-
-                  <div className="bg-[#f3ebd9] p-2 rounded border border-[#3c2311]">
-                    <div className="font-bold text-[#d97c27] flex items-center gap-1">
-                      <span>🤝</span> <span>Adab</span>
-                    </div>
-                    <div className="text-[10px] text-[#6b4728] mt-0.5">Bienveillance</div>
-                  </div>
+                  ) : (
+                    xpBoard.slice(0, 10).map((entry, idx) => {
+                      const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+                      return (
+                        <div
+                          key={entry.id}
+                          className={`flex items-center justify-between px-2.5 py-1.5 rounded border text-xs font-pixel ${
+                            entry.isCurrentUser
+                              ? 'bg-amber-100 border-[#d97c27] text-[#2b180b] font-black'
+                              : 'bg-[#f3ebd9] border-[#3c2311]/40 text-[#3c2311]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-6 text-center font-black shrink-0">{medal}</span>
+                            <span className="truncate font-bold">{entry.pseudo}</span>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className="text-[10px] text-[#6b4728]">
+                              {uiLang === 'ar' ? `م.${entry.level}` : `Niv.${entry.level}`}
+                            </span>
+                            <span className="px-2 py-0.5 rounded bg-[#3c2311] text-amber-200 font-mono text-[11px] font-bold">
+                              {entry.xp.toLocaleString()} XP
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
-
-                {savedSummary && (
-                  <div className="bg-[#ebdfc8] p-2 rounded border border-[#3c2311] text-center text-xs font-bold text-[#3c2311]">
-                    Niveau {savedSummary.level} • {savedSummary.xp} XP acquis
-                  </div>
-                )}
               </div>
 
               <button
