@@ -878,7 +878,7 @@ export default function App() {
         currentBeatIndex: 0
       }));
       setClimaxStep(0);
-      if (sceneId === 10 || sceneId === 17 || sceneId === 30 || sceneId === 40) {
+      if (sceneId === 10 || sceneId === 11 || sceneId === 17 || sceneId === 30 || sceneId === 40) {
         setIntroPrologueChapter(targetChap);
       }
       setActiveTab('adventure');
@@ -1619,7 +1619,7 @@ export default function App() {
                         currentBeatIndex: 0
                       }));
                     } else if (ch === 2) {
-                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
+                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 11);
                       setProgress((prev) => ({
                         ...prev,
                         currentSceneIndex: ch2Idx !== -1 ? ch2Idx : 0,
@@ -1683,7 +1683,7 @@ export default function App() {
                         setShowSupportModal(true);
                         return;
                       }
-                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
+                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 11);
                       setProgress((prev) => ({
                         ...prev,
                         completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
@@ -1735,7 +1735,7 @@ export default function App() {
                         selectedChapter: isSupporter ? 3 : 2
                       }));
                     } else {
-                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
+                      const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 11);
                       setProgress((prev) => ({
                         ...prev,
                         completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id])),
@@ -1749,7 +1749,7 @@ export default function App() {
                   }}
                   onOpenKnowledge={() => setShowKnowledge(true)}
                   onSelectChapter={(chapter) => {
-                    const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
+                    const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 11 : 1;
                     const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
                     setProgress((prev) => ({
                       ...prev,
@@ -1919,7 +1919,7 @@ export default function App() {
           }}
           onOpenQuiz={() => setShowQuiz(true)}
           onSelectChapter={(chapter) => {
-            const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
+            const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 11 : 1;
             const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
             trackGameStarted(false, progress.level, progress.xp);
             setProgress((prev) => ({
@@ -1958,7 +1958,7 @@ export default function App() {
             setIsSupporter(true);
             setShowSupportModal(false);
             if (currentScene.id === 9) {
-              const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 10);
+              const ch2Idx = ALL_SCENES.findIndex((s) => s.id === 11);
               setProgress((prev) => ({
                 ...prev,
                 completedScenes: Array.from(new Set([...prev.completedScenes, 9])),
