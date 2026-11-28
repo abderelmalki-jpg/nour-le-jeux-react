@@ -502,7 +502,7 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
 
   // Determine normalized step for the 7-step narrative journey
   let displayStep = targetSceneId;
-  const totalChapterSteps = 7;
+  let totalChapterSteps = 7;
 
   if (targetSceneId <= 9) {
     // Chapter 1 (Branch at step 5: Place=5, Ruelle=6, Vergers=7)
@@ -526,6 +526,14 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
     } else if (targetSceneId === 16) {
       displayStep = 7;
     }
+  } else if (targetSceneId >= 40 && targetSceneId <= 49) {
+    // Chapter 5 (Scenes 40..44 -> 5 scenes)
+    totalChapterSteps = 5;
+    displayStep = Math.max(1, Math.min(5, targetSceneId - 39));
+  } else if (targetSceneId >= 30 && targetSceneId <= 39) {
+    // Chapter 4 (Scenes 30..34 -> 5 scenes)
+    totalChapterSteps = 5;
+    displayStep = Math.max(1, Math.min(5, targetSceneId - 29));
   } else {
     // Chapter 3 (Branch at step 5: 201 or 202)
     if (targetSceneId <= 20) {
@@ -584,12 +592,24 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
         en: 'CONTINUE THE JOURNEY'
       }[langKey];
 
+  const handleProceed = () => {
+    soundManager.playSelect();
+    if (isLocked) {
+      onOpenQuiz?.();
+    } else {
+      onProceedToNextScene();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-300 select-none overflow-y-auto">
+    <div
+      onClick={handleProceed}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-300 select-none overflow-y-auto cursor-pointer"
+    >
       {/* Container with warm antique ivory & parchment aesthetic */}
-      <div 
+      <div
         dir={isRtl ? 'rtl' : 'ltr'}
-        className="bg-[#fbf7ee] border-2 border-[#d97c27]/40 rounded-3xl w-full max-w-2xl shadow-[0_16px_48px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col my-auto relative animate-in zoom-in-95 duration-300"
+        className="bg-[#fbf7ee] border-2 border-[#d97c27]/40 rounded-3xl w-full max-w-2xl shadow-[0_16px_48px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col my-auto relative animate-in zoom-in-95 duration-300 cursor-pointer"
       >
         {/* Subtle Decorative Background Corner Foliage (SVGs) */}
         <div className="absolute top-0 left-0 w-24 h-24 pointer-events-none opacity-15">
@@ -603,8 +623,17 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
           </svg>
         </div>
 
-        {/* 1. Top Header: Scene Number Pill & Noble Journey Subtitle */}
-        <div className="pt-6 pb-2 px-6 flex flex-col items-center text-center gap-1.5 z-10">
+        {/* Footprints Walking Keyframes */}
+        <style>{`
+          @keyframes nourFootprintWalk {
+            0%, 100% { opacity: 0.22; transform: scale(0.88); }
+            35% { opacity: 1; transform: scale(1.12); }
+            70% { opacity: 0.45; transform: scale(0.95); }
+          }
+        `}</style>
+
+        {/* 1. Top Header: Clean Scene Number Pill */}
+        <div className="pt-5 pb-1 px-6 flex flex-col items-center text-center z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#f4ebd9] border border-[#d2be9f] text-[#8c5a2b] shadow-xs">
             <span className="text-amber-600 text-xs">✦</span>
             <span className="font-cinzel text-xs font-bold tracking-widest uppercase">
@@ -614,65 +643,79 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
             </span>
             <span className="text-amber-600 text-xs">✦</span>
           </div>
-
-          <div className="flex items-center gap-3 text-stone-500 text-[11px] font-cinzel tracking-widest uppercase mt-0.5">
-            <span className="h-px w-8 bg-[#d2be9f]/60" />
-            <span className="text-[#8c5a2b] font-semibold">{headerSubtitleText}</span>
-            <span className="h-px w-8 bg-[#d2be9f]/60" />
-          </div>
         </div>
 
-        {/* 2. Companion Journey Progression Bar (Othmân ➔ Noura) */}
-        <div className="px-8 py-3 flex items-center justify-center gap-3 z-10 max-w-md mx-auto w-full">
-          {/* Othmân Avatar Badge */}
-          <div 
-            className="w-10 h-10 rounded-full border-2 border-[#d97c27] bg-[#1a1209] overflow-hidden shadow-sm shrink-0 flex items-center justify-center"
-            title="Othmân"
-          >
-            <img 
-              src={avatarOthman} 
-              alt="Othmân" 
-              className="w-full h-full object-cover" 
-            />
+        {/* 2. Companion Journey Bar: Othmân & Noura walking together ➔ Destination */}
+        <div className="px-6 sm:px-8 py-2.5 flex items-center justify-center gap-3 z-10 max-w-md mx-auto w-full">
+          {/* Othmân & Noura Together (Companion Duo) */}
+          <div className="flex items-center -space-x-2.5 rtl:space-x-reverse shrink-0" title="Othmân & Noura">
+            <div className="relative z-10 w-10 h-10 rounded-full border-2 border-[#d97c27] bg-[#1a1209] overflow-hidden shadow-sm flex items-center justify-center">
+              <img
+                src={avatarOthman}
+                alt="Othmân"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="relative z-0 w-10 h-10 rounded-full border-2 border-[#2d6a4f] bg-[#1a1209] overflow-hidden shadow-sm flex items-center justify-center">
+              <img
+                src={avatarNoura}
+                alt="Noura"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
 
-          {/* Interactive Journey Line */}
-          <div className="flex-1 flex items-center justify-between relative px-2">
-            <div className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-0.5 bg-[#e0d0b8]" />
-            <div 
-              className="absolute left-2 top-1/2 -translate-y-1/2 h-0.5 bg-[#d97c27] transition-all duration-700" 
-              style={{ width: `${Math.min(100, Math.max(0, ((displayStep - 1) / (totalChapterSteps - 1)) * 100))}%` }}
-            />
-
-            {stepsList.map((dotId) => {
-              const isPast = dotId < displayStep;
-              const isCurrent = dotId === displayStep;
+          {/* Animated Footprints Trail */}
+          <div className="flex-1 flex items-center justify-between px-1 sm:px-2" aria-hidden="true">
+            {Array.from({ length: 8 }).map((_, idx) => {
+              const isUpperStep = idx % 2 === 0;
+              const progressRatio = totalChapterSteps > 1 ? (displayStep - 1) / (totalChapterSteps - 1) : 1;
+              const isReached = idx / 7 <= progressRatio + 0.05;
 
               return (
-                <div 
-                  key={dotId} 
-                  className={`relative z-10 rounded-full transition-all duration-300 flex items-center justify-center ${
-                    isCurrent
-                      ? 'w-4 h-4 bg-[#d97c27] border-2 border-[#fbf7ee] shadow-[0_0_8px_rgba(217,124,39,0.8)] scale-110'
-                      : isPast
-                      ? 'w-2.5 h-2.5 bg-[#d97c27]'
-                      : 'w-2 h-2 bg-[#d2be9f]'
-                  }`}
-                />
+                <div
+                  key={idx}
+                  className={isUpperStep ? '-translate-y-1.5' : 'translate-y-1.5'}
+                >
+                  <div
+                    style={{
+                      animation: `nourFootprintWalk 1.8s ease-in-out ${idx * 0.18}s infinite`,
+                    }}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${
+                        isReached ? 'text-[#c26a1b]' : 'text-[#c9b394]'
+                      }`}
+                      style={{
+                        transform: isRtl
+                          ? `rotate(-90deg) ${isUpperStep ? '' : 'scaleX(-1)'}`
+                          : `rotate(90deg) ${isUpperStep ? '' : 'scaleX(-1)'}`,
+                      }}
+                      fill="currentColor"
+                    >
+                      {/* Sole */}
+                      <ellipse cx="12" cy="14.5" rx="4.2" ry="6.2" />
+                      {/* Heel */}
+                      <ellipse cx="12" cy="20.2" rx="2.9" ry="2.4" />
+                      {/* Little toes */}
+                      <circle cx="8.8" cy="6.6" r="1.35" />
+                      <circle cx="11.4" cy="5.6" r="1.25" />
+                      <circle cx="13.8" cy="6.2" r="1.15" />
+                      <circle cx="15.8" cy="7.6" r="1.0" />
+                    </svg>
+                  </div>
+                </div>
               );
             })}
           </div>
 
-          {/* Noura Avatar Badge */}
-          <div 
-            className="w-10 h-10 rounded-full border-2 border-[#2d6a4f] bg-[#1a1209] overflow-hidden shadow-sm shrink-0 flex items-center justify-center"
-            title="Noura"
+          {/* Destination / Unknown Adventure Emblem */}
+          <div
+            className="w-9 h-9 rounded-full border-2 border-[#d97c27]/70 bg-[#f4ebd9] text-[#b45309] shadow-sm shrink-0 flex items-center justify-center font-cinzel font-black text-lg leading-none"
+            aria-hidden="true"
           >
-            <img 
-              src={avatarNoura} 
-              alt="Noura" 
-              className="w-full h-full object-cover" 
-            />
+            {language === 'ar' ? '؟' : '?'}
           </div>
         </div>
 
@@ -701,8 +744,8 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
           </div>
         </div>
 
-        {/* 4. Scene Title, Poetic Subtitle & Brief */}
-        <div className="px-6 sm:px-10 py-3 text-center flex flex-col gap-1.5 z-10">
+        {/* 4. Scene Title & Brief */}
+        <div className="px-6 sm:px-10 py-2.5 text-center flex flex-col gap-1.5 z-10">
           {/* Main Title with Elegant Ornaments */}
           <h2 className="font-cinzel text-xl sm:text-2xl font-black text-[#3a2312] tracking-wide flex items-center justify-center gap-2">
             <span className="text-amber-600 text-sm">✦</span>
@@ -710,32 +753,11 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
             <span className="text-amber-600 text-sm">✦</span>
           </h2>
 
-          {/* Poetic Subtitle */}
-          <p className="font-cinzel text-xs sm:text-sm font-bold text-[#b45309] italic">
-            — {transitionMeta.subtitle[langKey]} —
-          </p>
-
           {/* Poetic Brief */}
-          <p className="text-xs sm:text-[13px] text-[#5c4028] italic font-serif leading-relaxed max-w-lg mx-auto mt-1">
+          <p className="text-sm sm:text-base text-[#5c4028] italic font-serif leading-relaxed max-w-lg mx-auto">
             {transitionMeta.brief[langKey]}
           </p>
         </div>
-
-        {/* Action XP Reward Badge if applicable */}
-        {action && (
-          <div className="mx-6 sm:mx-10 mb-2 p-2.5 rounded-xl bg-[#ebf5e9] border border-[#74c69d] flex items-center justify-between gap-3 text-xs z-10 shadow-xs">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">⭐</span>
-              <span className="font-bold text-[#2d522f]">
-                {language === 'ar' ? 'مهمة واقعية مُنجزة : ' : 'Action dans la vraie vie : '}
-                <span className="font-normal">{action.title}</span>
-              </span>
-            </div>
-            <span className="font-mono font-black text-[#2d522f] bg-[#d8f3dc] px-2 py-0.5 rounded-md border border-[#74c69d]">
-              +{action.xpReward} XP
-            </span>
-          </div>
-        )}
 
         {/* Spiritual Gate / Missing XP Notification */}
         {isLocked && (
@@ -763,39 +785,18 @@ export const SceneTransitionModal: React.FC<SceneTransitionModalProps> = ({
           </div>
         )}
 
-        {/* 5. Bottom Action: Noble CTA Button & Replay Option */}
-        <div className="pt-2 pb-6 px-6 sm:px-10 flex flex-col items-center gap-3 z-10">
+        {/* 5. Bottom Action: Noble CTA Button */}
+        <div className="pt-2 pb-6 px-6 sm:px-10 flex flex-col items-center z-10">
           <button
             type="button"
-            onClick={() => {
-              soundManager.playSelect();
-              if (isLocked) {
-                onOpenQuiz?.();
-              } else {
-                onProceedToNextScene();
-              }
+            onClick={(e) => {
+              e.stopPropagation();
+              handleProceed();
             }}
             className="w-full sm:w-auto min-w-[280px] py-3 px-8 rounded-2xl bg-gradient-to-r from-[#d97c27] via-[#ea8c35] to-[#d97c27] hover:brightness-105 active:translate-y-0.5 text-white font-cinzel font-bold text-sm sm:text-base border border-amber-300/40 shadow-[0_4px_16px_rgba(217,124,39,0.35)] flex items-center justify-center gap-2.5 transition-all cursor-pointer"
           >
             <span>{ctaButtonText}</span>
             <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Discreet Replay Button */}
-          <button
-            type="button"
-            onClick={() => {
-              soundManager.playSelect();
-              onReplayScene();
-            }}
-            className="text-[11px] text-[#8c5a2b] hover:text-[#3a2312] underline font-cinzel font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
-          >
-            <RotateCcw className="w-3 h-3 text-[#d97c27]" />
-            <span>
-              {language === 'ar'
-                ? 'إعادة قراءة المشهد السابق'
-                : 'Relire la scène précédente'}
-            </span>
           </button>
         </div>
       </div>

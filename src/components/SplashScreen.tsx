@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, RotateCcw, Lock, Clock, Heart, Award, Sparkles, BookOpen, Shield, HelpCircle, Film, ArrowLeft } from 'lucide-react';
+import { Volume2, VolumeX, RotateCcw, Lock, Clock, Award, Sparkles, BookOpen, Shield, Film, ArrowLeft } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 import { speechManager } from '../utils/speech';
 import { useLanguage } from '../context/LanguageContext';
@@ -268,7 +268,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
             </h1>
 
             {/* Ruban Parchemin Rétro Sous-Titre */}
-            <div className="relative -mt-1 sm:-mt-2 px-5 py-1 bg-[#fbf7ee] border-2 border-[#3c2311] rounded-sm shadow-[0_3px_0_#241407] flex items-center justify-center">
+            <div className="relative mt-3.5 sm:mt-4 px-5 py-1 bg-[#fbf7ee] border-2 border-[#3c2311] rounded-sm shadow-[0_3px_0_#241407] flex items-center justify-center">
               <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#d97c27] border-l-2 border-y-2 border-[#3c2311] rotate-45" />
               <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#d97c27] border-r-2 border-y-2 border-[#3c2311] rotate-45" />
               <span className="font-pixel text-xs sm:text-sm font-bold text-[#3c2311] tracking-wider whitespace-nowrap">
@@ -288,9 +288,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   soundManager.playSelect();
                   setScreenMode('story_menu');
                 }}
-                className="pixel-tile-btn pixel-tile-btn-primary pixel-tile-menu-item py-3.5 px-8 text-center text-base sm:text-lg font-black flex items-center justify-center gap-2.5"
+                className="pixel-tile-btn pixel-tile-btn-primary pixel-tile-menu-item py-3.5 px-8 text-center text-base sm:text-lg font-black flex items-center justify-center"
               >
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                 <span>{ux.storyMode}</span>
               </button>
 
@@ -302,9 +301,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                     speechManager.unlock();
                     onOpenQuiz();
                   }}
-                  className="pixel-tile-btn pixel-tile-btn-quiz pixel-tile-menu-item py-3.5 px-8 text-center text-base sm:text-lg font-black flex items-center justify-center gap-2.5"
+                  className="pixel-tile-btn pixel-tile-btn-quiz pixel-tile-menu-item py-3.5 px-8 text-center text-base sm:text-lg font-black flex items-center justify-center"
                 >
-                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-200 shrink-0" />
                   <span>{ux.quizMode}</span>
                 </button>
               )}
@@ -326,9 +324,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   soundManager.playSelect();
                   setScreenMode('achievements');
                 }}
-                className="pixel-tile-btn pixel-tile-menu-item py-3 px-8 text-center text-base sm:text-lg font-bold flex items-center justify-center gap-2"
+                className="pixel-tile-btn pixel-tile-menu-item py-3 px-8 text-center text-base sm:text-lg font-bold flex items-center justify-center"
               >
-                <Award className="w-4 h-4 text-[#b45309] shrink-0" />
                 <span>{ux.achievements}</span>
               </button>
 
@@ -338,9 +335,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   soundManager.playSelect();
                   setShowSupportModal(true);
                 }}
-                className="pixel-tile-btn pixel-tile-menu-item py-3 px-8 text-center text-base sm:text-lg font-bold flex items-center justify-center gap-2"
+                className="pixel-tile-btn pixel-tile-menu-item py-3 px-8 text-center text-base sm:text-lg font-bold flex items-center justify-center"
               >
-                <Heart className="w-4 h-4 text-[#b91c1c] shrink-0" />
                 <span>{uiLang === 'ar' ? 'حَوْلَ اللُّعْبَةِ' : uiLang === 'en' ? 'About' : 'À propos'}</span>
               </button>
             </div>

@@ -9,6 +9,7 @@ import { useTheme } from './context/ThemeContext';
 import { KNOWLEDGE_ITEMS } from './data/knowledge';
 import { INITIAL_STATS, INITIAL_QUESTS, INITIAL_BADGES, INITIAL_EQUIPMENT, INITIAL_APPEARANCE } from './data/rpgData';
 import { INITIAL_CHARACTER_TRAITS } from './utils/characterTraits';
+import { recordSiteVisit, recordGameStart } from './utils/siteStats';
 import { getLocalizedScene, getLocalizedHabitMessage } from './utils/narrativeI18n';
 import { PlayerProgress, DialogueChoice, TravelerAppearance, Scene, CharacterTraits } from './types';
 import { PixelioHeader } from './components/PixelioHeader';
@@ -23,7 +24,6 @@ import { StoryShotOverlay } from './components/StoryShotOverlay';
 import { DialogueBox } from './components/DialogueBox';
 import { QuizModal } from './components/QuizModal';
 import { IslamicQuizModal } from './components/IslamicQuizModal';
-import { RealActionModal } from './components/RealActionModal';
 import { ClimaxCombat } from './components/ClimaxCombat';
 import { KnowledgeModal } from './components/KnowledgeModal';
 import { HistoryModal } from './components/HistoryModal';
@@ -207,11 +207,24 @@ export default function App() {
   };
 
   const [viewMode, setViewMode] = useState<'landing' | 'game'>(getInitialViewMode);
-  const [showDoorRetreatModal, setShowDoorRetreatModal] = useState(false);
+  const [softGameOverChoiceId, setSoftGameOverChoiceId] = useState<
+    'c_door_retreat' | 'c_ch2_anger_retreat' | 'c_ch3_isolate_retreat' | 'c_ch4_pride_retreat' | 'c_ch5_quit_retreat' | null
+  >(null);
   const [choiceResetKey, setChoiceResetKey] = useState(0);
   const [bossReadyModal, setBossReadyModal] = useState<{ chapter: number; bossIdx: number } | null>(null);
   const [showWaswasGameOver, setShowWaswasGameOver] = useState(false);
   const promptedBossChaptersRef = useRef<Set<number>>(new Set());
+
+  // Anonymous cookieless Firestore visitor & game-start counter (site_stats/global + daily)
+  useEffect(() => {
+    recordSiteVisit();
+  }, []);
+
+  useEffect(() => {
+    if (viewMode === 'game') {
+      recordGameStart();
+    }
+  }, [viewMode]);
 
   // Sync with browser navigation (Back / Forward buttons)
   useEffect(() => {
@@ -749,27 +762,15 @@ export default function App() {
     }
     if (nextSceneIndex < ALL_SCENES.length) {
       const nextScene = ALL_SCENES[nextSceneIndex];
-      setContemplationState({
-        scene: currentScene,
-        nextScene: nextScene,
-        onFinish: () => {
-          soundManager.playQuizSuccess();
-          setSceneTransition({
-            completedScene: currentScene,
-            nextScene: nextScene
-          });
-        }
+      setSceneTransition({
+        completedScene: currentScene,
+        nextScene: nextScene
       });
     } else {
-      setContemplationState({
-        scene: currentScene,
-        onFinish: () => {
-          setProgress((prev) => ({
-            ...prev,
-            completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
-          }));
-        }
-      });
+      setProgress((prev) => ({
+        ...prev,
+        completedScenes: Array.from(new Set([...prev.completedScenes, currentScene.id]))
+      }));
     }
   };
 
@@ -916,51 +917,53 @@ export default function App() {
             : (prev.unlockedKnowledgeIds || [])
         };
       });
-      triggerWaswasChange(-15, "Bonne réponse : Le Waswâs s'affaiblit !");
+      triggerWaswasChange(-18, "Bonne réponse : Le Waswâs recule !");
     }
     advanceBeat();
   };
 
-  const handleRealActionValidate = (mode: 'done' | 'pledge' | 'skip' = 'done') => {
-    if (currentBeat.realActionId) {
-      const action = ALL_ACTIONS[currentBeat.realActionId];
-      if (action) {
-        if (mode === 'done') {
-          trackRealActionValidated(action.id, action.title, action.xpReward);
-          triggerXpGain(action.xpReward, `Action réelle accomplie : ${action.title}`);
-          setProgress((prev) => ({
-            ...prev,
-            completedRealActions: Array.from(new Set([...prev.completedRealActions, action.id])),
-            pledgedRealActions: (prev.pledgedRealActions || []).filter((id) => id !== action.id)
-          }));
-          triggerWaswasChange(-15, "Action réelle validée : L'Ombre recule !");
-        } else if (mode === 'pledge') {
-          const pledgeXp = Math.max(10, Math.round(action.xpReward / 2));
-          trackRealActionValidated(action.id, action.title + ' (Engagement)', pledgeXp);
-          triggerXpGain(pledgeXp, `Engagement d'Adab : ${action.title}`);
-          setProgress((prev) => ({
-            ...prev,
-            pledgedRealActions: Array.from(new Set([...(prev.pledgedRealActions || []), action.id]))
-          }));
-          triggerWaswasChange(-8, "Engagement pris : La détermination affaiblit le Waswâs !");
-        } else {
-          trackEvent('real_action_skipped', { action_id: action.id, action_title: action.title });
-        }
-      }
+  // Option A: Real-life actions never interrupt the story flow.
+  // They are silently unlocked in the Quests tab as optional bonus XP challenges and the story continues seamlessly.
+  useEffect(() => {
+    if (showSplash || viewMode !== 'game' || activeTab !== 'adventure') return;
+    if (contemplationState || sceneTransition) return;
+    if (!currentBeat || currentBeat.type !== 'real_action') return;
+
+    const actionId = currentBeat.realActionId;
+    if (actionId && ALL_ACTIONS[actionId]) {
+      setProgress((prev) => {
+        const alreadyDone = (prev.completedRealActions || []).includes(actionId);
+        const alreadyPledged = (prev.pledgedRealActions || []).includes(actionId);
+        if (alreadyDone || alreadyPledged) return prev;
+        return {
+          ...prev,
+          pledgedRealActions: [...(prev.pledgedRealActions || []), actionId]
+        };
+      });
     }
     advanceBeat();
-  };
+  }, [
+    showSplash,
+    viewMode,
+    activeTab,
+    contemplationState,
+    sceneTransition,
+    currentScene.id,
+    progress.currentBeatIndex,
+    currentBeat?.type,
+    currentBeat?.realActionId
+  ]);
 
   const handleValidatePledgedAction = (actionId: string, e?: React.MouseEvent) => {
     soundManager.playSelect();
     const action = ALL_ACTIONS[actionId];
     if (!action) return;
 
-    const remainingXp = Math.max(10, action.xpReward - Math.max(10, Math.round(action.xpReward / 2)));
-    handleHarvestXp(remainingXp, `Action d'Adab accomplie : ${action.title}`, e?.clientX, e?.clientY);
+    const xpBonus = action.xpReward;
+    handleHarvestXp(xpBonus, `Action d'Adab accomplie : ${action.title}`, e?.clientX, e?.clientY);
 
-    trackRealActionValidated(action.id, action.title + ' (Confirmé)', remainingXp);
-    triggerWaswasChange(-15, "Engagement accompli : L'Ombre recule !");
+    trackRealActionValidated(action.id, action.title, xpBonus);
+    triggerWaswasChange(-15, "Action réelle accomplie : L'Ombre recule !");
 
     setProgress((prev) => ({
       ...prev,
@@ -974,12 +977,24 @@ export default function App() {
   };
 
   const handleSelectChoice = (choice: DialogueChoice) => {
-    // Soft gentle "Game Over" when Othman retreats before opening the door in Scene 1
-    if (choice.id === 'c_door_retreat') {
+    // Soft gentle "Game Over" for the 5 key Waswâs temptation choices (1 per chapter)
+    if (
+      choice.id === 'c_door_retreat' ||
+      choice.id === 'c_ch2_anger_retreat' ||
+      choice.id === 'c_ch3_isolate_retreat' ||
+      choice.id === 'c_ch4_pride_retreat' ||
+      choice.id === 'c_ch5_quit_retreat'
+    ) {
       speechManager.stop();
       soundManager.playSelect();
-      setShowDoorRetreatModal(true);
+      triggerWaswasChange(15, "Céder au doute renforce le Waswâs (+15)");
+      setSoftGameOverChoiceId(choice.id);
       return;
+    }
+
+    // Positive narrative choices weaken the Waswâs visibly
+    if (choice.traitGains || choice.statBonus) {
+      triggerWaswasChange(-8, "Bon choix : Le Waswâs recule !");
     }
 
     // 0. Character Traits & Habits progression
@@ -1062,16 +1077,9 @@ export default function App() {
           return;
         }
         speechManager.stop();
-        setContemplationState({
-          scene: currentScene,
-          nextScene: targetScene,
-          onFinish: () => {
-            soundManager.playQuizSuccess();
-            setSceneTransition({
-              completedScene: currentScene,
-              nextScene: targetScene
-            });
-          }
+        setSceneTransition({
+          completedScene: currentScene,
+          nextScene: targetScene
         });
         return;
       }
@@ -1229,13 +1237,13 @@ export default function App() {
 
   // Trigger gentle Waswas Game Over if Waswas pressure reaches 100/100
   useEffect(() => {
-    if (showSplash || viewMode === 'landing' || activeTab !== 'adventure') return;
+    if (showSplash || viewMode === 'landing' || activeTab !== 'adventure' || softGameOverChoiceId) return;
     if ((progress.waswasXp || 0) >= 100 && !showWaswasGameOver) {
       speechManager.stop();
       soundManager.playSelect();
       setShowWaswasGameOver(true);
     }
-  }, [progress.waswasXp, showSplash, viewMode, activeTab, showWaswasGameOver]);
+  }, [progress.waswasXp, showSplash, viewMode, activeTab, showWaswasGameOver, softGameOverChoiceId]);
 
   if (viewMode === 'landing') {
     return (
@@ -1253,13 +1261,21 @@ export default function App() {
       <PixelioHeader
         level={progress.level}
         xp={progress.xp}
-        maxXp={1350}
+        maxXp={
+          progress.level === 1
+            ? 180
+            : progress.level === 2
+              ? 450
+              : progress.level === 3
+                ? 780
+                : progress.level === 4
+                  ? 1180
+                  : 1350
+        }
         waswasXp={progress.waswasXp || 0}
         lightPercent={progress.lightPercent}
         streakDays={progress.streakDays}
         onOpenMap={() => setActiveTab('travel')}
-        onOpenKnowledge={() => setShowKnowledge(true)}
-        onOpenQuiz={() => setShowQuiz(true)}
         onOpenLanding={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
         onReturnToMenu={() => {
           speechManager.stop();
@@ -1333,8 +1349,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Content Area based on activeTab */}
-      <div className="flex-1 min-h-0 flex flex-col overflow-hidden relative">
+      {/* Main Content Area based on activeTab — warm parchment backdrop on menu tabs so dark-brown headings are always 100% legible */}
+      <div
+        className={`flex-1 min-h-0 flex flex-col overflow-hidden relative ${
+          activeTab !== 'adventure' ? 'bg-[#efe3cd] text-[#3a2312]' : ''
+        }`}
+      >
         {activeTab === 'home' && (
           <HomeScreen
             progress={progress}
@@ -1403,6 +1423,7 @@ export default function App() {
             soundEnabled={progress.soundEnabled}
             onToggleSound={toggleSound}
             onOpenAssetManager={() => setShowAssetManager(true)}
+            onOpenKnowledge={() => setShowKnowledge(true)}
             onOpenSupport={SUPPORT_ENABLED ? () => {
               setSupportModalReason('profile');
               setShowSupportModal(true);
@@ -1549,14 +1570,6 @@ export default function App() {
                   onHarvestXp={handleHarvestXp}
                   onWaswasMistake={handleWaswasMistake}
                   customAssets={customAssets}
-                />
-              )}
-
-              {!contemplationState && !sceneTransition && currentBeat.type === 'real_action' && currentBeat.realActionId && (
-                <RealActionModal
-                  action={ALL_ACTIONS[currentBeat.realActionId] || ALL_ACTIONS.action_lit}
-                  onValidate={handleRealActionValidate}
-                  onHarvestXp={handleHarvestXp}
                 />
               )}
 
@@ -1735,6 +1748,22 @@ export default function App() {
                     setActiveTab('travel');
                   }}
                   onOpenKnowledge={() => setShowKnowledge(true)}
+                  onSelectChapter={(chapter) => {
+                    const targetSceneId = chapter === 5 ? 40 : chapter === 4 ? 30 : chapter === 3 ? 17 : chapter === 2 ? 10 : 1;
+                    const targetIdx = ALL_SCENES.findIndex((s) => s.id === targetSceneId);
+                    setProgress((prev) => ({
+                      ...prev,
+                      selectedChapter: chapter,
+                      currentSceneIndex: targetIdx !== -1 ? targetIdx : 0,
+                      currentBeatIndex: 0
+                    }));
+                    setActiveTab('adventure');
+                  }}
+                  onReturnToMenu={() => {
+                    speechManager.stop();
+                    soundManager.stopAmbient();
+                    setShowSplash(true);
+                  }}
                   onOpenFeedback={WEB_ONLY_FEATURES_ENABLED ? () => handleOpenLanding(true) : undefined}
                   onOpenSupport={SUPPORT_ENABLED ? () => {
                     setSupportModalReason('chapter_end');
@@ -1989,24 +2018,20 @@ export default function App() {
               }`}
             >
               {language === 'ar'
-                ? 'كَثُرَتِ الشُّكُوكُ حَتَّى أَثْقَلَتْ قَلْبَ عُثْمَانَ.\nلَا تَيْأَسْ… اِسْتَعِذْ بِاللَّهِ وَابْدَأِ الْفَصْلَ مِنْ جَدِيدٍ بِقَلْبٍ صَافٍ.'
+                ? 'كَثُرَتِ الشُّكُوكُ حَتَّى أَثْقَلَتْ قَلْبَ عُثْمَانَ.\nلَا تَيْأَسْ… اِسْتَعِذْ بِاللَّهِ وَأَعِدْ هَذَا الْمَشْهَدَ بِقَلْبٍ صَافٍ.'
                 : language === 'en'
-                  ? 'The whispers grew too heavy for Othman’s heart.\nDo not despair… seek refuge in Allah and begin this chapter anew with a clearer heart.'
-                  : 'Les murmures du doute sont devenus trop lourds pour le cœur d’Othmân.\nNe te décourage pas… cherche refuge auprès d’Allah et reprends ce chapitre depuis le début.'}
+                  ? 'The whispers grew too heavy for Othman’s heart.\nDo not despair… seek refuge in Allah and replay this scene with a clearer heart.'
+                  : 'Les murmures du doute sont devenus trop lourds pour le cœur d’Othmân.\nNe te décourage pas… cherche refuge auprès d’Allah et reprends cette scène depuis le début.'}
             </p>
 
             <button
               type="button"
               onClick={() => {
                 soundManager.playSelect();
-                const ch = getChapterForSceneId(currentScene.id);
-                const chapterStartSceneId = ch === 5 ? 40 : ch === 4 ? 30 : ch === 3 ? 17 : ch === 2 ? 10 : 1;
-                const startIdx = ALL_SCENES.findIndex((s) => s.id === chapterStartSceneId);
                 setShowWaswasGameOver(false);
                 setProgress((prev) => ({
                   ...prev,
-                  waswasXp: 10,
-                  currentSceneIndex: startIdx !== -1 ? startIdx : 0,
+                  waswasXp: 20,
                   currentBeatIndex: 0
                 }));
                 setChoiceResetKey((k) => k + 1);
@@ -2014,10 +2039,10 @@ export default function App() {
               className="mt-3 px-7 py-3 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
             >
               {language === 'ar'
-                ? 'إِعَادَةُ الْفَصْلِ مِنَ الْبِدَايَةِ ↺'
+                ? 'إِعَادَةُ الْمَشْهَدِ ↺'
                 : language === 'en'
-                  ? 'Restart Chapter ↺'
-                  : 'Recommencer le chapitre ↺'}
+                  ? 'Restart Scene ↺'
+                  : 'Recommencer la scène ↺'}
             </button>
           </div>
         </div>
@@ -2115,75 +2140,176 @@ export default function App() {
         </div>
       )}
 
-      {/* Cinematic Black Screen — Scene 1 Door Retreat Soft Game Over (matches IntroPrologue aesthetic) */}
-      {showDoorRetreatModal && (
-        <div
-          dir={language === 'ar' ? 'rtl' : 'ltr'}
-          className="fixed inset-0 z-[180] bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
-        >
+      {/* Cinematic Black Screen — Chapter Key Choice Soft Game Over (matches IntroPrologue aesthetic) */}
+      {softGameOverChoiceId && (() => {
+        const SOFT_GAME_OVER_COPY = {
+          c_door_retreat: {
+            eyebrow: {
+              fr: 'UN NOUVEAU MATIN T’ATTEND',
+              en: 'A NEW MORNING AWAITS',
+              ar: 'صَبَاحٌ جَدِيدٌ يَنْتَظِرُكَ'
+            },
+            title: {
+              fr: 'Le doute a gagné cette fois…',
+              en: 'Doubt won this time…',
+              ar: 'غَلَبَ التَّرَدُّدُ هَذِهِ الْمَرَّةَ…'
+            },
+            body: {
+              fr: 'Othmân n’a pas réussi à vaincre son Waswâs aujourd’hui et est retourné s’asseoir sur son lit.\nMais chaque nouveau matin est une chance offerte par Allah… il réessaiera demain.',
+              en: 'Othman could not overcome the whisper of doubt today and returned to his bed.\nYet every new dawn is a fresh chance from Allah… he will try again tomorrow.',
+              ar: 'لَمْ يَسْتَطِعْ عُثْمَانُ تَجَاوُزَ الْوَسْوَاسِ الْيَوْمَ، فَعَادَ إِلَى فِرَاشِهِ.\nلَكِنَّ كُلَّ صَبَاحٍ جَدِيدٍ هُوَ فُرْصَةٌ يَمْنَحُهَا اللَّهُ… سَيُحَاوِلُ غَدًا.'
+            },
+            cta: {
+              fr: 'Réessayer le lendemain ↺',
+              en: 'Try again tomorrow ↺',
+              ar: 'الْمُحَاوَلَةُ فِي الْغَدِ ↺'
+            }
+          },
+          c_ch2_anger_retreat: {
+            eyebrow: {
+              fr: 'LE FEU NE S’ÉTEINT PAS PAR LE FEU',
+              en: 'FIRE CANNOT EXTINGUISH FIRE',
+              ar: 'النَّارُ لَا تُطْفَأُ بِالنَّارِ'
+            },
+            title: {
+              fr: 'La colère a pris le dessus…',
+              en: 'Anger took over this time…',
+              ar: 'غَلَبَ الْغَضَبُ هَذِهِ الْمَرَّةَ…'
+            },
+            body: {
+              fr: 'Othmân a répondu par des cris. Le marché s’est figé, les cœurs se sont fermés et la dispute a enflé.\nLa vraie force (Al-Hilm) consiste à maîtriser son feu intérieur… reprends ton souffle et réessaie.',
+              en: 'Othman shouted back. The market fell silent, hearts closed, and the quarrel grew worse.\nTrue strength (Al-Hilm) is mastering the fire within… take a breath and try again.',
+              ar: 'رَدَّ عُثْمَانُ بِالصُّرَاخِ، فَتَجَمَّدَ السُّوقُ وَانْغَلَقَتِ الْقُلُوبُ وَاشْتَعَلَ الْخِلَافُ.\nالْقُوَّةُ الْحَقِيقِيَّةُ (الْحِلْمُ) هِيَ مِلْكُ النَّفْسِ عِنْدَ الْغَضَبِ… تَنَفَّسْ وَأَعِدِ الْمُحَاوَلَةَ.'
+            },
+            cta: {
+              fr: 'Reprendre ce choix ↺',
+              en: 'Reconsider this choice ↺',
+              ar: 'إِعَادَةُ الِاخْتِيَارِ ↺'
+            }
+          },
+          c_ch3_isolate_retreat: {
+            eyebrow: {
+              fr: 'LA SOLITUDE NOURRIT L’OMBRE',
+              en: 'ISOLATION FEEDS THE SHADOW',
+              ar: 'الْعُزْلَةُ تُغَذِّي الظِّلَّ'
+            },
+            title: {
+              fr: 'L’isolement a gagné cette fois…',
+              en: 'Isolation won this time…',
+              ar: 'غَلَبَتِ الْعُزْلَةُ هَذِهِ الْمَرَّةَ…'
+            },
+            body: {
+              fr: 'Othmân a écouté le murmure du repli et s’est coupé de ceux qui l’aiment. Dans le noir, le doute a paru encore plus lourd.\nLa fraternité est une lumière offerte par Allah… ouvre ton cœur et réessaie.',
+              en: 'Othman listened to the whisper of isolation and shut out those who care for him. In the dark, doubt felt even heavier.\nBrotherhood is a light granted by Allah… open your heart and try again.',
+              ar: 'أَصْغَى عُثْمَانُ لِوَسْوَسَةِ الْعُزْلَةِ وَانْقَطَعَ عَمَّنْ يُحِبُّونَهُ، فَازْدَادَ ثِقَلُ الشَّكِّ فِي الظَّلَامِ.\nالْأُخُوَّةُ نُورٌ يَمْنَحُهُ اللَّهُ… افْتَحْ قَلْبَكَ وَأَعِدِ الْمُحَاوَلَةَ.'
+            },
+            cta: {
+              fr: 'Reprendre ce choix ↺',
+              en: 'Reconsider this choice ↺',
+              ar: 'إِعَادَةُ الِاخْتِيَارِ ↺'
+            }
+          },
+          c_ch4_pride_retreat: {
+            eyebrow: {
+              fr: 'L’ORGUEIL ÉLOIGNE DES CŒURS',
+              en: 'PRIDE CLOSES THE HEART',
+              ar: 'الْكِبْرُ يُبْعِدُ الْقُلُوبَ'
+            },
+            title: {
+              fr: 'La fierté a fermé la porte…',
+              en: 'Pride closed the door…',
+              ar: 'أَغْلَقَ الْكِبْرُ الْبَابَ…'
+            },
+            body: {
+              fr: 'Othmân a laissé son orgueil parler à la place de sa gratitude. Un lourd silence s’est installé entre lui et ses parents.\nDemander pardon à ceux qui nous ont élevés grandit l’âme… reviens sur ce choix.',
+              en: 'Othman let pride speak louder than gratitude, and a heavy silence grew between him and his parents.\nApologizing to those who raised us elevates the soul… reconsider this choice.',
+              ar: 'تَرَكَ عُثْمَانُ الْكِبْرَ يَتَكَلَّمُ بَدَلًا مِنَ الِامْتِنَانِ، فَخَيَّمَ صَمْتٌ ثَقِيلٌ بَيْنَهُ وَبَيْنَ وَالِدَيْهِ.\nالِاعْتِذَارُ لِمَنْ رَبَّوْنَا يَرْفَعُ قَدْرَ النَّفْسِ… رَاجِعْ هَذَا الِاخْتِيَارَ.'
+            },
+            cta: {
+              fr: 'Reprendre ce choix ↺',
+              en: 'Reconsider this choice ↺',
+              ar: 'إِعَادَةُ الِاخْتِيَارِ ↺'
+            }
+          },
+          c_ch5_quit_retreat: {
+            eyebrow: {
+              fr: 'UN PETIT PAS VAUT MIEUX QUE L’ABANDON',
+              en: 'A SMALL STEP BEATS GIVING UP',
+              ar: 'خُطْوَةٌ صَغِيرَةٌ خَيْرٌ مِنَ الِاسْتِسْلَامِ'
+            },
+            title: {
+              fr: 'La lassitude l’a emporté…',
+              en: 'Weariness won this time…',
+              ar: 'غَلَبَ التَّعَبُ هَذِهِ الْمَرَّةَ…'
+            },
+            body: {
+              fr: 'Othmân a fait demi-tour si près du sommet, convaincu que ses petits pas ne suffisaient plus.\nPourtant, les œuvres les plus aimées d’Allah sont les plus constantes… relève-toi et poursuis l’ascension.',
+              en: 'Othman turned back so close to the summit, convinced his small steps were not enough.\nYet the deeds most beloved to Allah are the most consistent… rise and continue the climb.',
+              ar: 'تَرَاجَعَ عُثْمَانُ وَهُوَ قَرِيبٌ جِدًّا مِنَ الْقِمَّةِ، ظَانًّا أَنَّ خُطُوَاتِهِ الصَّغِيرَةَ لَا تَكْفِي.\nلَكِنَّ أَحَبَّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ… انْهَضْ وَأَكْمِلِ الصُّعُودَ.'
+            },
+            cta: {
+              fr: 'Reprendre l’ascension ↺',
+              en: 'Resume the climb ↺',
+              ar: 'مُتَابَعَةُ الصُّعُودِ ↺'
+            }
+          }
+        }[softGameOverChoiceId];
+
+        const langKey: 'fr' | 'en' | 'ar' = language === 'ar' ? 'ar' : language === 'en' ? 'en' : 'fr';
+
+        return (
           <div
-            className="pointer-events-none absolute rounded-full blur-3xl"
-            style={{
-              width: '20rem',
-              height: '20rem',
-              background:
-                'radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(180, 83, 9, 0.08) 50%, rgba(0, 0, 0, 0) 75%)',
-            }}
-          />
-
-          <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
-            <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-amber-300/80 font-cinzel font-bold">
-              {language === 'ar'
-                ? 'صَبَاحٌ جَدِيدٌ يَنْتَظِرُكَ'
-                : language === 'en'
-                  ? 'A NEW MORNING AWAITS'
-                  : 'UN NOUVEAU MATIN T’ATTEND'}
-            </span>
-
-            <h2
-              className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_18px_rgba(245,158,11,0.4)] ${
-                language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
-              }`}
-            >
-              {language === 'ar'
-                ? 'غَلَبَ التَّرَدُّدُ هَذِهِ الْمَرَّةَ…'
-                : language === 'en'
-                  ? 'Doubt won this time…'
-                  : 'Le doute a gagné cette fois…'}
-            </h2>
-
-            <p
-              className={`text-[#f7ecd7]/90 leading-relaxed whitespace-pre-line ${
-                language === 'ar'
-                  ? 'font-amiri text-lg sm:text-2xl leading-loose'
-                  : 'font-cinzel text-sm sm:text-lg tracking-wide'
-              }`}
-            >
-              {language === 'ar'
-                ? 'لَمْ يَسْتَطِعْ عُثْمَانُ تَجَاوُزَ الْوَسْوَاسِ الْيَوْمَ، فَعَادَ إِلَى فِرَاشِهِ.\nلَكِنَّ كُلَّ صَبَاحٍ جَدِيدٍ هُوَ فُرْصَةٌ يَمْنَحُهَا اللَّهُ… سَيُحَاوِلُ غَدًا.'
-                : language === 'en'
-                  ? 'Othman could not overcome the whisper of doubt today and returned to his bed.\nYet every new dawn is a fresh chance from Allah… he will try again tomorrow.'
-                  : 'Othmân n’a pas réussi à vaincre son Waswâs aujourd’hui et est retourné s’asseoir sur son lit.\nMais chaque nouveau matin est une chance offerte par Allah… il réessaiera demain.'}
-            </p>
-
-            <button
-              type="button"
-              onClick={() => {
-                soundManager.playSelect();
-                setShowDoorRetreatModal(false);
-                setChoiceResetKey((k) => k + 1);
+            dir={language === 'ar' ? 'rtl' : 'ltr'}
+            className="fixed inset-0 z-[180] bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
+          >
+            <div
+              className="pointer-events-none absolute rounded-full blur-3xl"
+              style={{
+                width: '20rem',
+                height: '20rem',
+                background:
+                  'radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(180, 83, 9, 0.08) 50%, rgba(0, 0, 0, 0) 75%)',
               }}
-              className="mt-3 px-7 py-3 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
-            >
-              {language === 'ar'
-                ? 'الْمُحَاوَلَةُ فِي الْغَدِ ↺'
-                : language === 'en'
-                  ? 'Try again tomorrow ↺'
-                  : 'Réessayer le lendemain ↺'}
-            </button>
+            />
+
+            <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
+              <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-amber-300/80 font-cinzel font-bold">
+                {SOFT_GAME_OVER_COPY.eyebrow[langKey]}
+              </span>
+
+              <h2
+                className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_18px_rgba(245,158,11,0.4)] ${
+                  language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
+                }`}
+              >
+                {SOFT_GAME_OVER_COPY.title[langKey]}
+              </h2>
+
+              <p
+                className={`text-[#f7ecd7]/90 leading-relaxed whitespace-pre-line ${
+                  language === 'ar'
+                    ? 'font-amiri text-lg sm:text-2xl leading-loose'
+                    : 'font-cinzel text-sm sm:text-lg tracking-wide'
+                }`}
+              >
+                {SOFT_GAME_OVER_COPY.body[langKey]}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  soundManager.playSelect();
+                  setSoftGameOverChoiceId(null);
+                  setChoiceResetKey((k) => k + 1);
+                }}
+                className="mt-3 px-7 py-3 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+              >
+                {SOFT_GAME_OVER_COPY.cta[langKey]}
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Subtle Habit & Moral Trait Notification Banner */}
       {habitToast && (

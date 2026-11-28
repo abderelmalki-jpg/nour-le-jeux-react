@@ -15,10 +15,10 @@ export const CHAPTER_1_PATCH: { en: Chapter1TranslationSet; ar: Chapter1Translat
       s1_noura_reply1: 'Then maybe it is time to introduce it to the world.',
       s1_othman_reply2: 'Mom... What if I cannot do it? Go toward others, speak, find my place...',
       s1_noura_reply2: 'You are already trying to know what the whole road will be like... when you have not yet taken the first step.',
-      s6_refus_choice: 'The young craftsman answers curtly. How does Othman react?',
-      s7_aid_choice: 'How does Othman step in to help the farmer?',
+      s6_refus_choice: 'The young craftsman answers curtly. What would you do in Othman’s place?',
+      s7_aid_choice: 'What would you do in Othman’s place to help the farmer?',
       s9_b3: 'His words hit exactly where it hurts... Maybe I was just lucky today. Maybe I am still the same shy boy as this morning...',
-      s9_ordeal_choice: 'Facing the hissing of the Great Waswas, what certainty does Othman raise?',
+      s9_ordeal_choice: 'Facing the hissing of the Great Waswas, what certainty would you choose in Othman’s place?',
       s9_proclamation: '« My patient efforts and my perseverance are worth more than your lies! I place my trust in Allah! »'
     },
     variants: {
@@ -49,10 +49,10 @@ export const CHAPTER_1_PATCH: { en: Chapter1TranslationSet; ar: Chapter1Translat
       s1_noura_reply1: 'إِذَنْ رُبَّمَا حَانَ الْوَقْتُ لِتُعَرِّفَهَا عَلَى الْعَالَمِ.',
       s1_othman_reply2: 'أُمِّي... وَمَاذَا لَوْ لَمْ أَنْجَحْ؟ فِي الذَّهَابِ إِلَى الْآخَرِينَ، وَفِي الْكَلَامِ، وَفِي إِيجَادِ مَكَانِي...',
       s1_noura_reply2: 'أَنْتَ تُحَاوِلُ مُنْذُ الْآنَ أَنْ تَعْرِفَ كَيْفَ سَيَكُونُ الطَّرِيقُ كُلُّهُ... وَأَنْتَ لَمْ تَخْطُ الْخُطْوَةَ الْأُولَى بَعْدُ.',
-      s6_refus_choice: 'يُجِيبُ الْحِرَفِيُّ الشَّابُّ بِجَفَاءٍ. كَيْفَ يَتَصَرَّفُ عُثْمَانُ؟',
-      s7_aid_choice: 'كَيْفَ يَتَدَخَّلُ عُثْمَانُ لِمُسَاعَدَةِ الْفَلَّاحِ؟',
+      s6_refus_choice: 'يُجِيبُ الْحِرَفِيُّ الشَّابُّ بِجَفَاءٍ. مَاذَا كُنْتَ سَتَفْعَلُ مَكَانَ عُثْمَانَ؟',
+      s7_aid_choice: 'مَاذَا كُنْتَ سَتَفْعَلُ مَكَانَ عُثْمَانَ لِمُسَاعَدَةِ الْفَلَّاحِ؟',
       s9_b3: 'كَلِمَاتُهُ تُصِيبُ بِالضَّبْطِ مَكَانَ الْأَلَمِ... رُبَّمَا كُنْتُ مَحْظُوظًا الْيَوْمَ فَقَطْ. رُبَّمَا مَا زِلْتُ ذَلِكَ الْفَتَى الْخَجُولَ نَفْسَهُ مِنْ هَذَا الصَّبَاحِ...',
-      s9_ordeal_choice: 'أَمَامَ فَحِيحِ الْوَسْوَاسِ الْأَكْبَرِ، أَيَّ يَقِينٍ يَرْفَعُ عُثْمَانُ؟',
+      s9_ordeal_choice: 'أَمَامَ فَحِيحِ الْوَسْوَاسِ الْأَكْبَرِ، أَيَّ يَقِينٍ كُنْتَ سَتَخْتَارُ مَكَانَ عُثْمَانَ؟',
       s9_proclamation: '« جُهُودِي الصَّابِرَةُ وَمُثَابَرَتِي أَغْلَى مِنْ أَكَاذِيبِكَ! أَضَعُ ثِقَتِي فِي اللهِ! »'
     },
     variants: {

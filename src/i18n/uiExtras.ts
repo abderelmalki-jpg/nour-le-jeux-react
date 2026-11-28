@@ -4,6 +4,8 @@ import type { Language } from './translations';
 // ⚠️ La version arabe est à faire relire par un arabophone natif.
 export interface UiExtras {
   play: string;
+  storyMode: string;
+  quizMode: string;
   continueGame: string;
   chapterSelect: string;
   newGame: string;
@@ -19,15 +21,32 @@ export interface UiExtras {
   resetXp: string;
   resetKeep: string;
   resetConfirm: string;
+  options: string;
+  achievements: string;
+  support: string;
+  back: string;
+  emptySlot: string;
+  adventure: string;
+  arcadeQuests: string;
+  soundLabel: string;
+  voiceLabel: string;
+  soundEnabled: string;
+  soundDisabled: string;
+  voiceEnabled: string;
+  voiceDisabled: string;
+  selectLanguage: string;
+  virtuesTitle: string;
 }
 
 export const UI_EXTRAS: Record<Language, UiExtras> = {
   fr: {
     play: 'JOUER',
-    continueGame: 'CONTINUER',
+    storyMode: 'Mode Histoire',
+    quizMode: 'Quiz',
+    continueGame: 'Continuer',
     chapterSelect: 'Sélection des Chapitres',
-    newGame: 'Nouvelle partie',
-    about: 'À propos du jeu',
+    newGame: 'Nouvelle Partie',
+    about: 'À propos',
     loading: 'Éveil de la lumière...',
     soon: 'BIENTÔT',
     voiceOn: 'Voix Active',
@@ -38,14 +57,31 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     resetWarning: 'Attention ! Tu vas effacer toute ton aventure et repartir du tout début.',
     resetXp: 'XP acquis',
     resetKeep: 'Garder ma partie',
-    resetConfirm: 'Oui, tout recommencer'
+    resetConfirm: 'Oui, tout recommencer',
+    options: 'Options',
+    achievements: 'Classements',
+    support: 'Support',
+    back: 'Retour',
+    emptySlot: '-- VIDE --',
+    adventure: 'Aventure',
+    arcadeQuests: 'Quêtes & Sagesse',
+    soundLabel: 'Sons & Musique',
+    voiceLabel: 'Narration Vocale',
+    soundEnabled: 'ACTIVÉ',
+    soundDisabled: 'COUPÉ',
+    voiceEnabled: 'ACTIVE',
+    voiceDisabled: 'COUPÉE',
+    selectLanguage: 'Langue du jeu',
+    virtuesTitle: 'Vertus du Cœur'
   },
   en: {
     play: 'PLAY',
-    continueGame: 'CONTINUE',
+    storyMode: 'Story Mode',
+    quizMode: 'Quiz',
+    continueGame: 'Continue',
     chapterSelect: 'Chapter Selection',
     newGame: 'New Game',
-    about: 'About the Game',
+    about: 'About',
     loading: 'Awakening the light...',
     soon: 'SOON',
     voiceOn: 'Voice On',
@@ -56,10 +92,27 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     resetWarning: 'Careful! You are about to erase your whole adventure and start again from the very beginning.',
     resetXp: 'XP earned',
     resetKeep: 'Keep my game',
-    resetConfirm: 'Yes, start over'
+    resetConfirm: 'Yes, start over',
+    options: 'Options',
+    achievements: 'Rankings',
+    support: 'Support',
+    back: 'Back',
+    emptySlot: '-- EMPTY --',
+    adventure: 'Adventure',
+    arcadeQuests: 'Quests & Wisdom',
+    soundLabel: 'Sound & Music',
+    voiceLabel: 'Voice Narration',
+    soundEnabled: 'ENABLED',
+    soundDisabled: 'MUTED',
+    voiceEnabled: 'ACTIVE',
+    voiceDisabled: 'MUTED',
+    selectLanguage: 'Game Language',
+    virtuesTitle: 'Heart Virtues'
   },
   ar: {
     play: 'ابْدَأْ',
+    storyMode: 'وَضْعُ الْقِصَّةِ',
+    quizMode: 'الِاخْتِبَارَاتُ',
     continueGame: 'مُتَابَعَةٌ',
     chapterSelect: 'اخْتِيَارُ الْفُصُولِ',
     newGame: 'لُعْبَةٌ جَدِيدَةٌ',
@@ -74,7 +127,22 @@ export const UI_EXTRAS: Record<Language, UiExtras> = {
     resetWarning: 'انْتَبِهْ! سَتَمْحُو مُغَامَرَتَكَ كُلَّهَا وَتَبْدَأُ مِنَ الْبِدَايَةِ.',
     resetXp: 'نِقَاطُ خِبْرَةٍ مُكْتَسَبَةٌ',
     resetKeep: 'الِاحْتِفَاظُ بِلُعْبَتِي',
-    resetConfirm: 'نَعَمْ، أَبْدَأُ مِنْ جَدِيدٍ'
+    resetConfirm: 'نَعَمْ، أَبْدَأُ مِنْ جَدِيدٍ',
+    options: 'خيارات',
+    achievements: 'التصنيفات',
+    support: 'الدعم',
+    back: 'رجوع',
+    emptySlot: '-- فارغ --',
+    adventure: 'المغامرة',
+    arcadeQuests: 'المهام والحكمة',
+    soundLabel: 'الأصوات والموسيقى',
+    voiceLabel: 'صوت الراوي',
+    soundEnabled: 'مُفَعَّلٌ',
+    soundDisabled: 'مَكْتُومٌ',
+    voiceEnabled: 'مُفَعَّلٌ',
+    voiceDisabled: 'مَكْتُومٌ',
+    selectLanguage: 'لغة اللعبة',
+    virtuesTitle: 'فضائل القلب'
   }
 };
 

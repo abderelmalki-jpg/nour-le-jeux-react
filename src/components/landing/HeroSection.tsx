@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Sparkles, Shield, HeartHandshake, Compass, CheckCircle2, Download, Smartphone, Film, Star, ShieldCheck, Maximize2 } from 'lucide-react';
+import { Play, Pause, Sparkles, Shield, HeartHandshake, Compass, CheckCircle2, Download, Smartphone, Film, Star, ShieldCheck, Maximize2 } from 'lucide-react';
 import { GAME_URL, APK_DOWNLOAD_URL } from '../../data/gameData';
 import { trackApkDownloadClick, trackPlayGameClick } from '../../utils/analytics';
 import { useLanguage } from '../../context/LanguageContext';
@@ -14,9 +14,8 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
   const { t } = useLanguage();
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [isHeroPlaying, setIsHeroPlaying] = useState(true);
-  const [isHeroMuted, setIsHeroMuted] = useState(true);
 
-  // Safely trigger video playback on mount (muted for browser policy)
+  // Safely trigger silent video playback on mount (image speaks for itself)
   React.useEffect(() => {
     if (heroVideoRef.current) {
       heroVideoRef.current.defaultMuted = true;
@@ -32,21 +31,12 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
 
   const toggleHeroPlay = () => {
     if (!heroVideoRef.current) return;
+    heroVideoRef.current.muted = true;
     if (heroVideoRef.current.paused) {
       heroVideoRef.current.play().then(() => setIsHeroPlaying(true)).catch(() => setIsHeroPlaying(false));
     } else {
       heroVideoRef.current.pause();
       setIsHeroPlaying(false);
-    }
-  };
-
-  const toggleHeroMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!heroVideoRef.current) return;
-    heroVideoRef.current.muted = !heroVideoRef.current.muted;
-    setIsHeroMuted(heroVideoRef.current.muted);
-    if (heroVideoRef.current.paused) {
-      heroVideoRef.current.play().then(() => setIsHeroPlaying(true)).catch(() => {});
     }
   };
 
@@ -243,12 +233,12 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
                 {/* Screen Content */}
                 <div className="relative rounded-[2rem] overflow-hidden bg-black aspect-[9/16] group cursor-pointer border border-[#d4af37]/20">
                   
-                  {/* Video Player */}
+                  {/* Video Player (silent visual showcase) */}
                   <div onClick={toggleHeroPlay} className="absolute inset-0">
                     <video
                       ref={heroVideoRef}
-                      src="/nour_le_jeu_trailer_25s.mp4"
-                      poster="/game-assets/hero_landing.jpg"
+                      src="/nour_promo_devlog.mp4"
+                      poster="/game-assets/title_screen_bg.jpg"
                       autoPlay
                       loop
                       muted
@@ -263,20 +253,8 @@ export default function HeroSection({ onOpenGame, onScrollToDemo, onScrollToVide
                   {/* Gradient overlay for better text readability */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-                  {/* Controls Overlay */}
+                  {/* Controls Overlay (Play/Pause only — always muted) */}
                   <div className="absolute bottom-5 right-4 z-20 flex flex-col gap-3">
-                    {/* Sound Mute/Unmute */}
-                    <button
-                      onClick={toggleHeroMute}
-                      className="p-3 rounded-full bg-black/50 hover:bg-black/70 border border-white/20 text-white backdrop-blur-md shadow-xl transition-all hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center"
-                      title={isHeroMuted ? "Activer le son" : "Couper le son"}
-                    >
-                      {isHeroMuted ? (
-                        <VolumeX className="w-5 h-5 text-white/80" />
-                      ) : (
-                        <Volume2 className="w-5 h-5 text-emerald-400" />
-                      )}
-                    </button>
                     {/* Play/Pause */}
                     <button
                       onClick={(e) => { e.stopPropagation(); toggleHeroPlay(); }}

@@ -2,6 +2,8 @@ import React from 'react';
 import { Sparkles, ArrowRight, X, Heart, Star, Check, BookOpen, ScrollText, User } from 'lucide-react';
 import { DEFAULT_ASSETS, CustomAssetsConfig } from '../utils/assets';
 import { soundManager } from '../utils/audio';
+import { useLanguage } from '../context/LanguageContext';
+import { SCREENS_TRANSLATIONS } from '../i18n/screensTranslations';
 
 interface NouraGuideModalProps {
   mode: 'intro' | 'celebration' | 'scene_unlocked';
@@ -22,10 +24,15 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
   onClose,
   onContinue
 }) => {
+  const { language, isRtl } = useLanguage();
+  const t = SCREENS_TRANSLATIONS[language]?.guideModal || SCREENS_TRANSLATIONS.fr.guideModal;
   const nouraImg = customAssets?.characters?.noura || DEFAULT_ASSETS.characters.noura;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
+    >
       <div className="w-full max-w-sm bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl p-5 sm:p-6 shadow-[0_6px_0_#3a2312] flex flex-col gap-4 relative overflow-hidden select-none">
         {/* Top Header */}
         <div className="flex items-center justify-between border-b border-[#ebdcc4] pb-2">
@@ -33,10 +40,10 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
             <span className="text-xl">🧕</span>
             <div>
               <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel">
-                Guide du Voyageur
+                {t.subtitle}
               </span>
               <h3 className="text-sm sm:text-base font-bold text-[#3a2312] font-cinzel">
-                {title || 'Conseils de Noura'}
+                {title || t.defaultTitle}
               </h3>
             </div>
           </div>
@@ -62,8 +69,7 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
               NOURA
             </span>
             <p className="text-xs sm:text-sm text-[#3a2312] font-bold leading-relaxed mt-0.5">
-              {message ||
-                "Rappelle-toi : chaque petit effort accompli avec sincérité fait grandir ta lumière intérieure !"}
+              {message || t.defaultMessage}
             </p>
           </div>
         </div>
@@ -76,7 +82,7 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
               <ScrollText className="w-4 h-4" />
             </div>
             <div className="text-xs sm:text-sm text-[#3a2312] leading-snug">
-              <span className="font-black">Quêtes (en bas) :</span> pour rejouer les scènes et faire tes défis du jour.
+              <span className="font-black">{t.questsTipTitle} </span>{t.questsTipDesc}
             </div>
           </div>
 
@@ -85,7 +91,7 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
               <BookOpen className="w-4 h-4" />
             </div>
             <div className="text-xs sm:text-sm text-[#3a2312] leading-snug">
-              <span className="font-black">Livre (en haut) :</span> pour consulter tes acquis et sagesses.
+              <span className="font-black">{t.bookTipTitle} </span>{t.bookTipDesc}
             </div>
           </div>
 
@@ -94,7 +100,7 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
               <User className="w-4 h-4" />
             </div>
             <div className="text-xs sm:text-sm text-[#3a2312] leading-snug">
-              <span className="font-black">Profil :</span> pour changer la tenue ou la coupe d'Othmân !
+              <span className="font-black">{t.profileTipTitle} </span>{t.profileTipDesc}
             </div>
           </div>
         </div>
@@ -113,7 +119,7 @@ export const AldwinGuideModal: React.FC<NouraGuideModalProps> = ({
           }}
           className="w-full py-3.5 rounded-2xl text-[#1a1209] font-black text-sm sm:text-base font-cinzel border-2 border-[#3a2312] shadow-[0_3px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-2 hover:brightness-105"
         >
-          <span>{mode === 'scene_unlocked' ? 'Aller sur la carte' : 'Compris, en route !'}</span>
+          <span>{t.continueBtn}</span>
           <ArrowRight className="w-4 h-4 text-[#1a1209]" />
         </button>
       </div>

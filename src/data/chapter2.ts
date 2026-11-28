@@ -304,15 +304,6 @@ export const CHAPTER_2_SCENES: Scene[] = [
         waswasReason: 'Sentiment d\'injustice & sang qui monte (+20 Colère)'
       },
       {
-        id: 's11_b6',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu te laisses insulter devant toute la place ? Il t\'accuse d\'une faute que tu n\'as pas commise ! Crie plus fort que lui, montre-lui qu\'il ne peut pas te manquer de respect !',
-        emotion: 'shadow',
-        waswasXpAmount: 15,
-        waswasReason: 'Pulsion de vengeance & orgueil blessé (+15)'
-      },
-      {
         id: 's11_b7',
         type: 'dialogue',
         speaker: 'jeune',
@@ -355,8 +346,8 @@ export const CHAPTER_2_SCENES: Scene[] = [
       {
         id: 's11_colere_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Le sang monte au visage d\'Othmân. Quelle réaction choisit-il ?',
+        speaker: 'narration',
+        text: 'Le sang monte au visage d\'Othmân. Que ferais-tu à sa place ?',
         choices: [
           {
             id: 'c_colere_respiration',
@@ -381,6 +372,10 @@ export const CHAPTER_2_SCENES: Scene[] = [
             choiceType: 'decision',
             traitGains: { adab: 7, hilm: 5 },
             habitMessage: 'Décision morale • Othmân éteint le feu de la discorde par l\'Adab.'
+          },
+          {
+            id: 'c_ch2_anger_retreat',
+            label: 'Céder à la colère et lui crier ses quatre vérités'
           }
         ]
       }
@@ -441,8 +436,8 @@ export const CHAPTER_2_SCENES: Scene[] = [
       {
         id: 's12_b5_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân sent son cœur battre fort devant les regards de la foule. Il réfléchit à l\'attitude à adopter :',
+        speaker: 'narration',
+        text: 'Othmân sent son cœur battre fort devant les regards de la foule. Que ferais-tu à sa place ?',
         choices: [
           {
             id: 'c2_silence_digne',
@@ -553,8 +548,8 @@ export const CHAPTER_2_SCENES: Scene[] = [
       {
         id: 's13_b8',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân réfléchit à l\'attitude qu\'il veut adopter :',
+        speaker: 'narration',
+        text: 'Que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c2_rifq',
@@ -595,15 +590,6 @@ export const CHAPTER_2_SCENES: Scene[] = [
         type: 'dialogue',
         speaker: 'narration',
         text: 'Othmân revient sur la place du marché. Le marchand, accroupi dans la poussière, tente péniblement de trier ses grenades écrasées.'
-      },
-      {
-        id: 's14_b2',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'N\'y va pas ! Tu vas te faire humilier à nouveau ! Pourquoi aider un homme qui t\'a insulté ?',
-        emotion: 'shadow',
-        waswasXpAmount: 15,
-        waswasReason: 'Peur de la rechute & hésitation (+15)'
       },
       {
         id: 's14_b3',
@@ -688,15 +674,6 @@ export const CHAPTER_2_SCENES: Scene[] = [
         speaker: 'noura',
         text: 'Tu as choisi la voie de la pudeur et du recueillement intérieur, Othmân. Face à l\'offense, s\'isoler pour prier sincèrement pour celui qui nous a heurté est une force réservée aux âmes pures.',
         emotion: 'smiling'
-      },
-      {
-        id: 's142_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu pries pour un inconnu qui t\'a insulté devant tout le monde ?! Il méritait ta malédiction, pas tes prières ! Garde tes invocations pour toi tout seul !',
-        emotion: 'shadow',
-        waswasXpAmount: 15,
-        waswasReason: 'Tentation d\'égoïsme & rancune sourde (+15)'
       },
       {
         id: 's142_b4',

@@ -41,44 +41,42 @@ export const HUD: React.FC<HUDProps> = ({
 
   return (
     <header className="relative z-40 w-full max-w-5xl mx-auto px-3 sm:px-6 pt-3 pb-2 flex flex-col gap-2">
-      {/* Main Top Bar */}
-      <div className="flex items-center justify-between gap-2 bg-[#1b1824]/90 backdrop-blur-md px-3 sm:px-4 py-2 rounded-2xl border border-amber-500/30 shadow-xl">
+      {/* Main Top Bar Style Tuile Rétro Beige */}
+      <div className="flex items-center justify-between gap-2 bg-[#fbf7ee]/95 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-xl border-2 sm:border-3 border-[#3c2311] shadow-[0_4px_0_#241407]">
         {/* Left: Chapter & Scene Indicator */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-600 to-amber-900 flex items-center justify-center border border-amber-400/40 shadow-inner shrink-0">
-            <span className="font-cinzel text-xs sm:text-sm font-bold text-amber-100">1</span>
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#d97c27] flex items-center justify-center border-2 border-[#3c2311] shadow-xs shrink-0">
+            <span className="font-pixel text-xs sm:text-sm font-black text-white">1</span>
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-amber-400/90 font-cinzel">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-[#8c5a2b] font-pixel">
                 {playerProgress.dayNumber === 2 && currentScene.id === 2 ? '🌅 Jour 2' : 'Chapitre 1'}
               </span>
-              <span className="text-[10px] text-zinc-500">•</span>
-              <span className="text-[10px] text-zinc-400">
+              <span className="text-[10px] text-[#3c2311]/40">•</span>
+              <span className="text-[10px] text-[#5c3a21] font-pixel">
                 {playerProgress.dayNumber === 2 && currentScene.id === 2 ? 'Carrefour Déverrouillé' : `Scène ${currentScene.id}/9`}
               </span>
             </div>
             <button
               onClick={() => setShowSceneMenu(!showSceneMenu)}
-              className="flex items-center gap-1 text-xs sm:text-sm font-bold text-zinc-100 hover:text-amber-300 transition-colors truncate text-left cursor-pointer"
+              className="flex items-center gap-1 text-xs sm:text-sm font-bold font-pixel text-[#3c2311] hover:text-[#d97c27] transition-colors truncate text-left cursor-pointer"
             >
               <span className="truncate">{currentScene.title}</span>
-              <ChevronDown className={`w-3.5 h-3.5 text-amber-400 transition-transform ${showSceneMenu ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-[#d97c27] transition-transform ${showSceneMenu ? 'rotate-180' : ''}`} />
             </button>
           </div>
         </div>
 
         {/* Center: XP Bar and counter */}
-        <div className="flex items-center gap-2 bg-[#252132] px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/20">
-          <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-          <div className="flex flex-col">
-            <div className="flex items-center gap-1">
-              <span className="text-[11px] sm:text-xs font-black text-amber-300 tracking-wide font-cinzel">
-                {playerProgress.xp}
-              </span>
-              <span className="text-[9px] font-semibold text-amber-400/70">XP</span>
-            </div>
+        <div className="flex items-center gap-1.5 bg-[#ebdcc0] px-2.5 sm:px-3 py-1 rounded-lg border-2 border-[#3c2311]">
+          <Sparkles className="w-3.5 h-3.5 text-[#d97c27]" />
+          <div className="flex items-center gap-1 font-pixel">
+            <span className="text-xs font-black text-[#3c2311] tracking-wide">
+              {playerProgress.xp}
+            </span>
+            <span className="text-[9px] font-bold text-[#8c5a2b]">XP</span>
           </div>
         </div>
 
@@ -91,9 +89,9 @@ export const HUD: React.FC<HUDProps> = ({
               onOpenAssets();
             }}
             title="Personnaliser les visuels (Assets)"
-            className="p-1.5 sm:p-2 rounded-xl bg-[#252132] hover:bg-[#342f44] text-amber-300/90 border border-amber-500/30 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg bg-[#ebdcc0] hover:bg-[#e0cfb4] text-[#3c2311] border-2 border-[#3c2311] transition-all cursor-pointer shadow-xs active:translate-y-0.5"
           >
-            <ImageIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <ImageIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           {/* Knowledge Codex */}
@@ -103,11 +101,11 @@ export const HUD: React.FC<HUDProps> = ({
               onOpenKnowledge();
             }}
             title="Bibliothèque du Savoir (ʿIlm)"
-            className="p-1.5 sm:p-2 rounded-xl bg-amber-950/40 hover:bg-amber-800/40 text-amber-300 border border-amber-500/30 transition-all cursor-pointer relative"
+            className="p-1.5 rounded-lg bg-[#ebdcc0] hover:bg-[#e0cfb4] text-[#3c2311] border-2 border-[#3c2311] transition-all cursor-pointer shadow-xs active:translate-y-0.5 relative"
           >
-            <Compass className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {playerProgress.unlockedKnowledgeIds.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 text-[9px] font-black text-zinc-950 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#d97c27] text-[8px] font-black text-white rounded-full flex items-center justify-center border border-[#3c2311]">
                 {playerProgress.unlockedKnowledgeIds.length}
               </span>
             )}
@@ -120,9 +118,9 @@ export const HUD: React.FC<HUDProps> = ({
               onOpenHistory();
             }}
             title="Historique des dialogues"
-            className="p-1.5 sm:p-2 rounded-xl bg-[#252132] hover:bg-[#342f44] text-zinc-300 border border-zinc-700/60 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg bg-[#ebdcc0] hover:bg-[#e0cfb4] text-[#3c2311] border-2 border-[#3c2311] transition-all cursor-pointer shadow-xs active:translate-y-0.5"
           >
-            <BookOpen className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           {/* Audio toggle */}
@@ -132,12 +130,12 @@ export const HUD: React.FC<HUDProps> = ({
               soundManager.playSelect();
             }}
             title={playerProgress.soundEnabled ? "Couper le son" : "Activer le son"}
-            className="p-1.5 sm:p-2 rounded-xl bg-[#252132] hover:bg-[#342f44] text-zinc-300 border border-zinc-700/60 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg bg-[#ebdcc0] hover:bg-[#e0cfb4] text-[#3c2311] border-2 border-[#3c2311] transition-all cursor-pointer shadow-xs active:translate-y-0.5"
           >
             {playerProgress.soundEnabled ? (
-              <Volume2 className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-emerald-400" />
+              <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2d6a4f]" />
             ) : (
-              <VolumeX className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-zinc-500" />
+              <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8c2b2b]" />
             )}
           </button>
         </div>

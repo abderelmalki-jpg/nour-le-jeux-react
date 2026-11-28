@@ -3,19 +3,37 @@
 Champs à remplir dans App Store Connect → ton app → *Informations sur l'app* et *Version 1.0.4*.
 Les longueurs respectent les limites d'Apple (vérifiées).
 
-## Identité
+## Identité & Pack ASO / SEO Multilingue (0 doublon entre Nom, Sous-titre et Mots-clés)
 
+### 🇫🇷 Français (`fr-FR`)
 | Champ | Valeur | Limite |
 |---|---|---|
-| Nom | `Nour : Jeu Islamique & Adab` (27) | 30 |
-| Sous-titre | `L'Adab en jouant, en famille` (28) | 30 |
-| Catégorie principale | **Jeux** → sous-catégorie *Jeux de rôle* | |
-| Catégorie secondaire | **Éducation** | |
-| Mots-clés | `jeu islamique,adab,éducatif,famille,hadith,quiz,musulman,RPG,sagesse,enfants,aventure,halal` (91) | 100 |
-| Langue principale | Français (+ Anglais et Arabe si tu veux) | |
-| URL d'assistance | `https://playnour.online` (ou une page contact) | |
-| URL de politique de confidentialité | `https://playnour.online/privacy.html` | |
-| Copyright | `© 2026 Nour Studios` | |
+| Nom | `Nour : Jeu Islamique & Quiz` (27) | 30 |
+| Sous-titre | `Aventure, Adab, Coran Enfant` (28) | 30 |
+| Mots-clés | `hadith,musulman,ramadan,priere,ablution,sagesse,famille,educatif,histoire,prophete,halal,rpg,arabe` (98) | 100 |
+
+### 🇸🇦 Arabe (`ar-SA`)
+| Champ | Valeur | Limite |
+|---|---|---|
+| Nom | `نور : لعبة ومسابقات إسلامية` (27) | 30 |
+| Sous-titre | `قصة وأدب وقرآن للأطفال والأسرة` (30) | 30 |
+| Mots-clés | `حديث,وضوء,صلاة,رمضان,حكمة,تعليم,مسلم,أسئلة,ثقافة,أنبياء,سيرة,تربية,أخلاق,مغامرة,حلال,تحدي,دينية` (95) | 100 |
+
+### 🇬🇧 Anglais (`en-US` / `en-GB`)
+| Champ | Valeur | Limite |
+|---|---|---|
+| Nom | `Nour: Islamic Game & Quiz` (25) | 30 |
+| Sous-titre | `Quran, Hadith & Adab RPG Kids` (29) | 30 |
+| Mots-clés | `muslim,halal,ramadan,salah,wudu,stories,family,trivia,prophets,manners,arabic,educational,adventure` (99) | 100 |
+
+### Paramètres communs
+| Champ | Valeur |
+|---|---|
+| Catégorie principale | **Jeux** → sous-catégorie *Jeux de rôle* |
+| Catégorie secondaire | **Éducation** |
+| URL d'assistance | `https://playnour.online` |
+| URL de politique de confidentialité | `https://playnour.online/privacy.html` |
+| Copyright | `© 2026 Nour Studios` |
 
 > ⚠️ `public/privacy.html` a été mise à jour (iOS, PostHog, paiements web uniquement). **Redéploie le site**
 > (`firebase deploy --only hosting`) pour que l'URL affiche la nouvelle version avant la soumission.

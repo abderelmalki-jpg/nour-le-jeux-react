@@ -150,14 +150,14 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
   return (
     <header
       dir={isRtl ? 'rtl' : 'ltr'}
-      className={`w-full backdrop-blur-md px-1.5 sm:px-4 pt-[max(0.35rem,env(safe-area-inset-top))] pb-1 sm:py-2 flex items-center justify-between shadow-lg z-40 select-none transition-all shrink-0 ${
+      className={`w-full backdrop-blur-md px-1.5 sm:px-4 pt-[max(0.35rem,env(safe-area-inset-top))] pb-1 sm:py-2 flex items-center justify-between gap-1.5 shadow-lg z-40 select-none transition-all shrink-0 ${
         isParchment
           ? 'bg-[#f6ebd7]/95 border-b-2 border-[#c5a059]/70 text-[#2b2118]'
           : 'bg-black/55 border-b border-amber-500/30 text-white'
       }`}
     >
       {/* Left: Avatar & Dual Gauges (Othmân Nour & Waswâs Ombre) */}
-      <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+      <div className="flex items-center gap-1 sm:gap-3 min-w-0 shrink">
         {/* Avatar badge */}
         <div className="hidden sm:block w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-950/70 border-2 border-amber-400/60 overflow-hidden p-0.5 relative shadow-md shrink-0">
           <img
@@ -167,21 +167,6 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
           />
         </div>
 
-        {/* Streak badge (Série de jours) — always visible to encourage coming back */}
-        <div
-          title={`Série de ${streakDays} jour${streakDays > 1 ? 's' : ''} — reviens chaque jour pour la faire grandir !`}
-          className={`flex items-center gap-0.5 px-1 sm:px-1.5 py-0.5 rounded-lg border font-black text-[10px] font-mono shadow-xs shrink-0 transition-all ${
-            streakDays >= 3
-              ? 'bg-gradient-to-r from-orange-600 to-amber-500 text-amber-50 border-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.55)]'
-              : isParchment
-              ? 'bg-[#efe0c3] text-[#8a5a19] border-[#c58f4e]/70'
-              : 'bg-black/50 text-amber-200/90 border-amber-500/40'
-          }`}
-        >
-          <span className={streakDays >= 3 ? 'animate-pulse' : ''}>🔥</span>
-          <span>{streakDays}</span>
-        </div>
-
         {/* 1. Othmân XP Block (Gleaming Pure Gold) */}
         <div
           id="pixelio-header-xp-target"
@@ -189,12 +174,12 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
             isGaining ? 'scale-105 drop-shadow-[0_0_14px_#f59e0b]' : ''
           }`}
         >
-          <div className="flex items-center gap-1 sm:gap-1.5 relative">
-            <span className="text-[10px] font-black text-amber-950 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-300 px-1 sm:px-1.5 py-0.2 rounded-md border border-yellow-200 font-mono shadow-xs uppercase">
+          <div className="flex items-center gap-0.5 sm:gap-1.5 relative">
+            <span className="text-[9px] sm:text-[10px] font-black text-amber-950 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-300 px-1 sm:px-1.5 py-0.2 rounded-md border border-yellow-200 font-mono shadow-xs uppercase whitespace-nowrap">
               {shortLevel} {level}
             </span>
             <span
-              className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
+              className={`text-[9px] sm:text-[10px] font-bold font-mono whitespace-nowrap transition-colors duration-200 ${
                 isGaining
                   ? isParchment
                     ? 'text-amber-800 font-black scale-105'
@@ -243,13 +228,13 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               : ''
           }`}
         >
-          <div className="flex items-center gap-1 sm:gap-1.5 relative">
-            <span className="text-[10px] font-black text-fuchsia-200 bg-purple-950/90 px-1 sm:px-1.5 py-0.2 rounded-md border border-purple-400/60 font-mono shadow-xs flex items-center gap-0.5 sm:gap-1">
+          <div className="flex items-center gap-0.5 sm:gap-1.5 relative">
+            <span className="text-[9px] sm:text-[10px] font-black text-fuchsia-200 bg-purple-950/90 px-1 sm:px-1.5 py-0.2 rounded-md border border-purple-400/60 font-mono shadow-xs flex items-center gap-0.5 sm:gap-1">
               <span>🌑</span>
               <span className="tracking-wide hidden sm:inline">{shortWaswas}</span>
             </span>
             <span
-              className={`text-[10px] font-bold font-mono transition-colors duration-200 ${
+              className={`text-[9px] sm:text-[10px] font-bold font-mono whitespace-nowrap transition-colors duration-200 ${
                 isWaswasGaining
                   ? isParchment
                     ? 'text-purple-800 font-black scale-105'
@@ -306,7 +291,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
       </div>
 
       {/* Right: Streamlined Actions (Quiz, Savoir, unified Menu/Settings) */}
-      <div className="header-actions flex items-center gap-1.5 shrink-0">
+      <div className="header-actions flex items-center gap-1 sm:gap-1.5 shrink-0">
         {/* Dedicated Islamic Quiz Button */}
         {onOpenQuiz && (
           <button
@@ -323,11 +308,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
                 ? 'Savoir requis pour la suite du voyage ! Réponds aux Quiz (+XP)'
                 : 'Quiz & Défis (+XP)'
             }
-            className={`px-2.5 py-1.5 rounded-xl border-2 transition-all cursor-pointer shadow-sm flex items-center gap-1.5 active:scale-95 font-cinzel text-[11px] sm:text-xs shrink-0 ${
-              hasSpiritualGatePending
-                ? 'bg-[#2d6a4f] hover:bg-[#387f5e] border-amber-400 text-amber-200 font-black ring-2 ring-amber-400/70 animate-pulse shadow-[0_0_12px_rgba(245,158,11,0.6)]'
-                : 'bg-[#2d6a4f] hover:bg-[#387f5e] border-[#52b788]/70 text-emerald-50 font-bold'
-            }`}
+            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl border-2 transition-all cursor-pointer shadow-sm flex items-center gap-1 sm:gap-1.5 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0 bg-[#2d6a4f] hover:bg-[#387f5e] border-[#52b788]/70 text-emerald-50 font-bold"
           >
             <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
             <span>{language === 'ar' ? 'اختبار' : 'Quiz'}</span>
@@ -342,7 +323,7 @@ export const PixelioHeader: React.FC<PixelioHeaderProps> = ({
               onOpenKnowledge();
             }}
             title={language === 'ar' ? 'كتاب العلم والحكمة' : language === 'en' ? 'Book of Wisdom' : 'Livre du Savoir'}
-            className="px-2.5 py-1.5 rounded-xl bg-amber-600/95 border-2 border-amber-400/70 hover:bg-amber-500 text-white font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1.5 active:scale-95 font-cinzel text-[11px] sm:text-xs shrink-0"
+            className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-amber-600/95 border-2 border-amber-400/70 hover:bg-amber-500 text-white font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1 sm:gap-1.5 active:scale-95 font-cinzel text-[10px] sm:text-xs shrink-0"
           >
             <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             <span className="hidden sm:inline">{language === 'ar' ? 'العلم' : language === 'en' ? 'Wisdom' : 'Savoir'}</span>

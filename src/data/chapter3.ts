@@ -226,41 +226,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         emotion: 'worried'
       },
       {
-        id: 's17_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu vois bien ? Tu es devenu un fardeau pour tout le monde. Tu ne sers plus à rien. Abandonne tes projets, tu n\'atteindras jamais la sagesse...',
-        emotion: 'shadow',
-        waswasXpAmount: 20,
-        waswasReason: 'Culpabilité & abattement face à la maladie (+20)',
-        adaptiveVariants: [
-          {
-            dominantTrait: 'discipline',
-            text: 'Toutes tes routines sont anéanties ! Tu as raté ton réveil, ta journée est ruinée, tu ne vaux rien dès que ton planning s\'effondre !'
-          },
-          {
-            dominantTrait: 'vitalite',
-            text: 'Toi qui te croyais si fort et infatigable ! Regarde tes bras trembler. Tu n\'es qu\'une coquille vide incapable de faire trois pas !'
-          },
-          {
-            dominantTrait: 'ilm',
-            text: 'À quoi bon tout ce savoir accumulé si tu ne peux même pas tenir debout ? Tes réflexions ne te guériront pas !'
-          },
-          {
-            dominantTrait: 'adab',
-            text: 'Tu es devenu un fardeau pour Noura. Elle doit s\'épuiser à te soigner alors que tu devrais la soulager ! Tu la déçois !'
-          },
-          {
-            dominantTrait: 'sabr',
-            text: 'Tu prétends patienter... mais au fond tu sais que cette maladie va durer indéfiniment. Abandonne tout espoir !'
-          },
-          {
-            dominantTrait: 'hilm',
-            text: 'Tu retiens tes plaintes, mais une colère sourde bouillonne : pourquoi ce coup d\'arrêt tombe-t-il sur toi ?'
-          }
-        ]
-      },
-      {
         id: 's17_b4',
         type: 'dialogue',
         speaker: 'noura',
@@ -285,8 +250,8 @@ export const CHAPTER_3_SCENES: Scene[] = [
       {
         id: 's17_b6_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân réfléchit à l\'attitude qu\'il choisit d\'adopter face à sa faiblesse ce matin...',
+        speaker: 'narration',
+        text: 'Face à sa faiblesse ce matin, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c3_discipline_soins',
@@ -359,15 +324,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         emotion: 'worried'
       },
       {
-        id: 's18_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Fuis cet endroit ! Ne pose aucune question ! Fais semblant que tout va bien, les faibles consultent les médecins, pas les héros !',
-        emotion: 'shadow',
-        waswasXpAmount: 15,
-        waswasReason: 'Peur du diagnostic & tentation de déni (+15)'
-      },
-      {
         id: 's18_b4',
         type: 'dialogue',
         speaker: 'apothicaire',
@@ -431,15 +387,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         text: 'Mais au premier rang des marches, un jeune garçon de son âge monte paisiblement. Son bras gauche est solidement maintenu par une attelle de bois clair enveloppée de bandelettes de lin blanc.'
       },
       {
-        id: 's19_b4',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu as vu ? Même lui monte sans se plaindre ! Toi tu n\'as qu\'une fatigue et tu gémis ! Tu es pitoyable !',
-        emotion: 'shadow',
-        waswasXpAmount: 15,
-        waswasReason: 'Comparaison culpabilisante du Waswâs (+15)'
-      },
-      {
         id: 's19_b5',
         type: 'dialogue',
         speaker: 'attelle',
@@ -450,8 +397,8 @@ export const CHAPTER_3_SCENES: Scene[] = [
       {
         id: 's19_b5_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân réfléchit à l\'attitude fraternelle à adopter face au jeune garçon blessé...',
+        speaker: 'narration',
+        text: 'Face au jeune garçon blessé, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c3_entraide_marche',
@@ -546,8 +493,8 @@ export const CHAPTER_3_SCENES: Scene[] = [
       {
         id: 's20_b6_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân réfléchit à la façon dont il souhaite poursuivre son après-midi de convalescence...',
+        speaker: 'narration',
+        text: 'Pour poursuivre cet après-midi de convalescence, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c3_verger',
@@ -690,15 +637,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         emotion: 'worried'
       },
       {
-        id: 's21_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Ne leur écris surtout pas ! Tu vas déranger tout le monde avec tes complaintes. Isole-toi dans le noir, tu n\'as plus ta place parmi eux !',
-        emotion: 'shadow',
-        waswasXpAmount: 20,
-        waswasReason: 'Tentateur d\'isolement & peur de l\'oubli (+20)'
-      },
-      {
         id: 's21_b4',
         type: 'dialogue',
         speaker: 'noura',
@@ -708,8 +646,8 @@ export const CHAPTER_3_SCENES: Scene[] = [
       {
         id: 's21_b4_choice',
         type: 'choice',
-        speaker: 'personnage',
-        text: 'Othmân réfléchit à la façon d\'agir pour dissiper la solitude et garder le lien...',
+        speaker: 'narration',
+        text: 'Pour dissiper la solitude et garder le lien, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c3_message_fraternel',
@@ -724,6 +662,10 @@ export const CHAPTER_3_SCENES: Scene[] = [
             responsePreview: '« Maman veille sur moi avec tant d\'amour. Je la remercie de tout cœur avant de penser au reste. »',
             moralKey: 'gratitude_proche',
             statBonus: { stat: 'constance', amount: 2 }
+          },
+          {
+            id: 'c_ch3_isolate_retreat',
+            label: 'S’enfermer dans le noir et couper le lien avec tout le monde'
           }
         ]
       },
@@ -770,15 +712,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         speaker: 'personnage',
         text: 'Pourquoi moi ? Pourquoi maintenant ? Je faisais mes efforts, je cherchais à être bon ! Pourquoi mon propre corps me trahit-il ?',
         emotion: 'worried'
-      },
-      {
-        id: 's22_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Parce que tes efforts ne valent rien ! Tu as été abandonné ! Si Dieu t\'aimait, tu serais fort et invincible !',
-        emotion: 'shadow',
-        waswasXpAmount: 25,
-        waswasReason: 'Révolte & sentiment d\'injustice (+25)'
       },
       {
         id: 's22_b4',
@@ -884,15 +817,6 @@ export const CHAPTER_3_SCENES: Scene[] = [
         speaker: 'personnage',
         text: 'J\'ai pris mes soins, j\'ai bu la Talbîna... Pourtant ce soir, je ne me sens pas beaucoup plus vigoureux qu\'hier. À quoi bon tout cet effort si rien ne change ?',
         emotion: 'worried'
-      },
-      {
-        id: 's24_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu as perdu ton temps ! La guérison ne viendra jamais ! Tu resteras faible pour toujours !',
-        emotion: 'shadow',
-        waswasXpAmount: 20,
-        waswasReason: 'Découragement face à la lenteur de la guérison (+20)'
       },
       {
         id: 's24_b4',

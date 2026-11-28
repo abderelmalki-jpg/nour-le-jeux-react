@@ -94,14 +94,6 @@ export const CHAPTER_5_SCENES: Scene[] = [
         text: 'La montée est bien plus raide que je ne l\'imaginais… Mes jambes sont lourdes et le sommet paraît encore si loin.'
       },
       {
-        id: 's40_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        speakerName: 'Le Waswâs',
-        emotion: 'shadow',
-        text: 'À quoi bon continuer ? Tu as déjà fait quatre chapitres, c\'est bien assez ! Redescends te reposer, personne ne te reprochera d\'abandonner.'
-      },
-      {
         id: 's40_b4',
         type: 'dialogue',
         speaker: 'noura',
@@ -112,9 +104,8 @@ export const CHAPTER_5_SCENES: Scene[] = [
       {
         id: 's40_choice',
         type: 'choice',
-        speaker: 'personnage',
-        speakerName: 'Othmân',
-        text: 'La fatigue pèse sur les épaules d\'Othmân. Comment choisit-il d\'aborder la montée ?',
+        speaker: 'narration',
+        text: 'La fatigue pèse sur les épaules d\'Othmân. Que ferais-tu à sa place pour aborder la montée ?',
         choices: [
           {
             id: 'c40_pas',
@@ -124,9 +115,13 @@ export const CHAPTER_5_SCENES: Scene[] = [
           },
           {
             id: 'c40_souffle',
-            label: '« Je reprends mon souffle calmement et je fixe mon cap vers la lumière. »',
+            label: '« Je reprends mon souffle calmement, je dis Bismillāh et je continue vers le sommet. »',
             habitMessage: 'Savoir s\'arrêter pour respirer sans renoncer est une vraie force.',
             traitGains: { hilm: 2, sabr: 2 }
+          },
+          {
+            id: 'c_ch5_quit_retreat',
+            label: 'Écouter la fatigue et redescendre au pied de la montagne'
           }
         ]
       }
@@ -259,14 +254,13 @@ export const CHAPTER_5_SCENES: Scene[] = [
       {
         id: 's43_choice',
         type: 'choice',
-        speaker: 'personnage',
-        speakerName: 'Othmân',
-        text: 'Avant le dernier virage vers le sommet, quelle intention Othmân place-t-il dans son cœur ?',
+        speaker: 'narration',
+        text: 'Avant le dernier virage vers le sommet, quelle intention choisirais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c43_partage',
-            label: '« Partager la lumière que j\'ai reçue avec ceux qui doutent encore. »',
-            habitMessage: 'La vraie lumière grandit lorsqu\'on la partage.',
+            label: '« Transmettre le bien que j\'ai appris et encourager ceux qui traversent une épreuve. »',
+            habitMessage: 'Transmettre un savoir utile et soutenir ses frères est un acte béni.',
             traitGains: { adab: 2, sabr: 2 }
           },
           {
@@ -282,7 +276,7 @@ export const CHAPTER_5_SCENES: Scene[] = [
         type: 'real_action',
         speaker: 'enfant',
         speakerName: 'Pont de Nour',
-        text: 'Deviens à ton tour une lanterne pour quelqu\'un autour de toi.',
+        text: 'Encourage concrètement une personne autour de toi qui fournit un effort.',
         realActionId: 'action_encourager_proche'
       }
     ]

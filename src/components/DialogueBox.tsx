@@ -471,27 +471,32 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
           </div>
         )}
 
-        <div className="flex items-start sm:items-stretch gap-2.5 sm:gap-4">
-          {/* Incrusted Speaker Avatar / Portrait Medallion */}
-          {beat.speaker && beat.speaker !== 'system' && (
-            <div className="flex flex-col items-center justify-start sm:justify-center pt-0.5 sm:pt-0 shrink-0">
-              <div className="relative p-0.5 sm:p-1 rounded-xl sm:rounded-2xl bg-black/35 border border-amber-500/40 shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex items-center justify-center">
-                <CharacterAvatar
-                  speaker={beat.speaker}
-                  emotion={beat.emotion}
-                  size="md"
-                  customAssets={customAssets}
-                />
-                {/* Decorative corner accent */}
-                <div className="absolute -bottom-1 -right-1 w-2 sm:w-2.5 h-2 sm:h-2.5 bg-[#d97c27] border border-amber-300/80 rotate-45 rounded-xs" />
+        <div className="flex flex-col gap-2 max-h-[48dvh] sm:max-h-[54dvh] overflow-y-auto pr-0.5 custom-scrollbar">
+          <div className="flex items-start sm:items-stretch gap-2.5 sm:gap-4 shrink-0">
+            {/* Incrusted Speaker Avatar / Portrait Medallion (hidden on narrow mobile during choices to give full width) */}
+            {beat.speaker && beat.speaker !== 'system' && (
+              <div
+                className={`flex-col items-center justify-start sm:justify-center pt-0.5 sm:pt-0 shrink-0 ${
+                  beat.choices && beat.choices.length > 0 ? 'hidden sm:flex' : 'flex'
+                }`}
+              >
+                <div className="relative p-0.5 sm:p-1 rounded-xl sm:rounded-2xl bg-black/35 border border-amber-500/40 shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                  <CharacterAvatar
+                    speaker={beat.speaker}
+                    emotion={beat.emotion}
+                    size="md"
+                    customAssets={customAssets}
+                  />
+                  {/* Decorative corner accent */}
+                  <div className="absolute -bottom-1 -right-1 w-2 sm:w-2.5 h-2 sm:h-2.5 bg-[#d97c27] border border-amber-300/80 rotate-45 rounded-xs" />
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Dialogue Body with scroll protection for small screens */}
-          <div className="flex-1 min-w-0 flex flex-col gap-1.5 sm:gap-2 max-h-[36vh] sm:max-h-[48vh] overflow-y-auto pr-0.5 custom-scrollbar">
-            {/* Top Bar inside box: Voice narration toggle, replay & skip button */}
-            <div className="flex items-center justify-end min-h-[20px] sm:min-h-[24px] gap-1.5 sm:gap-2">
+            {/* Dialogue Header Controls + Text Column */}
+            <div className="flex-1 min-w-0 flex flex-col gap-1.5 sm:gap-2">
+              {/* Top Bar inside box: Voice narration toggle, replay & skip button */}
+              <div className="flex items-center justify-end flex-wrap min-h-[20px] sm:min-h-[24px] gap-1.5 sm:gap-2 shrink-0">
               {/* Skip already-read replies (returning players) */}
               {showSkipSeen && onSkipSeen && (beat.type === 'dialogue' || beat.type === 'memory_fragments') && (
                 <button
@@ -559,7 +564,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                         setIsVoiceEnabled(true);
                         speechManager.speakBeat({ id: beat.id, speaker: beat.speaker, text: fullText, lang: language }, { force: true });
                       }}
-                      className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-1.5 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
+                      className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-[#fde68a] hover:text-white transition-colors px-1.5 py-0.5 rounded-lg bg-[#3a2312] border border-[#5c3a21] shadow-xs cursor-pointer"
                       title="Réécouter la réplique"
                     >
                       <RotateCcw className="w-2.5 h-2.5" />
@@ -580,7 +585,7 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                     setDisplayedText(fullText);
                     setIsTyping(false);
                   }}
-                  className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-300 hover:text-white transition-colors px-2 py-0.5 rounded-lg bg-black/40 border border-amber-500/40 shadow-xs cursor-pointer"
+                  className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-[#fde68a] hover:text-white transition-colors px-2 py-0.5 rounded-lg bg-[#3a2312] border border-[#5c3a21] shadow-xs cursor-pointer"
                 >
                   <FastForward className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   {language === 'ar' ? 'تخطّي' : language === 'en' ? 'Skip' : 'Passer'}
@@ -624,26 +629,24 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
               </div>
             )}
 
-            {/* Arabic Script callout if present */}
+            {/* Arabic Script callout if present — always high-contrast deep amber/brown on the light parchment dialogue box */}
             {fullArabicText && (
-              <div className={`py-1 px-2 border-r-3 border-[#d97c27] text-right font-amiri text-base sm:text-lg md:text-xl tracking-wide dir-rtl my-0.5 ${
-                isParchment ? 'text-amber-800' : 'text-amber-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.95)]'
-              }`}>
+              <div className="shrink-0 py-1.5 px-2.5 border-r-3 border-[#b45309] bg-[#f4ead5]/70 rounded-l-lg text-right font-amiri text-base sm:text-lg md:text-xl font-bold tracking-wide dir-rtl my-0.5 text-[#5c2d0c] leading-relaxed">
                 {fullArabicText}
               </div>
             )}
 
             {/* Main Dialogue Text lines — framed with a golden border when presenting a choice question */}
             <div
-              className={`whitespace-pre-line min-h-[32px] sm:min-h-[44px] text-[#3c2311] ${
+              className={`shrink-0 whitespace-pre-line break-words text-[#3c2311] ${
                 beat.choices && beat.choices.length > 0
-                  ? 'bg-[#fdf7e7] border-2 border-[#d4a24c] rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(180,120,30,0.12)] font-cinzel font-black'
-                  : 'font-pixel font-bold'
+                  ? 'bg-[#fdf7e7] border-2 border-[#c89238] rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-[0_2px_10px_rgba(180,120,30,0.12)] font-cinzel font-black'
+                  : 'min-h-[32px] sm:min-h-[44px] font-pixel font-bold'
               } ${
                 isRtl
                   ? 'font-amiri text-base sm:text-lg md:text-xl leading-[1.9] text-right'
                   : beat.choices && beat.choices.length > 0
-                    ? 'text-sm sm:text-base md:text-[17px] leading-snug text-center'
+                    ? 'text-[13px] sm:text-base md:text-[17px] leading-snug text-center'
                     : 'text-xs sm:text-sm md:text-base leading-snug sm:leading-relaxed'
               }`}
             >
@@ -655,15 +658,17 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
 
             {/* Click to continue prompt - Style Evoland indicateur ▶ */}
             {!isTyping && (!beat.choices || beat.choices.length === 0) && (
-              <div className="flex justify-end items-center gap-1.5 text-xs font-pixel font-bold pt-1 select-none text-[#3c2311] animate-pulse">
+              <div className="shrink-0 flex justify-end items-center gap-1.5 text-xs font-pixel font-bold pt-1 select-none text-[#3c2311] animate-pulse">
                 <span>{(UI_EXTRAS[language] || UI_EXTRAS.fr).next}</span>
                 <span className="text-sm font-black text-[#3c2311]">▶</span>
               </div>
             )}
+            </div>
+          </div>
 
-            {/* Clean, refined Choice Tiles (no trait badges, no emojis, no leading blue arrow; traits remain active under the hood) */}
-            {beat.choices && beat.choices.length > 0 && !isTyping && (
-              <div className="mt-2.5 flex flex-col gap-2 animate-in fade-in duration-300">
+          {/* Full-width Clean Choice Tiles below the Avatar+Text row so mobile gets 100% horizontal space */}
+          {beat.choices && beat.choices.length > 0 && !isTyping && (
+            <div className="shrink-0 mt-1 flex flex-col gap-2 animate-in fade-in duration-300 w-full">
                 {selectedChoiceId && (
                   <div className="flex justify-end">
                     <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-700 text-white border border-emerald-800 shadow-xs">
@@ -774,7 +779,6 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
                 </div>
               </div>
             )}
-          </div>
         </div>
       </div>
 

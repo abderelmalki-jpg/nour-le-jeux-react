@@ -417,15 +417,6 @@ export const CHAPTER_1_SCENES: Scene[] = [
         emotion: 'thoughtful'
       },
       {
-        id: 's1_waswas_comfort',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Reste ici... Ici, personne ne te juge. Tu y es en sécurité. Dehors... tu ne sais pas ce qui t’attend.',
-        emotion: 'shadow',
-        waswasXpAmount: 10,
-        waswasReason: 'La tentation de la zone de confort'
-      },
-      {
         id: 's1_noura_push',
         type: 'dialogue',
         speaker: 'noura',
@@ -655,15 +646,6 @@ export const CHAPTER_1_SCENES: Scene[] = [
         emotion: 'thoughtful'
       },
       {
-        id: 's1_door_waswas',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu peux encore rester. Personne ne t’oblige à sortir. Tu es si bien ici...',
-        emotion: 'shadow',
-        waswasXpAmount: 10,
-        waswasReason: 'Le dernier murmure du doute devant la porte'
-      },
-      {
         id: 's1_door_noura',
         type: 'dialogue',
         speaker: 'noura',
@@ -795,6 +777,13 @@ export const CHAPTER_1_SCENES: Scene[] = [
         emotion: 'smiling'
       },
       {
+        id: 's2_ui_quests',
+        type: 'dialogue',
+        speaker: 'noura',
+        text: 'Avant de partir, regarde l’onglet Quêtes en bas, Othmân : tu peux y gagner de l’XP bonus si tu accomplis une prière, lis cinq minutes de Coran ou coupes quinze minutes de distractions. Mais rassure-toi, rien n’est obligatoire, c’est juste un coup de pouce !',
+        emotion: 'smiling'
+      },
+      {
         id: 's2_act',
         type: 'real_action',
         realActionId: 'action_depart',
@@ -819,13 +808,6 @@ export const CHAPTER_1_SCENES: Scene[] = [
         text: 'Le sentier se rétrécit sous des rochers escarpés. Une brume violacée et lourde s\'élève du sol. Un Waswas émerge : une ombre chuchotante, sans consistance physique, mais chargée de doute.'
       },
       {
-        id: 's3_b2',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu n\'y arriveras jamais.\nTu veux te faire des amis ? Tu n\'es même pas capable d\'adresser la parole à un inconnu sans bégayer.',
-        emotion: 'shadow'
-      },
-      {
         id: 's3_b3',
         type: 'dialogue',
         speaker: 'personnage',
@@ -840,6 +822,13 @@ export const CHAPTER_1_SCENES: Scene[] = [
         speaker: 'noura',
         text: 'Il ne lit pas dans tes pensées, Othmân. Il souffle sur tes doutes pour te paralyser et te pousser à faire demi-tour. Cette ombre n\'a aucun pouvoir réel, sauf celui que tu lui accordes.',
         emotion: 'thoughtful'
+      },
+      {
+        id: 's3_b6_gauge',
+        type: 'dialogue',
+        speaker: 'noura',
+        text: 'Regarde la jauge violette tout en haut de ton écran, Othmân : c\'est la pression du Waswâs — tes doutes qui montent quand tu hésites. Si elle atteint 100, tu perds ton élan ; mais chaque bon choix et chaque rappel d\'Allah la fait aussitôt reculer !',
+        emotion: 'smiling'
       },
       {
         id: 's3_b7',
@@ -901,6 +890,13 @@ export const CHAPTER_1_SCENES: Scene[] = [
         emotion: 'smiling'
       },
       {
+        id: 's3_ui_profile',
+        type: 'dialogue',
+        speaker: 'noura',
+        text: 'Et pense à ouvrir ton onglet Profil en bas : tu pourras y suivre ta progression, ton parcours et tes rangs, et surtout consulter le Livre du Savoir où s’enregistrent tous tes acquis au fil de l’aventure !',
+        emotion: 'smiling'
+      },
+      {
         id: 's3_pont_istiadhah',
         type: 'dialogue',
         speaker: 'noura',
@@ -919,13 +915,6 @@ export const CHAPTER_1_SCENES: Scene[] = [
         type: 'dialogue',
         speaker: 'narration',
         text: 'Le cœur raffermi par la demande de protection divine, Othmân plante fermement son bâton et fait un grand pas en avant.'
-      },
-      {
-        id: 's3_b17',
-        type: 'dialogue',
-        speaker: 'waswas',
-        text: 'Tu vas quand même échouer...',
-        emotion: 'shadow'
       },
       {
         id: 's3_b18',

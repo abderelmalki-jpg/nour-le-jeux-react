@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BookOpen, X, MessageSquare } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { useLanguage } from '../context/LanguageContext';
+import { SCREENS_TRANSLATIONS } from '../i18n/screensTranslations';
 
 interface HistoryEntry {
   speaker: string;
@@ -17,6 +19,8 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
   history,
   onClose
 }) => {
+  const { language, isRtl } = useLanguage();
+  const t = SCREENS_TRANSLATIONS[language]?.historyModal || SCREENS_TRANSLATIONS.fr.historyModal;
   const [filterSpeaker, setFilterSpeaker] = useState<string>('all');
 
   const filteredHistory = history.filter((entry) => {
@@ -25,7 +29,10 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 select-none">
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 select-none"
+    >
       <div className="bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-[0_12px_30px_rgba(0,0,0,0.8)] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b-2 border-[#3a2312] bg-[#f3ebd9]">
@@ -35,10 +42,10 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
             </div>
             <div>
               <span className="text-[10px] font-bold text-[#8c5a2b] uppercase tracking-widest font-cinzel">
-                Journal du récit
+                {t.subtitle}
               </span>
               <h2 className="text-base sm:text-lg font-bold text-[#3a2312] font-cinzel">
-                Historique des Dialogues
+                {t.title}
               </h2>
             </div>
           </div>
@@ -48,7 +55,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
               soundManager.playSelect();
               onClose();
             }}
-            title="Fermer"
+            title={t.closeBtn}
             className="p-2 rounded-xl bg-[#ebdfc8] hover:bg-[#d9c7ab] text-[#3a2312] border-2 border-[#3a2312] transition-colors cursor-pointer shadow-xs active:translate-y-0.5"
           >
             <X className="w-5 h-5" />
@@ -57,7 +64,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
 
         {/* Filter bar */}
         <div className="px-4 py-2.5 bg-[#ebdfc8] border-b border-[#d2be9f] flex items-center gap-1.5 overflow-x-auto">
-          {['all', 'Personnage', 'Noura', 'Waswas', 'Narration'].map((spk) => (
+          {['all', 'Othmân', 'Noura', 'Waswas', 'Narration'].map((spk) => (
             <button
               key={spk}
               onClick={() => {
@@ -75,7 +82,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                   : 'text-[#5c4028] hover:bg-[#f3ebd9] border border-[#d2be9f]'
               }`}
             >
-              {spk === 'all' ? 'Tous' : spk}
+              {spk === 'all' ? t.filterAll : spk}
             </button>
           ))}
         </div>
@@ -85,7 +92,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
           {filteredHistory.length === 0 ? (
             <div className="text-center py-12 text-[#8c6b4e] flex flex-col items-center">
               <MessageSquare className="w-8 h-8 mb-2 opacity-50 text-[#d97c27]" />
-              <p className="text-xs font-cinzel">Aucun dialogue enregistré pour le moment.</p>
+              <p className="text-xs font-cinzel">{t.emptyText}</p>
             </div>
           ) : (
             filteredHistory.map((entry, idx) => (
@@ -98,7 +105,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                     {entry.speaker}
                   </span>
                   <span className="text-[#8c5a2b] font-mono font-bold">
-                    Scène {entry.sceneId}
+                    #{entry.sceneId}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm text-[#3a2312] whitespace-pre-line leading-relaxed">

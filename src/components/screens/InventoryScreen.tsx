@@ -3,6 +3,8 @@ import { Shield, BookOpen, Clock, Heart, Anchor, Sparkles, Check } from 'lucide-
 import { EquipmentItem, PlayerStats, PlayerProgress } from '../../types';
 import { PIXEL_ASSETS } from '../../utils/assets';
 import { soundManager } from '../../utils/audio';
+import { useLanguage } from '../../context/LanguageContext';
+import { SCREENS_TRANSLATIONS, getLocalizedEquipment } from '../../i18n/screensTranslations';
 
 interface InventoryScreenProps {
   progress: PlayerProgress;
@@ -13,6 +15,9 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
   progress,
   onEquipItem
 }) => {
+  const { language, isRtl } = useLanguage();
+  const t = SCREENS_TRANSLATIONS[language]?.inventory || SCREENS_TRANSLATIONS.fr.inventory;
+
   const [activeCategory, setActiveCategory] = useState<
     'equipement' | 'objets' | 'ressources' | 'decoration'
   >('equipement');
@@ -41,14 +46,17 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
   const decoList = progress.equipment.filter((e) => e.category === 'decoration');
 
   return (
-    <div className="flex-1 flex flex-col overflow-y-auto px-3 sm:px-6 pt-3 pb-12 max-w-md mx-auto w-full gap-3 select-none custom-scrollbar">
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className="flex-1 flex flex-col overflow-y-auto px-3 sm:px-6 pt-3 pb-12 max-w-md mx-auto w-full gap-3 select-none custom-scrollbar"
+    >
       {/* Title */}
       <div>
         <span className="text-[10px] font-bold uppercase tracking-wider text-[#8c5a2b] font-cinzel">
-          Objets, équipements, ressources
+          {t.subtitle}
         </span>
         <h1 className="text-base sm:text-lg font-bold text-[#3a2312] font-cinzel">
-          SAC – INVENTAIRE
+          {t.title}
         </h1>
       </div>
 
@@ -56,10 +64,10 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
       <div className="grid grid-cols-4 p-1 bg-[#ebdfc8] border-2 border-[#3a2312] rounded-2xl shadow-[0_2px_0_#3a2312]">
         {(
           [
-            { id: 'equipement', label: 'Équipement' },
-            { id: 'objets', label: 'Objets' },
-            { id: 'ressources', label: 'Ressources' },
-            { id: 'decoration', label: 'Décoration' }
+            { id: 'equipement', label: t.tabEquipment },
+            { id: 'objets', label: t.tabObjects },
+            { id: 'ressources', label: t.tabResources },
+            { id: 'decoration', label: t.tabDecoration }
           ] as const
         ).map((tab) => (
           <button
@@ -88,7 +96,7 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
               <div className="flex flex-col gap-3 items-center">
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel mb-1">
-                    Tenue
+                    {t.slotOutfit}
                   </span>
                   <div className="w-14 h-14 rounded-2xl bg-[#ebdfc8] border-2 border-[#3a2312] flex items-center justify-center p-1 relative shadow-[0_2px_0_#3a2312]">
                     <span className="text-2xl">🥋</span>
@@ -102,7 +110,7 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
 
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel mb-1">
-                    Sac
+                    {t.slotBag}
                   </span>
                   <div className="w-14 h-14 rounded-2xl bg-[#ebdfc8] border-2 border-[#3a2312] flex items-center justify-center p-1 relative shadow-[0_2px_0_#3a2312]">
                     <span className="text-2xl">🎒</span>
@@ -125,7 +133,7 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
                   />
                 </div>
                 <span className="text-[11px] font-bold text-[#8c5a2b] font-mono mt-1">
-                  NIV. {progress.level}
+                  {t.levelShort} {progress.level}
                 </span>
               </div>
 
@@ -133,7 +141,7 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
               <div className="flex flex-col gap-3 items-center">
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel mb-1">
-                    Cape
+                    {t.slotCape}
                   </span>
                   <div className="w-14 h-14 rounded-2xl bg-[#ebdfc8] border-2 border-[#3a2312] flex items-center justify-center p-1 relative shadow-[0_2px_0_#3a2312]">
                     <span className="text-2xl">🧣</span>
@@ -147,7 +155,7 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
 
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel mb-1">
-                    Lanterne
+                    {t.slotLantern}
                   </span>
                   <div className="w-14 h-14 rounded-2xl bg-[#ebdfc8] border-2 border-[#3a2312] flex items-center justify-center p-1 relative shadow-[0_2px_0_#3a2312]">
                     <span className="text-2xl">🏮</span>
@@ -165,54 +173,57 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
           {/* Équipements Possédés */}
           <div className="bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl p-3 shadow-[0_3px_0_#3a2312]">
             <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel block mb-2">
-              ÉQUIPEMENTS POSSÉDÉS
+              {t.ownedEquipment}
             </span>
             <div className="grid grid-cols-5 gap-2">
-              {equipmentList.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    soundManager.playSelect();
-                    onEquipItem(item.id);
-                  }}
-                  className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center p-1 relative transition-all cursor-pointer ${
-                    item.equipped
-                      ? 'bg-[#ebf5e9] border-[#4a804d] shadow-[0_2px_0_#3a2312]'
-                      : 'bg-[#ebdfc8] hover:bg-[#ebdcc4] border-[#3a2312]'
-                  }`}
-                  title={`${item.name} (${item.statBonus || ''})`}
-                >
-                  <span className="text-xl">
-                    {item.category === 'tenue'
-                      ? '🥋'
-                      : item.category === 'cape'
-                      ? '🧣'
-                      : item.category === 'sac'
-                      ? '🎒'
-                      : '🏮'}
-                  </span>
-                  {item.equipped && (
-                    <div className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#4a804d] text-white flex items-center justify-center text-[8px] font-bold">
-                      ✓
-                    </div>
-                  )}
-                </button>
-              ))}
+              {equipmentList.map((item) => {
+                const locItem = getLocalizedEquipment(item, language);
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      soundManager.playSelect();
+                      onEquipItem(item.id);
+                    }}
+                    className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center p-1 relative transition-all cursor-pointer ${
+                      item.equipped
+                        ? 'bg-[#ebf5e9] border-[#4a804d] shadow-[0_2px_0_#3a2312]'
+                        : 'bg-[#ebdfc8] hover:bg-[#ebdcc4] border-[#3a2312]'
+                    }`}
+                    title={`${locItem.name} (${locItem.statBonus || ''})`}
+                  >
+                    <span className="text-xl">
+                      {item.category === 'tenue'
+                        ? '🥋'
+                        : item.category === 'cape'
+                        ? '🧣'
+                        : item.category === 'sac'
+                        ? '🎒'
+                        : '🏮'}
+                    </span>
+                    {item.equipped && (
+                      <div className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#4a804d] text-white flex items-center justify-center text-[8px] font-bold">
+                        ✓
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* STATS Display */}
           <div className="bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl p-3 shadow-[0_3px_0_#3a2312] flex flex-col gap-2">
             <span className="text-[10px] font-bold text-[#8c5a2b] uppercase font-cinzel">
-              STATS
+              {t.statsTitle}
             </span>
             <div className="grid grid-cols-1 gap-1.5">
               {[
-                { label: 'Discipline', val: progress.stats.discipline, icon: '🛡️' },
-                { label: 'Savoir', val: progress.stats.savoir, icon: '📖' },
-                { label: 'Patience', val: progress.stats.patience, icon: '⏳' },
-                { label: 'Bonté', val: progress.stats.bonte, icon: '💛' },
-                { label: 'Constance', val: progress.stats.constance, icon: '⚓' }
+                { label: t.statDiscipline, val: progress.stats.discipline, icon: '🛡️' },
+                { label: t.statSavoir, val: progress.stats.savoir, icon: '📖' },
+                { label: t.statPatience, val: progress.stats.patience, icon: '⏳' },
+                { label: t.statBonte, val: progress.stats.bonte, icon: '💛' },
+                { label: t.statConstance, val: progress.stats.constance, icon: '⚓' }
               ].map((stat) => (
                 <div key={stat.label} className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
@@ -230,52 +241,61 @@ export const InventoryScreen: React.FC<InventoryScreenProps> = ({
       {/* Other tabs: Objets, Ressources, Décoration */}
       {activeCategory === 'objets' && (
         <div className="flex flex-col gap-2">
-          {objectsList.map((item) => (
-            <div
-              key={item.id}
-              className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
-            >
-              <span className="text-2xl">📜</span>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold text-[#3a2312]">{item.name}</span>
-                <span className="text-[11px] text-[#6b4724]">{item.description}</span>
+          {objectsList.map((item) => {
+            const locItem = getLocalizedEquipment(item, language);
+            return (
+              <div
+                key={item.id}
+                className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
+              >
+                <span className="text-2xl">📜</span>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-[#3a2312]">{locItem.name}</span>
+                  <span className="text-[11px] text-[#6b4724]">{locItem.description}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
       {activeCategory === 'ressources' && (
         <div className="flex flex-col gap-2">
-          {resourcesList.map((item) => (
-            <div
-              key={item.id}
-              className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
-            >
-              <span className="text-2xl">🌾</span>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold text-[#3a2312]">{item.name}</span>
-                <span className="text-[11px] text-[#6b4724]">{item.description}</span>
+          {resourcesList.map((item) => {
+            const locItem = getLocalizedEquipment(item, language);
+            return (
+              <div
+                key={item.id}
+                className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
+              >
+                <span className="text-2xl">🌾</span>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-[#3a2312]">{locItem.name}</span>
+                  <span className="text-[11px] text-[#6b4724]">{locItem.description}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
       {activeCategory === 'decoration' && (
         <div className="flex flex-col gap-2">
-          {decoList.map((item) => (
-            <div
-              key={item.id}
-              className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
-            >
-              <span className="text-2xl">🏺</span>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold text-[#3a2312]">{item.name}</span>
-                <span className="text-[11px] text-[#6b4724]">{item.description}</span>
+          {decoList.map((item) => {
+            const locItem = getLocalizedEquipment(item, language);
+            return (
+              <div
+                key={item.id}
+                className="p-3 bg-[#fbf7ee] border-2 border-[#3a2312] rounded-2xl flex items-center gap-3 shadow-[0_2px_0_#3a2312]"
+              >
+                <span className="text-2xl">🏺</span>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-[#3a2312]">{locItem.name}</span>
+                  <span className="text-[11px] text-[#6b4724]">{locItem.description}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

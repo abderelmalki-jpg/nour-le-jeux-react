@@ -39,11 +39,6 @@ const SCENE_1_SHOTS: StoryboardShot[] = [
     alt: 'Noura apparaissant dans l’embrasure de la porte baignée de soleil'
   },
   {
-    id: 'shot_waswas',
-    src: '/game-assets/scene1/05_waswas_chambre.png',
-    alt: 'L’ombre insidieuse du Waswâs murmurant le doute dans la chambre'
-  },
-  {
     id: 'shot_lit',
     src: '/game-assets/scene1/03_othman_refait_lit.png',
     alt: 'Othmân repliant sa couverture et ordonnant son lit'
@@ -59,11 +54,6 @@ const SCENE_1_SHOTS: StoryboardShot[] = [
     alt: 'Main résolue d’Othmân posée sur le loquet de fer de la porte'
   },
   {
-    id: 'shot_sortie',
-    src: '/game-assets/scene1/07_sortie_vers_village.png',
-    alt: 'Othmân franchissant la porte ouverte sur la ruelle baignée d’or'
-  },
-  {
     id: 'shot_poteau',
     src: '/game-assets/scene1/08_chemin_vers_poteau.png',
     videoSrc: '/game-assets/scene1/08_chemin_vers_poteau.mp4',
@@ -77,11 +67,8 @@ const getScene1ActiveShotId = (beatId?: string): string => {
   // 1. Hook & monologue initial
   if (['s1_hook_1', 's1_hook_2'].includes(beatId)) return 'shot_fenetre';
 
-  // 2. Arrivée et échange avec Noura
-  if (['s1_noura_intro', 's1_othman_reply1', 's1_noura_reply1', 's1_othman_reply2', 's1_noura_reply2'].includes(beatId)) return 'shot_noura';
-
-  // 3. Apparition du Waswâs (Ombre & murmure)
-  if (['s1_waswas_comfort', 's1_noura_push'].includes(beatId)) return 'shot_waswas';
+  // 2. Arrivée et échange avec Noura (sans apparition du Waswâs dans la chambre)
+  if (['s1_noura_intro', 's1_othman_reply1', 's1_noura_reply1', 's1_othman_reply2', 's1_noura_reply2', 's1_noura_push'].includes(beatId)) return 'shot_noura';
 
   // 4. Choix du geste matinal (Othmân assis en réflexion)
   if (['s1_choice_morning'].includes(beatId)) return 'shot_fenetre';
@@ -116,14 +103,11 @@ const getScene1ActiveShotId = (beatId?: string): string => {
     return 'shot_eau_sandales';
   }
 
-  // 7. La Porte & Dernier murmure de doute
-  if (['s1_door_approach', 's1_door_waswas', 's1_door_noura', 's1_door_choice'].includes(beatId)) return 'shot_loquet';
+  // 7. La Porte
+  if (['s1_door_approach', 's1_door_noura', 's1_door_choice'].includes(beatId)) return 'shot_loquet';
 
-  // 8. Franchir le seuil au soleil
-  if (['s1_door_exit'].includes(beatId)) return 'shot_sortie';
-
-  // 9. Panorama d'ouverture vers le Poteau aux Chemins
-  if (['s1_vista_narration'].includes(beatId)) return 'shot_poteau';
+  // 8. Sortie & Panorama vidéo vers le Poteau aux Chemins
+  if (['s1_door_exit', 's1_vista_narration'].includes(beatId)) return 'shot_poteau';
 
   return 'shot_fenetre';
 };
@@ -181,7 +165,6 @@ export const SceneBackground: React.FC<SceneBackgroundProps> = ({
             's1_order_othman_niyyah',
             's1_order_noura_finish',
             's1_door_approach',
-            's1_door_waswas',
             's1_door_noura',
             's1_door_choice',
             's1_door_exit',
@@ -328,8 +311,57 @@ export const SceneBackground: React.FC<SceneBackgroundProps> = ({
 
   // Dynamic Real-Action Scene for Scene 2 (Carrefour):
   // Always show the video now, no need to wait for action_depart
+  // Dedicated illustrations for Chapter 5 mountain climb (Scenes 41, 42, 43)
+  if (scene.id === 41 || scene.id === 42 || scene.id === 43) {
+    const ch5ShotMap: Record<number, { src: string; alt: string }> = {
+      41: {
+        src: '/game-assets/chapter5/scene41_sentier_oliviers.jpg',
+        alt: 'Othmân et Noura gravissant le sentier rocheux des oliviers'
+      },
+      42: {
+        src: '/game-assets/chapter5/scene42_halte_gourde.jpg',
+        alt: 'Sur le sentier étroit de montagne, Othmân calme le voyageur pressé près de sa gourde tombée'
+      },
+      43: {
+        src: '/game-assets/chapter5/scene43_bilal_lanterne.jpg',
+        alt: 'Bilâl rattrape Othmân sur la montée avec une petite lanterne et des dattes'
+      }
+    };
+    const shot = ch5ShotMap[scene.id];
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center bg-[#181422]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img
+            src={shot.src}
+            className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl transform scale-110 pointer-events-none"
+            alt=""
+            referrerPolicy="no-referrer"
+          />
+          <img
+            src={shot.src}
+            alt={shot.alt}
+            className={`relative w-full h-full object-contain object-center transition-transform duration-[4000ms] ease-out pointer-events-none ${
+              isContemplating ? 'scale-105' : 'scale-100'
+            }`}
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        <div
+          className={`absolute inset-0 transition-all duration-1000 pointer-events-none z-10 ${
+            isContemplating
+              ? 'bg-gradient-to-t from-black/40 via-transparent to-black/20'
+              : 'bg-gradient-to-t from-black/20 via-transparent to-black/10'
+          }`}
+        />
+      </div>
+    );
+  }
+
   if (theme === 'carrefour') {
-    const bgDepart = customAssets?.backgrounds?.carrefour || DEFAULT_ASSETS.backgrounds.carrefour;
+    const isQuestsGuide = currentBeat?.id === 's2_ui_quests';
+    const bgDepart = isQuestsGuide
+      ? '/game-assets/scene2/noura_guide_quetes.jpg'
+      : customAssets?.backgrounds?.carrefour || DEFAULT_ASSETS.backgrounds.carrefour;
 
     return (
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center bg-[#181422]">
@@ -727,47 +759,17 @@ export const SceneBackground: React.FC<SceneBackgroundProps> = ({
     );
   }
 
-  // Dynamic Real-Action Scene for Scene 3 (Waswas):
-  // Purple doubt mist vs sunny clear road based on completedRealActions ('action_istiadhah')
-  // or if scene 3 beat has progressed to/past dissolution
+  // Dynamic Scene for Scene 3 & 41 (sentier ensoleillé sans représentation imagée du Waswâs avant le climax)
   if (theme === 'waswas') {
-    const isIstiadhahDone =
-      completedRealActions.includes('action_istiadhah') ||
-      (scene.id === 3 && currentBeat && ['s3_b18', 's3_b19', 's3_b20'].includes(currentBeat.id));
-    const bgMist = customAssets?.backgrounds?.waswas || DEFAULT_ASSETS.backgrounds.waswas;
-    const bgClair = customAssets?.backgrounds?.waswas_clair || DEFAULT_ASSETS.backgrounds.waswas_clair;
+    const isProfileGuide = currentBeat?.id === 's3_ui_profile';
+    const bgClair = isProfileGuide
+      ? '/game-assets/scene3/noura_guide_savoir.jpg'
+      : customAssets?.backgrounds?.waswas_clair || DEFAULT_ASSETS.backgrounds.waswas_clair;
 
     return (
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center bg-[#181422]">
-        {/* Layer 1: Brume violette de Waswas (Visible avant l'action d'Istiʿādhah) */}
-        {bgMist && (
-          <div
-            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
-              isIstiadhahDone ? 'opacity-0 pointer-events-none' : 'opacity-100'
-            }`}
-          >
-            <img src={bgMist} className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl transform scale-110 pointer-events-none" alt="" referrerPolicy="no-referrer" />
-            <SafeVideo
-              src="/game-assets/waswas_smoke.mp4"
-              poster={bgMist}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className={`relative w-full h-full object-contain object-center transition-transform duration-[4000ms] ease-out pointer-events-none ${
-                isContemplating ? 'scale-105' : 'scale-100'
-              }`}
-            />
-          </div>
-        )}
-
-        {/* Layer 2: Sentier ensoleillé et dégagé (Fades in dès que l'Istiʿādhah est faite) */}
         {bgClair && (
-          <div
-            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
-              isIstiadhahDone ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-          >
+          <div className="absolute inset-0 flex items-center justify-center">
             <img
               src={bgClair}
               className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl transform scale-110"
@@ -776,7 +778,7 @@ export const SceneBackground: React.FC<SceneBackgroundProps> = ({
             />
             <img
               src={bgClair}
-              alt="Sentier dégagé et lumineux après refuge en Allah"
+              alt="Sentier lumineux sur la voie de la sagesse"
               className={`relative w-full h-full object-contain object-center transition-transform duration-[4000ms] ease-out ${
                 isContemplating ? 'scale-105' : 'scale-100'
               }`}

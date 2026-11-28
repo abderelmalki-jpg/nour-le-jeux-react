@@ -113,7 +113,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
             : language === 'en'
               ? 'Doubt fed: The Waswas grows stronger!'
               : 'Doute nourri : Le Waswâs prend de la force !';
-        onWaswasMistake(12, reason);
+        onWaswasMistake(18, reason);
       }
     }
   };
@@ -125,10 +125,10 @@ export const QuizModal: React.FC<QuizModalProps> = ({
     : 'Choisis la bonne réponse (du 1er coup : +40 XP)';
 
   const wrongWarning = language === 'ar'
-    ? `ليست الإجابة الصحيحة — ازداد الوسواس قوة (+12) ! حاول مرة أخرى (المكافأة الحالية: +${xpReward} XP)`
+    ? `ليست الإجابة الصحيحة — ازداد الوسواس قوة (+18) ! حاول مرة أخرى (المكافأة الحالية: +${xpReward} XP)`
     : language === 'en'
-    ? `Not the right answer — the Waswas grew stronger (+12)! Try again (current reward: +${xpReward} XP)`
-    : `Ce n’est pas la bonne réponse — le Waswâs augmente (+12) ! Essaie encore (gain actuel : +${xpReward} XP)`;
+    ? `Not the right answer — the Waswas grew stronger (+18)! Try again (current reward: +${xpReward} XP)`
+    : `Ce n’est pas la bonne réponse — le Waswâs augmente (+18) ! Essaie encore (gain actuel : +${xpReward} XP)`;
 
   const harvestLabel = language === 'ar'
     ? `احصل على +${xpReward} نقطة إيمان`
@@ -142,129 +142,94 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 backdrop-blur-xs animate-in fade-in duration-200 select-none"
     >
       <div className="w-full max-w-lg bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl shadow-[0_8px_0_#3a2312] flex flex-col max-h-[85vh] relative overflow-hidden animate-in zoom-in-95 duration-200">
-        {/* Pinned Header */}
-        <div className="flex items-center justify-between p-3 sm:p-4 border-b-2 border-[#3a2312] bg-[#f3ebd9] shrink-0 z-10">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-xl bg-[#ebdfc8] border-2 border-[#3a2312] text-[#3a2312]">
-              <BookOpen className="w-4 h-4 text-[#d97c27]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-bold text-[#8c5a2b] uppercase tracking-wider font-cinzel">
-                  {t.modalTitle}
-                </span>
-                <span className="text-[9px] font-black text-[#2d6a4f] bg-[#d8f3dc] px-1.5 py-0.2 rounded-md border border-[#74c69d]">
-                  +{xpReward} XP
-                </span>
-              </div>
-              <h3 className="text-xs sm:text-sm font-bold text-[#3a2312] font-cinzel line-clamp-1">
-                {activeQuiz.topic}
-              </h3>
-            </div>
-          </div>
-
-          <span className="text-[10px] font-bold text-[#8c5a2b] bg-[#ebdfc8] px-2 py-0.5 rounded-full border border-[#3a2312] font-mono shrink-0">
-            {quiz.reference.reference}
-          </span>
-        </div>
-
         {/* Scrollable Content Body */}
         <div
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto p-3.5 sm:p-4 flex flex-col gap-3 custom-scrollbar"
         >
-          {/* Prompt from Noura */}
-          <div className="flex items-start gap-2.5 sm:gap-3 bg-[#ebdfc8] p-2.5 sm:p-3 rounded-2xl border-2 border-[#3a2312] shrink-0">
-            <CharacterAvatar
-              speaker={quiz.promptSpeaker}
-              size="sm"
-              customAssets={customAssets}
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-1.5">
-                <span className="text-xs font-bold text-[#2d6a4f] font-cinzel">
-                  {language === 'ar' ? 'نورة' : 'NOURA'}
-                </span>
+          {/* Question & 4 Options (hidden once solved so only the green teaching card remains) */}
+          {!isSolved && (
+            <>
+              {/* Prompt from Noura */}
+              <div className="flex items-start gap-2.5 sm:gap-3 bg-[#ebdfc8] p-2.5 sm:p-3 rounded-2xl border-2 border-[#3a2312] shrink-0">
+                <CharacterAvatar
+                  speaker={quiz.promptSpeaker}
+                  size="sm"
+                  customAssets={customAssets}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <span className="text-xs font-bold text-[#2d6a4f] font-cinzel">
+                      {language === 'ar' ? 'نورة' : 'NOURA'}
+                    </span>
+                  </div>
+                  <p className={`font-bold text-[#3a2312] mt-0.5 ${isRtl ? 'font-amiri text-base sm:text-lg md:text-xl leading-[1.8] text-right' : 'text-sm sm:text-base leading-snug'}`}>
+                    « {quiz.question} »
+                  </p>
+                </div>
               </div>
-              <p className={`font-bold text-[#3a2312] mt-0.5 ${isRtl ? 'font-amiri text-base sm:text-lg md:text-xl leading-[1.8] text-right' : 'text-sm sm:text-base leading-snug'}`}>
-                « {quiz.question} »
-              </p>
-            </div>
-          </div>
 
-          {/* 4 Options Grid — wrong attempts are crossed out WITHOUT revealing the right answer until found */}
-          <div className="grid grid-cols-1 gap-2.5 shrink-0">
-            {normalizedOptions.map((option) => {
-              const isWrongTried = wrongOptionIds.includes(option.id);
-              const isSolvedCorrect = isSolved && option.isCorrect;
-              const resolvedStyle = isSolvedCorrect
-                ? 'bg-[#ebf5e9] border-[#4a804d] text-[#2d522f] shadow-[0_2px_0_#3a2312] font-bold'
-                : isWrongTried
-                  ? 'bg-[#fde8e8] border-[#c53030] text-[#9b2c2c] opacity-75 line-through cursor-not-allowed'
-                  : isSolved
-                    ? 'bg-[#ebdfc8]/50 border-[#b89f81] text-[#8c6b4e] opacity-55 cursor-default'
+              {/* 4 Options Grid — wrong attempts are crossed out WITHOUT revealing the right answer until found */}
+              <div className="grid grid-cols-1 gap-2.5 shrink-0">
+                {normalizedOptions.map((option) => {
+                  const isWrongTried = wrongOptionIds.includes(option.id);
+                  const resolvedStyle = isWrongTried
+                    ? 'bg-[#fde8e8] border-[#c53030] text-[#9b2c2c] opacity-75 line-through cursor-not-allowed'
                     : 'bg-[#f3ebd9] border-[#3a2312] text-[#3a2312] hover:bg-[#ebdcc4] shadow-[0_2px_0_#3a2312] cursor-pointer';
 
-              return (
-                <button
-                  key={option.id}
-                  disabled={isSolved || isWrongTried}
-                  onClick={() => handleSelectOption(option.id)}
-                  className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border-2 transition-all font-bold ${
-                    isRtl ? 'text-right font-amiri text-base sm:text-lg leading-[1.8]' : 'text-left text-sm sm:text-base'
-                  } ${resolvedStyle}`}
-                >
-                  <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-[#ebdfc8] text-xs sm:text-sm font-black flex items-center justify-center border border-[#3a2312] shrink-0 font-mono">
-                    {option.id}
-                  </span>
-                  <span className="flex-1 leading-snug">{option.text}</span>
-                  {isSolvedCorrect && (
-                    <CheckCircle2 className="w-5 h-5 text-[#4a804d] shrink-0" />
-                  )}
-                  {isWrongTried && (
-                    <XCircle className="w-5 h-5 text-[#c53030] shrink-0" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                  return (
+                    <button
+                      key={option.id}
+                      disabled={isWrongTried}
+                      onClick={() => handleSelectOption(option.id)}
+                      className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border-2 transition-all font-bold ${
+                        isRtl ? 'text-right font-amiri text-base sm:text-lg leading-[1.8]' : 'text-left text-sm sm:text-base'
+                      } ${resolvedStyle}`}
+                    >
+                      <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-[#ebdfc8] text-xs sm:text-sm font-black flex items-center justify-center border border-[#3a2312] shrink-0 font-mono">
+                        {option.id}
+                      </span>
+                      <span className="flex-1 leading-snug">{option.text}</span>
+                      {isWrongTried && (
+                        <XCircle className="w-5 h-5 text-[#c53030] shrink-0" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
           {/* Explanation & Verified Source Card (ONLY revealed once the player finds the correct answer!) */}
           {isSolved && (
             <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300 pb-1">
-              <div className="p-3.5 sm:p-4 rounded-2xl border-2 bg-[#ebf5e9] border-[#4a804d] text-[#2d522f]">
-                <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-[#3a2312]/15">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a804d]" />
-                    <span className="text-xs sm:text-sm font-bold text-[#2d522f] font-cinzel">
-                      {t.correctAnswer}
-                    </span>
-                  </div>
-
+              <div className="p-4 sm:p-5 rounded-2xl border-2 bg-[#ebf5e9] border-[#4a804d] text-[#2d522f]">
+                <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[#3a2312]/15">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] uppercase font-bold text-[#8c5a2b] font-cinzel">
-                      {t.explanationHeader}
+                    <CheckCircle2 className="w-5 h-5 text-[#4a804d]" />
+                    <span className="text-sm sm:text-base font-bold text-[#2d522f] font-cinzel">
+                      {t.correctAnswer}
                     </span>
                   </div>
                 </div>
 
-                <p className={`text-[#3a2312] ${isRtl ? 'font-amiri text-base sm:text-lg leading-[1.85] text-right font-medium' : 'text-xs sm:text-sm leading-relaxed font-sans font-medium'}`}>
+                <p className={`text-[#3a2312] ${isRtl ? 'font-amiri text-lg sm:text-xl leading-[1.9] text-right font-medium' : 'text-sm sm:text-base leading-relaxed font-sans font-medium'}`}>
                   {activeQuiz.explanation}
                 </p>
 
                 {/* Reference Excerpt */}
                 {reference && (
-                  <div className="mt-2.5 pt-2 border-t border-[#3a2312]/15 flex flex-col gap-0.5">
-                    <span className="text-xs font-bold text-[#8c5a2b]">
+                  <div className="mt-3 pt-2.5 border-t border-[#3a2312]/15 flex flex-col gap-1">
+                    <span className="text-xs sm:text-sm font-bold text-[#8c5a2b]">
                       {reference.concept} — {reference.reference}
                     </span>
                     {reference.citationText && (
-                      <p className="text-xs italic text-[#6b4724]">
+                      <p className="text-sm sm:text-base italic text-[#6b4724] leading-relaxed">
                         « {reference.citationText} »
                       </p>
                     )}
                     {reference.arabic && (
-                      <p className="text-right text-base sm:text-lg text-[#3a2312] font-amiri dir-rtl mt-0.5">
+                      <p className="text-right text-lg sm:text-xl text-[#3a2312] font-amiri dir-rtl mt-1 leading-loose">
                         {reference.arabic}
                       </p>
                     )}

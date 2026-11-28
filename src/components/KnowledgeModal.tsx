@@ -11,6 +11,8 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { useLanguage } from '../context/LanguageContext';
+import { SCREENS_TRANSLATIONS } from '../i18n/screensTranslations';
 
 interface KnowledgeModalProps {
   unlockedIds: string[];
@@ -28,6 +30,8 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
   currentXp = 0,
   currentLevel = 1
 }) => {
+  const { language, isRtl } = useLanguage();
+  const t = SCREENS_TRANSLATIONS[language]?.knowledgeModal || SCREENS_TRANSLATIONS.fr.knowledgeModal;
   const [selectedItem, setSelectedItem] = useState<KnowledgeItem | null>(KNOWLEDGE_ITEMS[0]);
   const [filterType, setFilterType] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,7 +55,10 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-200 select-none">
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-200 select-none"
+    >
       <div className="bg-[#fbf7ee] border-3 border-[#3a2312] rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-[0_12px_30px_rgba(0,0,0,0.8)] overflow-hidden">
         {/* Top Header */}
         <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5 border-b-2 border-[#3a2312] bg-[#f3ebd9]">
@@ -61,17 +68,17 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
             </div>
             <div>
               <h2 className="text-sm sm:text-base font-bold text-[#3a2312] font-cinzel leading-tight">
-                Livre du Savoir
+                {t.title}
               </h2>
               <span className="text-[10px] text-[#8c5a2b] font-bold tracking-wider uppercase font-cinzel">
-                Notions de Sagesse (ʿIlm)
+                {t.subtitle}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="flex flex-col items-end">
-              <span className="text-[9px] font-bold text-[#8c5a2b] font-cinzel">Niv. {currentLevel}</span>
+              <span className="text-[9px] font-bold text-[#8c5a2b] font-cinzel">{t.levelShort} {currentLevel}</span>
               <span className="text-xs font-mono font-black text-[#d97c27] bg-[#fdf5e6] px-2 py-0.5 rounded-md border border-[#d97c27]/40 shadow-xs">
                 {currentXp} XP
               </span>
@@ -81,7 +88,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
                 soundManager.playSelect();
                 onClose();
               }}
-              title="Fermer"
+              title={t.closeBtn}
               className="p-1.5 sm:p-2 rounded-xl bg-[#ebdcc4] hover:bg-[#d9c7ab] text-[#3a2312] transition-colors cursor-pointer border border-[#3a2312] shadow-xs"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -102,7 +109,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
                     : 'bg-[#fbf7ee] text-[#6b4724] hover:bg-[#f3ebd9] border border-[#d2be9f]'
                 }`}
               >
-                {type === 'all' ? 'Toutes les notions' : type}
+                {type === 'all' ? t.filterAll : type}
               </button>
             ))}
           </div>
@@ -112,7 +119,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
             <Search className="w-3 h-3 text-[#8c5a2b] absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Rechercher..."
+              placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-7 pr-2.5 py-1 bg-white/70 border border-[#8c5a2b]/30 rounded-xl text-xs text-[#3a2312] placeholder:text-[#a37c56] focus:outline-none focus:border-[#e69138]"
@@ -155,11 +162,11 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
                       </span>
                       {isUnlocked ? (
                         <span className="text-[10px] text-[#2d6a4f] font-bold flex items-center gap-1">
-                          <CheckCircle className="w-3 h-3" /> Acquis
+                          <CheckCircle className="w-3 h-3" /> ✓
                         </span>
                       ) : (
                         <span className="text-[10px] text-[#a37c56] font-medium flex items-center gap-1">
-                          <Lock className="w-3 h-3" /> À découvrir
+                          <Lock className="w-3 h-3" /> 🔒
                         </span>
                       )}
                     </div>
@@ -189,7 +196,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
                 className="flex items-center gap-1 text-xs font-bold text-[#d97c27] bg-[#ebdfc8] px-3 py-1.5 rounded-xl border border-[#3a2312] shadow-xs cursor-pointer font-cinzel"
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>Retour à la liste des notions</span>
+                <span>← {t.title}</span>
               </button>
             </div>
 
@@ -219,7 +226,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
                 <div className="space-y-3">
                   <div>
                     <h4 className="text-xs font-bold text-[#6b4724] uppercase tracking-wider mb-1 font-cinzel">
-                      Sens & Enseignement
+                      {t.definitionLabel}
                     </h4>
                     <p className="text-xs sm:text-sm text-[#4a2e18] leading-relaxed font-sans bg-[#f3ebd9] p-3 rounded-xl border border-[#ebdcc4]">
                       {selectedItem.summary}
@@ -228,7 +235,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
 
                   <div>
                     <h4 className="text-xs font-bold text-[#6b4724] uppercase tracking-wider mb-1 font-cinzel">
-                      Contexte & Pratique quotidienne
+                      {t.referenceLabel}
                     </h4>
                     <p className="text-xs text-[#8c5a2b] leading-relaxed font-sans">
                       {selectedItem.detailedContext}
@@ -239,7 +246,7 @@ export const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-[#a37c56] py-12">
                 <Compass className="w-12 h-12 stroke-[1.5] mb-2 opacity-50" />
-                <p className="text-xs">Sélectionnez une notion pour afficher les détails.</p>
+                <p className="text-xs">{t.emptySearchResults}</p>
               </div>
             )}
           </div>

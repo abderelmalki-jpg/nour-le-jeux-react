@@ -146,14 +146,6 @@ export const CHAPTER_4_SCENES: Scene[] = [
         text: 'Othmân, mon fils, avant de partir, peux-tu m\'aider à rentrer les paniers d\'olives et ranger ta besace ? Ton père a déjà porté les caisses ce matin.'
       },
       {
-        id: 's30_b3',
-        type: 'dialogue',
-        speaker: 'waswas',
-        speakerName: 'Le Waswâs',
-        emotion: 'shadow',
-        text: 'Toujours des corvées ! À chaque fois que tu veux sortir, on te retient. Dis-lui que tu n\'as pas le temps, tu as déjà assez aidé cette semaine !'
-      },
-      {
         id: 's30_b4',
         type: 'dialogue',
         speaker: 'personnage',
@@ -171,9 +163,8 @@ export const CHAPTER_4_SCENES: Scene[] = [
       {
         id: 's30_choice',
         type: 'choice',
-        speaker: 'personnage',
-        speakerName: 'Othmân',
-        text: 'À peine quelques pas hors de la maison, le cœur d\'Othmân se serre. Que se dit-il ?',
+        speaker: 'narration',
+        text: 'À peine quelques pas hors de la maison, le cœur d\'Othmân se serre. Que ferais-tu à sa place ?',
         choices: [
           {
             id: 'c30_regret',
@@ -308,9 +299,8 @@ export const CHAPTER_4_SCENES: Scene[] = [
       {
         id: 's32_choice',
         type: 'choice',
-        speaker: 'personnage',
-        speakerName: 'Othmân',
-        text: 'Comment Othmân répond-il à la confidence de son ami ?',
+        speaker: 'narration',
+        text: 'Face à la confidence de son ami, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c32_soutien',
@@ -323,6 +313,10 @@ export const CHAPTER_4_SCENES: Scene[] = [
             label: '« Merci de m\'avoir ouvert les yeux. Je vais rentrer tout de suite réparer ma parole. »',
             habitMessage: 'Transformer la prise de conscience en action rapide est une marque de maturité.',
             traitGains: { discipline: 2, hilm: 1 }
+          },
+          {
+            id: 'c_ch4_pride_retreat',
+            label: 'Garder son orgueil et refuser d’aller s’excuser auprès de ses parents'
           }
         ]
       }
@@ -414,9 +408,8 @@ export const CHAPTER_4_SCENES: Scene[] = [
       {
         id: 's34_choice',
         type: 'choice',
-        speaker: 'personnage',
-        speakerName: 'Othmân',
-        text: 'Othmân veut accompagner ses excuses d\'un vrai geste de Birr. Que choisit-il ?',
+        speaker: 'narration',
+        text: 'Pour accompagner ses excuses d\'un vrai geste de Birr, que ferais-tu à la place d\'Othmân ?',
         choices: [
           {
             id: 'c34_paniers',

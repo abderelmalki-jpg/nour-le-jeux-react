@@ -23,6 +23,7 @@ import { soundManager } from '../../utils/audio';
 import { getLocalizedScene } from '../../utils/narrativeI18n';
 import { useLanguage } from '../../context/LanguageContext';
 import { CHAPTER_LABELS } from '../../i18n/uiExtras';
+import { SCREENS_TRANSLATIONS } from '../../i18n/screensTranslations';
 
 interface TravelMapScreenProps {
   currentSceneIndex: number;
@@ -48,6 +49,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   onBack: _onBack
 }) => {
   const { language: uiLanguage, isRtl } = useLanguage();
+  const tMap = SCREENS_TRANSLATIONS[uiLanguage]?.travelMap || SCREENS_TRANSLATIONS.fr.travelMap;
   const mapLabels =
     uiLanguage === 'ar'
       ? {
@@ -374,7 +376,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
   return (
     <div
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="flex-1 min-h-0 flex flex-col w-full h-full max-w-6xl mx-auto px-2 sm:px-4 lg:px-6 py-1 sm:py-2 select-none relative overflow-hidden"
+      className="flex-1 min-h-0 flex flex-col w-full h-full max-w-6xl mx-auto px-2.5 sm:px-4 lg:px-6 pt-2 pb-20 md:py-2 select-none relative overflow-y-auto md:overflow-hidden custom-scrollbar"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -454,14 +456,14 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
       {/* ========================================================= */}
       {/* 2. CORPS CENTRAL : LA CARTE SENTIER + FICHE D'ÉTAPE       */}
       {/* ========================================================= */}
-      <div className="flex-1 min-h-0 flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 lg:gap-6 w-full h-full overflow-hidden">
+      <div className="flex-1 md:min-h-0 flex flex-col md:flex-row items-center justify-start md:justify-center gap-3 sm:gap-4 lg:gap-6 w-full md:h-full md:overflow-hidden">
         
         {/* ======================================================= */}
         {/* 🗺️ CANVAS DE LA CARTE : SENTIER DU VOYAGE AVEC TRACÉ   */}
         {/* ======================================================= */}
         <div
           key={`chapter-path-${activeChapter}`}
-          className={`relative h-full flex-1 max-h-[calc(100vh-175px)] aspect-[9/14] sm:aspect-[9/13] md:max-w-[440px] lg:max-w-[480px] rounded-2xl sm:rounded-3xl border-3 border-[#3a2312] overflow-hidden shadow-[0_6px_0_#3a2312] bg-[#b8956e] shrink-0 ${
+          className={`relative w-full max-w-[440px] lg:max-w-[480px] h-[440px] sm:h-[490px] md:h-full md:flex-1 md:max-h-[calc(100vh-175px)] rounded-2xl sm:rounded-3xl border-3 border-[#3a2312] overflow-hidden shadow-[0_6px_0_#3a2312] bg-[#b8956e] shrink-0 ${
             slideDirection === 'right'
               ? 'animate-in slide-in-from-right duration-300'
               : slideDirection === 'left'
@@ -509,15 +511,16 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
             const isCurrent = scene.id === nextPlayableScene.id && !isCompleted;
             const isUnlocked = true;
             const isSelected = scene.id === focusedScene.id;
-            const pos = currentChapterConfig.positions[index] || { top: '50%', left: '50%' };
+            const pos = currentChapterConfig.positions[index] || { top: '50%', left: '50%', x: 50, y: 50 };
+            const safeLeft = `${Math.min(68, Math.max(32, pos.x ?? 50))}%`;
             const isBoss = scene.id === 9 || scene.id === 15 || scene.id === 25 || scene.id === 35 || scene.id === 44;
 
             return (
               <div
                 key={scene.id}
-                style={{ top: pos.top, left: pos.left }}
+                style={{ top: pos.top, left: safeLeft }}
                 className={`absolute -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group cursor-pointer transition-all duration-200 ${
-                  isCurrent || isSelected ? 'scale-110 z-30' : 'hover:scale-105'
+                  isCurrent || isSelected ? 'scale-105 z-30' : 'hover:scale-105'
                 }`}
                 onClick={() =>
                   handleNodeClick(
@@ -531,7 +534,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
               >
                 {/* Badge TU ES ICI / ÉTAPE ACTUELLE au-dessus du nœud */}
                 {isCurrent && (
-                  <div className="absolute -top-6 sm:-top-7 flex items-center gap-1 bg-[#3a2312] text-amber-300 font-cinzel font-black text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full border border-amber-400 shadow-md animate-bounce whitespace-nowrap">
+                  <div className="absolute -top-5 sm:-top-6 flex items-center gap-1 bg-[#3a2312] text-amber-300 font-cinzel font-black text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full border border-amber-400 shadow-md animate-bounce whitespace-nowrap">
                     <Footprints className="w-2.5 h-2.5" />
                     <span>{mapLabels.youAreHere}</span>
                   </div>
@@ -539,9 +542,9 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
 
                 {/* Pastille / Nœud de l'Étape */}
                 <div
-                  className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-2xl border-2 transition-all font-cinzel text-xs shadow-[0_3px_0_#3a2312] ${
+                  className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-0.5 sm:py-1.5 max-w-[165px] sm:max-w-[210px] rounded-2xl border-2 transition-all font-cinzel text-xs shadow-[0_3px_0_#3a2312] ${
                     isCurrent
-                      ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-stone-950 font-black ring-3 sm:ring-4 ring-amber-400/90 shadow-[0_0_16px_rgba(245,158,11,0.7),0_3px_0_#3a2312]'
+                      ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-stone-950 font-black ring-2 sm:ring-4 ring-amber-400/90 shadow-[0_0_16px_rgba(245,158,11,0.7),0_3px_0_#3a2312]'
                       : isSelected
                       ? 'bg-amber-100 border-[#d97c27] text-[#3a2312] ring-2 ring-[#d97c27]'
                       : isCompleted
@@ -563,11 +566,11 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                   ) : !isUnlocked ? (
                     <Lock className="w-3 h-3 text-[#8c5a2b] shrink-0" />
                   ) : (
-                    <span className="text-[10px] font-bold text-[#8c5a2b]">{index + 1}.</span>
+                    <span className="text-[10px] font-bold text-[#8c5a2b] shrink-0">{index + 1}.</span>
                   )}
 
                   {/* Nom court de l'étape */}
-                  <span className="text-[9.5px] sm:text-[11px] font-bold whitespace-nowrap tracking-tight">
+                  <span className="text-[9.5px] sm:text-[11px] font-bold truncate tracking-tight">
                     {getLocalizedScene(scene, uiLanguage).title}
                   </span>
 
@@ -632,19 +635,19 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                     <button
                       onClick={() =>
                         setLockedSceneModal({
-                          sceneTitle: focusedScene.title,
+                          sceneTitle: getLocalizedScene(focusedScene, uiLanguage).title,
                           requiredXp: focusedScene.id >= 17 ? 780 : 450,
-                          gateReason: 'Cette étape fait partie du Chapitre 2 ou 3. Débloquez la suite avec le Pack Fondateur (4,99 €) ou votre Code Promo.',
+                          gateReason: tMap.founderAccessPrice,
                           isFounderRequired: true
                         })
                       }
                       className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-stone-950 font-black font-cinzel text-xs border-2 border-[#3a2312] shadow-xs active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
                     >
                       <Lock className="w-4 h-4 text-stone-900" />
-                      <span>Pack Fondateur ou Code Promo (4,99 €)</span>
+                      <span>{tMap.founderRequiredTitle} ({tMap.founderAccessPrice})</span>
                     </button>
                     <span className="text-[10px] text-emerald-800 font-bold text-center">
-                      🛡️ Accès Immédiat • Paiement ou Code Promo
+                      {tMap.founderGuarantee}
                     </span>
                   </div>
                 ) : (
@@ -653,7 +656,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                       handleNodeClick(
                         focusedScene.id,
                         focusedScene.requiredXp || 0,
-                        focusedScene.title,
+                        getLocalizedScene(focusedScene, uiLanguage).title,
                         focusedScene.gateReason,
                         focusedScene.isSpiritualGate
                       )
@@ -661,7 +664,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                     className="w-full py-2.5 px-4 rounded-xl bg-amber-200 hover:bg-amber-300 text-amber-950 font-black font-cinzel text-xs border-2 border-[#3a2312] shadow-xs active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
                   >
                     <Lock className="w-4 h-4 text-amber-900" />
-                    <span>Porte fermée ({focusedScene.requiredXp} XP requis)</span>
+                    <span>{tMap.lockedDoorTitle} ({focusedScene.requiredXp} XP)</span>
                   </button>
                 )}
                 {onOpenKnowledgeQuiz && !(focusedScene.id >= 10 && !isSupporter) && (
@@ -670,7 +673,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                     className="w-full py-1.5 px-3 rounded-lg bg-[#2d6a4f] hover:bg-[#23533e] text-white font-bold font-cinzel text-[10px] shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Zap className="w-3 h-3 fill-amber-300 text-amber-300" />
-                    <span>Faire un Quiz de Savoir (+XP)</span>
+                    <span>{tMap.quizXpBtn}</span>
                   </button>
                 )}
               </div>
@@ -712,7 +715,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
 
             <div>
               <span className="text-[10px] font-black uppercase tracking-wider text-[#8c5a2b] font-cinzel">
-                {lockedSceneModal.isFounderRequired ? 'Accès Pack Fondateur' : 'Porte Verrouillée'}
+                {lockedSceneModal.isFounderRequired ? tMap.founderRequiredTitle : tMap.lockedDoorTitle}
               </span>
               <h3 className="text-base font-black text-[#3a2312] font-cinzel mt-1">
                 {lockedSceneModal.sceneTitle}
@@ -720,20 +723,19 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
             </div>
 
             <p className="text-xs text-[#6b4724] leading-relaxed bg-[#f3ebd9] p-3 rounded-xl border border-[#d2be9f]">
-              {lockedSceneModal.gateReason ||
-                `Cette étape demande ${lockedSceneModal.requiredXp} XP pour être franchie. Continue ton apprentissage pour la débloquer !`}
+              {lockedSceneModal.gateReason || tMap.lockedReason(lockedSceneModal.requiredXp)}
             </p>
 
             {lockedSceneModal.isFounderRequired ? (
               <div className="flex flex-col gap-2.5 w-full mt-1">
                 <div className="w-full p-2.5 rounded-xl bg-emerald-50 border border-emerald-400 text-emerald-900 text-[11px] font-bold flex items-center justify-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>🛡️ 100% Sérénité : Satisfait ou Remboursé 7j</span>
+                  <span>{tMap.founderGuarantee}</span>
                 </div>
 
                 <div className="w-full flex items-center justify-between bg-[#ebdfc8] py-2 px-3 rounded-xl border border-[#3a2312] text-xs font-bold text-[#3a2312]">
-                  <span>Accès Chapitres 2 & 3</span>
-                  <span className="text-amber-700 font-black font-mono">4,99 € (Offre Spéciale)</span>
+                  <span>{tMap.founderRequiredTitle}</span>
+                  <span className="text-amber-700 font-black font-mono">{tMap.founderAccessPrice}</span>
                 </div>
 
                 <button
@@ -744,20 +746,20 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                   className="w-full py-2.5 px-3 rounded-xl bg-[#2d6a4f] hover:bg-[#1b4332] text-white font-black text-xs font-cinzel shadow-md flex items-center justify-center gap-2 cursor-pointer active:translate-y-0.5 border-2 border-[#1b4332]"
                 >
                   <Sparkles className="w-4 h-4 fill-amber-300 text-amber-300" />
-                  <span>Débloquer (Paiement ou Code Promo)</span>
+                  <span>{tMap.unlockFounderBtn}</span>
                 </button>
 
                 <button
                   onClick={() => setLockedSceneModal(null)}
                   className="w-full py-1.5 px-3 rounded-xl bg-[#ebdfc8] hover:bg-[#dfceb3] text-[#3a2312] font-bold text-xs font-cinzel border border-[#3a2312] cursor-pointer"
                 >
-                  Fermer
+                  {tMap.closeBtn}
                 </button>
               </div>
             ) : (
               <>
                 <div className="w-full flex items-center justify-center gap-2 bg-[#ebdfc8] py-1.5 px-3 rounded-xl border border-[#3a2312] text-xs font-bold text-[#3a2312]">
-                  <span>Ton XP : <strong className="text-[#d97c27]">{playerXp}</strong> / {lockedSceneModal.requiredXp} XP</span>
+                  <span>{tMap.yourXp(playerXp, lockedSceneModal.requiredXp)}</span>
                 </div>
 
                 <div className="flex flex-col gap-2 w-full mt-1">
@@ -770,7 +772,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                       className="w-full py-2 px-3 rounded-xl bg-[#2d6a4f] hover:bg-[#1b4332] text-white font-black text-xs font-cinzel shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Zap className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
-                      <span>Répondre à des Quiz (+XP)</span>
+                      <span>{tMap.quizXpBtn}</span>
                     </button>
                   )}
 
@@ -778,7 +780,7 @@ export const TravelMapScreen: React.FC<TravelMapScreenProps> = ({
                     onClick={() => setLockedSceneModal(null)}
                     className="w-full py-2 px-3 rounded-xl bg-[#ebdfc8] hover:bg-[#dfceb3] text-[#3a2312] font-bold text-xs font-cinzel border border-[#3a2312] cursor-pointer"
                   >
-                    Compris
+                    {tMap.understoodBtn}
                   </button>
                 </div>
               </>

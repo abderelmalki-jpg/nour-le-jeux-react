@@ -18,7 +18,7 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
       s40_b2: 'The climb is much steeper than I imagined… My legs feel heavy and the summit still looks so far away.',
       s40_b3: 'Why keep going? You already finished four chapters, that is enough! Go back down and rest — no one will blame you for giving up.',
       s40_b4: 'Do not look at the whole mountain at once, Othman. Look only at the next stone before your foot, and move forward with steadiness.',
-      s40_choice: 'Fatigue weighs on Othman’s shoulders. How does he choose to face the climb?',
+      s40_choice: 'Fatigue weighs on Othman’s shoulders. What would you do in his place to face the climb?',
       s41_b1: 'A veil of purple mist slips between the rocks. The old doubts from the very first day return to whisper in Othman’s ear.',
       s41_b2: 'Aʿūdhu billāhi mina sh-shayṭāni r-rajīm! I recognize you now, Waswas. You want to make me forget everything I have already overcome.',
       s41_b3: 'Remember the golden rule of perseverance: it is not one-day feats that build character, but small faithful steps.',
@@ -31,8 +31,8 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
       s42_quiz: 'The Sage recalls the Quranic promise that strengthens every effort:',
       s43_b1: 'Othman! I caught up with you! Your father entrusted me with this small lantern and some dates for the final climb.',
       s43_b2: 'Al-Hamdulillāh! Between my parents’ prayers, the patience of the boy with the splint, and your friendship, Bilal, I see we are never alone when walking toward good.',
-      s43_choice: 'Before the last bend toward the summit, what intention does Othman place in his heart?',
-      s43_action: 'Now become a lantern for someone around you.',
+      s43_choice: 'Before the last bend toward the summit, what intention would you choose in Othman’s place?',
+      s43_action: 'Encourage someone around you who is making an effort today.',
       s44_b1: 'Just before the peak, the Shadow gathers all its whispers: loneliness, anger, discouragement, and ingratitude! Yet Othman holds his lantern high.',
       s44_climax: 'Call upon every virtue learned since Chapter 1 to cross the summit!',
       s45_b1: 'Othman finally reaches the summit. Before his eyes stretches the whole valley bathed in gold: his room, the crossroads, the reconciled market, the orchard, and the family courtyard.',
@@ -42,8 +42,9 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
     },
     choices: {
       c40_pas: { label: '"One step at a time, with Bismillāh. Even slowly, I keep moving."', habitMessage: 'Calm perseverance turns steep slopes into reachable steps.' },
-      c40_souffle: { label: '"I catch my breath calmly and keep my eyes on the light."', habitMessage: 'Pausing to breathe without quitting is true strength.' },
-      c43_partage: { label: '"Share the light I received with those who still doubt."', habitMessage: 'True light grows brighter whenever it is shared.' },
+      c40_souffle: { label: '"I catch my breath calmly, say Bismillāh, and keep heading for the summit."', habitMessage: 'Pausing to breathe without quitting is true strength.' },
+      c_ch5_quit_retreat: { label: 'Give in to weariness and walk back down the mountain' },
+      c43_partage: { label: '"Share the good I have learned and encourage those going through a hardship."', habitMessage: 'Sharing beneficial knowledge and supporting others is a blessed deed.' },
       c43_confiance: { label: '"Place my Tawakkul in Allah and keep learning all my life."', habitMessage: 'Humility and trust in Allah are the finest companions on the road.' }
     },
     quizzes: {
@@ -102,7 +103,7 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
       s40_b2: 'الصُّعُودُ أَشَدُّ انْحِدَارًا مِمَّا تَصَوَّرْتُ… قَدَمَايَ ثَقِيلَتَانِ وَالْقِمَّةُ مَا زَالَتْ بَعِيدَةً جِدًّا.',
       s40_b3: 'مَا فَائِدَةُ الْمُوَاصَلَةِ؟ لَقَدْ أَنْهَيْتَ أَرْبَعَةَ فُصُولٍ، هَذَا يَكْفِي! انْزِلْ وَاسْتَرِحْ، لَنْ يَلُومَكَ أَحَدٌ إِذَا تَوَقَّفْتَ.',
       s40_b4: 'لَا تَنْظُرْ إِلَى الْجَبَلِ كُلِّهِ دُفْعَةً وَاحِدَةً يَا عُثْمَانُ، بَلِ انْظُرْ إِلَى الْخُطْوَةِ التَّالِيَةِ أَمَامَ قَدَمِكَ وَتَقَدَّمْ بِثَبَاتٍ.',
-      s40_choice: 'يُثْقِلُ التَّعَبُ كَتِفَيْ عُثْمَانَ. كَيْفَ يَخْتَارُ مُوَاصَلَةَ الصُّعُودِ؟',
+      s40_choice: 'يُثْقِلُ التَّعَبُ كَتِفَيْ عُثْمَانَ. مَاذَا كُنْتَ سَتَفْعَلُ مَكَانَهُ لِمُوَاصَلَةِ الصُّعُودِ؟',
       s41_b1: 'يَنْسَابُ ضَبَابٌ بَنَفْسَجِيٌّ بَيْنَ الصُّخُورِ، وَتَعُودُ الشُّكُوكُ الْقَدِيمَةُ لِتُوَسْوِسَ فِي أُذُنِ عُثْمَانَ.',
       s41_b2: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ! أَعْرِفُكَ الْآنَ أَيُّهَا الْوَسْوَاسُ، تُرِيدُ أَنْ تُنْسِيَنِي كُلَّ مَا تَجَاوَزْتُهُ.',
       s41_b3: 'تَذَكَّرِ الْقَاعِدَةَ الذَّهَبِيَّةَ لِلصَّبْرِ: لَيْسَتْ إِنْجَازَاتُ يَوْمٍ وَاحِدٍ مَا يَبْنِي الْإِنْسَانَ، بَلِ الْخُطُوَاتُ الصَّغِيرَةُ الدَّائِمَةُ.',
@@ -115,8 +116,8 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
       s42_quiz: 'يُذَكِّرُ الْحَكِيمُ بِالْوَعْدِ الْقُرْآنِيِّ الَّذِي يُقَوِّي كُلَّ مُجْتَهِدٍ:',
       s43_b1: 'يَا عُثْمَانُ! لَحِقْتُ بِكَ! أَرْسَلَ مَعِي وَالِدُكَ هَذَا الْمِصْبَاحَ الصَّغِيرَ وَبَعْضَ التَّمْرِ لِلْمَرْحَلَةِ الْأَخِيرَةِ.',
       s43_b2: 'الْحَمْدُ لِلَّهِ! بَيْنَ دَعَوَاتِ وَالِدَيَّ، وَصَبْرِ الْفَتَى ذِي الْجَبِيرَةِ، وَصُحْبَتِكَ يَا بِلَالُ، أَدْرَكْتُ أَنَّنَا لَا نَسِيرُ وَحْدَنَا أَبَدًا فِي طَرِيقِ الْخَيْرِ.',
-      s43_choice: 'قَبْلَ الْمُنْعَطَفِ الْأَخِيرِ نَحْوَ الْقِمَّةِ، مَا النِّيَّةُ الَّتِي يَضَعُهَا عُثْمَانُ فِي قَلْبِهِ؟',
-      s43_action: 'كُنْ أَنْتَ أَيْضًا مِصْبَاحًا لِمَنْ حَوْلَكَ.',
+      s43_choice: 'قَبْلَ الْمُنْعَطَفِ الْأَخِيرِ نَحْوَ الْقِمَّةِ، أَيَّ نِيَّةٍ كُنْتَ سَتَخْتَارُ مَكَانَ عُثْمَانَ؟',
+      s43_action: 'شَجِّعْ شَخْصًا حَوْلَكَ يَبْذُلُ جُهْدًا الْيَوْمَ بِكَلِمَةٍ طَيِّبَةٍ.',
       s44_b1: 'قُبَيْلَ الْقِمَّةِ، يَجْمَعُ الظِّلُّ كُلَّ وَسَاوِسِهِ: الْعُزْلَةَ، وَالْغَضَبَ، وَالْيَأْسَ، وَالْجُحُودَ! لَكِنَّ عُثْمَانَ يَرْفَعُ مِصْبَاحَهُ عَالِيًا.',
       s44_climax: 'اسْتَحْضِرْ كُلَّ الْقِيَمِ الَّتِي تَعَلَّمْتَهَا مُنْذُ الْفَصْلِ الْأَوَّلِ لِتَبْلُغَ الْقِمَّةَ!',
       s45_b1: 'يَصِلُ عُثْمَانُ أَخِيرًا إِلَى الْقِمَّةِ، وَتَمْتَدُّ أَمَامَ عَيْنَيْهِ الْوَادِي كُلُّهُ غَارِقًا فِي النُّورِ الذَّهَبِيِّ: غُرْفَتُهُ، وَالْمُفْتَرَقُ، وَالسُّوقُ الْمُتَصَالِحُ، وَالْبُسْتَانُ، وَفِنَاءُ الْبَيْتِ.',
@@ -126,8 +127,9 @@ export const CHAPTER_5_TRANSLATIONS: { en: Chapter1TranslationSet; ar: Chapter1T
     },
     choices: {
       c40_pas: { label: '« خُطْوَةً بَعْدَ خُطْوَةٍ بِبِسْمِ اللَّهِ، حَتَّى بِبُطْءٍ سَأَسْتَمِرُّ. »', habitMessage: 'الصَّبْرُ الْهَادِئُ يُحَوِّلُ الْعَقَبَاتِ الْكَبِيرَةَ إِلَى خُطُوَاتٍ مُمْكِنَةٍ.' },
-      c40_souffle: { label: '« أَلْتَقِطُ أَنْفَاسِي بِهُدُوءٍ وَأُثَبِّتُ نَظَرِي نَحْوَ النُّورِ. »', habitMessage: 'الِاسْتِرَاحَةُ دُونَ اسْتِسْلَامٍ قُوَّةٌ حَقِيقِيَّةٌ.' },
-      c43_partage: { label: '« أَنْ أُشَارِكَ النُّورَ الَّذِي تَعَلَّمْتُهُ مَعَ مَنْ لَا يَزَالُ يَشُكُّ. »', habitMessage: 'النُّورُ الْحَقِيقِيُّ يَزْدَادُ كُلَّمَا شَارَكْنَاهُ.' },
+      c40_souffle: { label: '« أَلْتَقِطُ أَنْفَاسِي بِهُدُوءٍ، وَأَقُولُ بِسْمِ اللَّهِ وَأُوَاصِلُ نَحْوَ الْقِمَّةِ. »', habitMessage: 'الِاسْتِرَاحَةُ دُونَ اسْتِسْلَامٍ قُوَّةٌ حَقِيقِيَّةٌ.' },
+      c_ch5_quit_retreat: { label: 'الِاسْتِسْلَامُ لِلتَّعَبِ وَالنُّزُولُ إِلَى سَفْحِ الْجَبَلِ' },
+      c43_partage: { label: '« أَنْ أَنْقُلَ الْخَيْرَ الَّذِي تَعَلَّمْتُهُ وَأُشَجِّعَ مَنْ يَمُرُّ بِصُعُوبَةٍ. »', habitMessage: 'نَشْرُ الْعِلْمِ النَّافِعِ وَمُسَانَدَةُ الْآخَرِينَ عَمَلٌ مُبَارَكٌ.' },
       c43_confiance: { label: '« أَنْ أَتَوَكَّلَ عَلَى اللَّهِ وَأَسْتَمِرَّ فِي التَّعَلُّمِ طَوَالَ حَيَاتِي. »', habitMessage: 'التَّوَاضُعُ وَالتَّوَكُّلُ عَلَى اللَّهِ خَيْرُ رَفِيقٍ فِي الطَّرِيقِ.' }
     },
     quizzes: {

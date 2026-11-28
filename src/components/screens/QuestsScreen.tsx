@@ -7,6 +7,10 @@ import { CHAPTER_2_SCENES } from '../../data/chapter2';
 import { CHAPTER_3_SCENES } from '../../data/chapter3';
 import { CHAPTER_4_SCENES } from '../../data/chapter4';
 import { CHAPTER_5_SCENES } from '../../data/chapter5';
+import { useLanguage } from '../../context/LanguageContext';
+import { SCREENS_TRANSLATIONS, getLocalizedQuest } from '../../i18n/screensTranslations';
+import { CHAPTER_LABELS } from '../../i18n/uiExtras';
+import { getLocalizedScene } from '../../utils/narrativeI18n';
 
 interface QuestsScreenProps {
   progress: PlayerProgress;
@@ -27,20 +31,24 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
   isSupporter = false,
   onOpenSupportModal
 }) => {
+  const { language, isRtl } = useLanguage();
+  const t = SCREENS_TRANSLATIONS[language]?.quests || SCREENS_TRANSLATIONS.fr.quests;
   const [questTab, setQuestTab] = useState<'daily' | 'story'>('daily');
 
   const dailyQuests = progress.quests.filter((q) => q.category === 'daily');
   const pledgedActionIds = progress.pledgedRealActions || [];
   const completedActionIds = progress.completedRealActions || [];
 
-  const isChapter2Unlocked = Boolean(isSupporter);
-  const isChapter3Unlocked = Boolean(isSupporter);
+  const isChapter2Unlocked = true;
+  const isChapter3Unlocked = true;
+
+  const chapterLabelsMap = CHAPTER_LABELS[language]?.items || CHAPTER_LABELS.fr.items;
 
   const chaptersData = [
     {
       number: 1,
-      title: 'Le Réveil & Le Grand Poteau',
-      theme: 'La lutte contre la paresse & le premier départ',
+      title: chapterLabelsMap[1]?.title || 'Le Réveil & Le Grand Poteau',
+      theme: chapterLabelsMap[1]?.subtitle || 'La lutte contre la paresse & le premier départ',
       scenes: CHAPTER_1_SCENES,
       isUnlocked: true,
       requiredXp: 0,
@@ -49,8 +57,8 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
     },
     {
       number: 2,
-      title: 'Le Chemin du Hilm',
-      theme: 'La maîtrise de la colère & la douceur',
+      title: chapterLabelsMap[2]?.title || 'Le Chemin du Hilm',
+      theme: chapterLabelsMap[2]?.subtitle || 'La maîtrise de la colère & la douceur',
       scenes: CHAPTER_2_SCENES,
       isUnlocked: isChapter2Unlocked,
       requiredXp: 450,
@@ -59,8 +67,8 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
     },
     {
       number: 3,
-      title: 'La Montagne Intérieure',
-      theme: "L'épreuve, le Sabr & la guérison",
+      title: chapterLabelsMap[3]?.title || 'La Montagne Intérieure',
+      theme: chapterLabelsMap[3]?.subtitle || "L'épreuve, le Sabr & la guérison",
       scenes: CHAPTER_3_SCENES,
       isUnlocked: isChapter3Unlocked,
       requiredXp: 780,
@@ -69,8 +77,8 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
     },
     {
       number: 4,
-      title: 'Ce que tu as encore',
-      theme: 'La bonté envers les parents (Birr al-Wālidayn)',
+      title: chapterLabelsMap[4]?.title || 'Ce que tu as encore',
+      theme: chapterLabelsMap[4]?.subtitle || 'La bonté envers les parents (Birr al-Wālidayn)',
       scenes: CHAPTER_4_SCENES,
       isUnlocked: true,
       requiredXp: 0,
@@ -79,8 +87,8 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
     },
     {
       number: 5,
-      title: 'Le Sommet de la Persévérance',
-      theme: 'La constance (As-Sabr) & Finale Saison 1',
+      title: chapterLabelsMap[5]?.title || 'Le Sommet de la Persévérance',
+      theme: chapterLabelsMap[5]?.subtitle || 'La constance (As-Sabr) & Finale Saison 1',
       scenes: CHAPTER_5_SCENES,
       isUnlocked: true,
       requiredXp: 0,
@@ -105,7 +113,10 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-y-auto px-3 sm:px-6 pt-3 pb-16 max-w-xl mx-auto w-full gap-3 select-none custom-scrollbar">
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className="flex-1 flex flex-col overflow-y-auto px-3 sm:px-6 pt-3 pb-16 max-w-xl mx-auto w-full gap-3 select-none custom-scrollbar"
+    >
       
       {/* ========================================================= */}
       {/* 1. EN-TÊTE ÉLÉGANT & INSPIRANT                             */}
@@ -113,13 +124,13 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
       <div className="bg-[#fbf7ee] rounded-2xl sm:rounded-3xl border-3 border-[#3a2312] p-3.5 sm:p-4 shadow-[0_4px_0_#3a2312] text-center flex flex-col items-center gap-1 shrink-0">
         <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#8c5a2b] font-cinzel flex items-center gap-1.5">
           <ScrollText className="w-3.5 h-3.5 text-[#d97c27]" />
-          <span>QUÊTES & ACCOMPLISSEMENT</span>
+          <span>{t.headerSubtitle}</span>
         </span>
         <h1 className="text-base sm:text-lg font-black text-[#3a2312] font-cinzel">
-          L'Élévation par les Actes
+          {t.headerTitle}
         </h1>
         <p className="text-xs text-[#6b4724] italic font-medium">
-          « Chaque petite action dans le réel fait grandir ton personnage. »
+          {t.headerQuote}
         </p>
       </div>
 
@@ -139,7 +150,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
           }`}
         >
           <span>🌙</span>
-          <span>MON CHEMIN & ADAB</span>
+          <span>{t.tabMyPath}</span>
         </button>
         <button
           onClick={() => {
@@ -153,7 +164,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
           }`}
         >
           <span>📖</span>
-          <span>HISTOIRE</span>
+          <span>{t.tabStory}</span>
         </button>
       </div>
 
@@ -168,10 +179,10 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
             <div className="flex items-center justify-between px-1">
               <span className="text-[11px] font-black text-[#1b4332] uppercase font-cinzel flex items-center gap-1.5">
                 <HeartHandshake className="w-3.5 h-3.5 text-[#2d6a4f]" />
-                <span>Mes Engagements d'Adab du Jour :</span>
+                <span>{t.pledgedSectionTitle}</span>
               </span>
               <span className="text-[10px] font-bold text-[#2d6a4f] bg-[#d8f3dc] px-2 py-0.5 rounded-full border border-[#74c69d]">
-                {pledgedActionIds.length} en attente
+                {t.pendingCount(pledgedActionIds.length)}
               </span>
             </div>
 
@@ -180,7 +191,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                 {pledgedActionIds.map((actId) => {
                   const action = allActions[actId];
                   if (!action) return null;
-                  const remainingXp = Math.max(10, action.xpReward - Math.max(10, Math.round(action.xpReward / 2)));
+                  const bonusXp = action.xpReward;
 
                   return (
                     <div
@@ -211,7 +222,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                         className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#2d6a4f] to-[#3a8461] hover:brightness-110 text-white font-black text-xs font-cinzel border border-[#1b4332] shadow-sm active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 shrink-0 animate-pulse"
                       >
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>C'est fait ! (+{remainingXp} XP)</span>
+                        <span>{t.pledgedDoneBtn(bonusXp)}</span>
                       </button>
                     </div>
                   );
@@ -219,7 +230,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
               </div>
             ) : (
               <div className="p-3 rounded-2xl bg-[#f5ede0] border border-[#d2be9f] text-center text-xs text-[#6b4724]">
-                <span>🌿 Lorsque tu prends un engagement dans l'histoire, il s'inscrit ici pour que tu puisses l'accomplir et le valider dans ta journée.</span>
+                <span>{t.pledgedEmptyHint}</span>
               </div>
             )}
           </div>
@@ -228,15 +239,16 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
           <div className="flex flex-col gap-2 pt-1 border-t border-[#3a2312]/15">
             <div className="flex items-center justify-between px-1">
               <span className="text-[11px] font-black text-[#8c5a2b] uppercase font-cinzel">
-                🌙 Habitudes Quotidiennes :
+                {t.dailyHabitsTitle}
               </span>
               <span className="text-[10px] font-bold text-[#6b4724]">
-                {dailyQuests.filter(q => q.completed).length}/{dailyQuests.length} accomplies
+                {t.dailyHabitsDoneCount(dailyQuests.filter(q => q.completed).length, dailyQuests.length)}
               </span>
             </div>
 
             <div className="flex flex-col gap-2">
               {dailyQuests.map((quest) => {
+                const locQuest = getLocalizedQuest(quest, language);
                 return (
                   <div
                     key={quest.id}
@@ -254,10 +266,10 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                       </div>
                       <div className="flex flex-col min-w-0">
                         <span className={`text-xs sm:text-sm font-bold truncate ${quest.completed ? 'line-through opacity-85' : ''}`}>
-                          {quest.title}
+                          {locQuest.title}
                         </span>
                         <span className="text-[11px] text-[#6b4724] line-clamp-1 mt-0.5">
-                          {quest.description}
+                          {locQuest.description}
                         </span>
                       </div>
                     </div>
@@ -267,7 +279,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                       {quest.completed ? (
                         <span className="flex items-center gap-1.5 text-xs font-black text-[#2d6a4f] bg-[#d8f3dc] px-3 py-1.5 rounded-xl border border-[#74c69d]">
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
-                          <span>✓ Accomplie (+{quest.xpReward} XP)</span>
+                          <span>{t.questAccomplished(quest.xpReward)}</span>
                         </span>
                       ) : (
                         <button
@@ -279,7 +291,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                           className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black text-xs font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 transition-all cursor-pointer flex items-center gap-1 shrink-0"
                         >
                           <Sparkles className="w-3.5 h-3.5 fill-current" />
-                          <span>+{quest.xpReward} XP</span>
+                          <span>{t.questXpBtn(quest.xpReward)}</span>
                         </button>
                       )}
                     </div>
@@ -298,10 +310,10 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
         <div className="flex flex-col gap-3 animate-in fade-in duration-200">
           <div className="flex items-center justify-between px-1">
             <span className="text-[11px] font-black text-[#8c5a2b] uppercase font-cinzel">
-              📖 Chronique des Chapitres :
+              📖 {t.chroniclesTitle}
             </span>
             <span className="text-[10px] font-bold text-[#2d6a4f]">
-              {progress.completedScenes.length} scènes franchies
+              {progress.completedScenes.length} scènes
             </span>
           </div>
 
@@ -326,7 +338,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                       <span className="text-2xl">{chapter.icon}</span>
                       <div>
                         <span className="text-[9.5px] font-black uppercase tracking-wider text-[#8c5a2b] font-cinzel">
-                          Chapitre {chapter.number}
+                          {t.chapterNumber(chapter.number)}
                         </span>
                         <h3 className="text-xs sm:text-sm font-black font-cinzel text-[#3a2312]">
                           {chapter.title}
@@ -337,11 +349,11 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                     <div className="flex items-center gap-1.5">
                       {isChapterDone ? (
                         <span className="text-[10px] font-black text-emerald-800 bg-emerald-200 px-2 py-0.5 rounded-full border border-emerald-400">
-                          ✓ Terminé
+                          ✓ {t.chapterDone}
                         </span>
                       ) : chapter.isUnlocked ? (
                         <span className="text-[10px] font-bold text-[#3a2312] bg-amber-200 px-2 py-0.5 rounded-full border border-amber-400">
-                          {chapterCompletedCount} / {totalChapterScenes} scènes
+                          {chapterCompletedCount} / {totalChapterScenes}
                         </span>
                       ) : (
                         <button
@@ -353,7 +365,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                           className="flex items-center gap-1 text-[10px] font-black text-amber-900 bg-amber-200 hover:bg-amber-300 px-2 py-0.5 rounded-full border border-amber-400 cursor-pointer shadow-xs transition-colors"
                         >
                           <Lock className="w-3 h-3 text-amber-900" />
-                          <span>Pack Fondateur / Promo</span>
+                          <span>{t.founderAccess}</span>
                         </button>
                       )}
                     </div>
@@ -363,6 +375,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1">
                     {chapter.scenes.slice(0, 4).map((scene) => {
                       const isSceneDone = progress.completedScenes.includes(scene.id);
+                      const locScene = getLocalizedScene(scene, language);
                       return (
                         <div
                           key={scene.id}
@@ -383,7 +396,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                         >
                           <div className="flex items-center gap-1.5 truncate">
                             <span>{isSceneDone ? '✓' : chapter.isUnlocked ? '▶' : '🔒'}</span>
-                            <span className="truncate">{scene.id}. {scene.title}</span>
+                            <span className="truncate">{scene.id}. {locScene.title}</span>
                           </div>
                         </div>
                       );
@@ -400,7 +413,7 @@ export const QuestsScreen: React.FC<QuestsScreenProps> = ({
                       className="w-full mt-1 py-2 px-3 rounded-xl bg-[#ebdfc8] hover:bg-[#dfceb3] text-[#3a2312] font-black font-cinzel text-xs border border-[#3a2312] shadow-xs active:translate-y-0.5 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Compass className="w-3.5 h-3.5 text-[#d97c27]" />
-                      <span>Explorer sur Le Chemin</span>
+                      <span>{t.tabStory}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                   )}

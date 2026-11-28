@@ -1092,6 +1092,99 @@ export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
     ? '💡 Choose your spiritual reply:'
     : '💡 Choisis ta riposte spirituelle :';
 
+  // Cinematic Black Screen Game Over for Climax Combat
+  if (isDefeat) {
+    return (
+      <div
+        dir={isRtl ? 'rtl' : 'ltr'}
+        className="fixed inset-0 z-50 bg-[#07060b] flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-500 select-none"
+      >
+        <div
+          className="pointer-events-none absolute rounded-full blur-3xl"
+          style={{
+            width: '24rem',
+            height: '24rem',
+            background:
+              'radial-gradient(circle, rgba(139, 92, 246, 0.32) 0%, rgba(88, 28, 135, 0.15) 50%, rgba(0, 0, 0, 0) 75%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-5 animate-in fade-in slide-in-from-bottom-3 duration-500">
+          <span className="text-xs sm:text-sm uppercase tracking-[0.28em] text-purple-300/85 font-cinzel font-bold">
+            {language === 'ar'
+              ? 'ضَغْطُ الْوَسْوَاسِ'
+              : language === 'en'
+                ? 'WASWAS PRESSURE'
+                : 'PRESSION DU WASWÂS'}
+          </span>
+
+          <h2
+            className={`text-2xl sm:text-4xl font-bold text-[#fde68a] leading-snug drop-shadow-[0_2px_18px_rgba(245,158,11,0.35)] ${
+              language === 'ar' ? 'font-amiri text-3xl sm:text-5xl' : 'font-cinzel tracking-wider'
+            }`}
+          >
+            {language === 'ar'
+              ? 'أَحْكَمَ حِجَابُ الشَّكِّ إِغْلَاقَهُ…'
+              : language === 'en'
+                ? 'The Veil of Doubt Closed in…'
+                : 'Le Voile du Doute s’est refermé…'}
+          </h2>
+
+          <p
+            className={`text-[#f7ecd7]/90 leading-relaxed whitespace-pre-line ${
+              language === 'ar'
+                ? 'font-amiri text-lg sm:text-2xl leading-loose'
+                : 'font-cinzel text-sm sm:text-lg tracking-wide'
+            }`}
+          >
+            {language === 'ar'
+              ? 'أَمَامَ هَجَمَاتِ الْوَسْوَاسِ، احْتَاجَ قَلْبُكَ إِلَى مَزِيدٍ مِنَ الثَّبَاتِ.\nقَوِّ رُوحَكَ بِالْحِلْمِ وَالْيَقِينِ لِتَعُودَ أَقْوَى!'
+              : language === 'en'
+                ? 'Against the assaults of the Waswas, your heart wavered.\nStrengthen your soul with gentle forbearance and Knowledge to return stronger!'
+                : 'Face aux assauts du Waswâs, ton cœur a manqué de fermeté.\nFortifie ton esprit avec la sagesse du Hilm et le Savoir pour revenir plus fort !'}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full justify-center mt-3">
+            {onOpenHilmQuiz && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundManager.playSelect();
+                  onOpenHilmQuiz();
+                }}
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-emerald-950/70 hover:bg-emerald-900/90 border border-emerald-400/70 text-emerald-200 font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.16em] cursor-pointer transition-all shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center justify-center gap-2.5 active:scale-95"
+              >
+                <BookOpen className="w-4 h-4 text-emerald-300" />
+                <span>
+                  {language === 'ar'
+                    ? 'تقوية القلب (اختبار الحلم والعلم)'
+                    : language === 'en'
+                      ? 'Fortify My Heart (Wisdom Quiz)'
+                      : 'Fortifier mon cœur (Quiz du Hilm & Savoir)'}
+                </span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={handleRetryCombat}
+              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-300/70 text-[#fde68a] font-cinzel font-bold text-xs sm:text-sm uppercase tracking-[0.18em] cursor-pointer transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] flex items-center justify-center gap-2 active:scale-95"
+            >
+              <RotateCcw className="w-4 h-4 text-[#fde68a]" />
+              <span>
+                {language === 'ar'
+                  ? 'إعادة المواجهة فوراً ↺'
+                  : language === 'en'
+                    ? 'Retry Combat Immediately ↺'
+                    : 'Réessayer le combat immédiatement ↺'}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       dir={isRtl ? 'rtl' : 'ltr'}
@@ -1157,64 +1250,7 @@ export const ClimaxCombat: React.FC<ClimaxCombatProps> = ({
 
         {/* SCROLLABLE MAIN BODY */}
         <div className="flex-1 overflow-y-auto p-3.5 sm:p-4 flex flex-col gap-3 custom-scrollbar">
-          {/* DEFEAT SCREEN */}
-          {isDefeat ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center gap-3 py-4 animate-in fade-in zoom-in-95 duration-300">
-              <div className="w-16 h-16 rounded-2xl bg-purple-950/20 border-2 border-purple-800 flex items-center justify-center shadow-lg">
-                <Moon className="w-9 h-9 text-purple-800 fill-purple-900/40 animate-pulse" />
-              </div>
-
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-[#3a2312] font-cinzel leading-tight">
-                  {language === 'ar' ? 'أحكم حجاب الشك إغلاقه...' : language === 'en' ? 'The Veil of Doubt Closed in...' : 'Le Voile du Doute s’est refermé...'}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#6b4724] font-medium mt-1 leading-relaxed max-w-xs">
-                  {language === 'ar'
-                    ? 'أمام هجمات الوسواس، احتاج قلبك إلى مزيد من الثبات. قوِّ روحك بالحلم واليقين لتعود أقوى!'
-                    : language === 'en'
-                    ? 'Against the assaults of the Waswas, your heart wavered. Strengthen your soul with gentle forbearance and Knowledge to return stronger!'
-                    : 'Face aux assauts du Waswâs, ton cœur a manqué de fermeté. Fortifie ton esprit avec la sagesse du Hilm et le Savoir pour revenir plus fort !'}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col gap-2.5 w-full mt-2">
-                {onOpenHilmQuiz && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      soundManager.playSelect();
-                      onOpenHilmQuiz();
-                    }}
-                    style={{
-                      backgroundColor: '#1b4332',
-                      backgroundImage: 'linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%)',
-                      color: '#ffffff'
-                    }}
-                    className="w-full py-3.5 px-4 rounded-2xl text-white font-black text-xs sm:text-sm font-cinzel border-2 border-[#0d281e] shadow-[0_4px_0_#0d281e] active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 tracking-wide uppercase hover:brightness-110"
-                  >
-                    <BookOpen className="w-4 h-4 text-amber-300" />
-                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                      {language === 'ar' ? 'تقوية القلب (اختبار الحلم والعلم)' : language === 'en' ? 'Fortify My Heart (Wisdom Quiz)' : 'Fortifier mon cœur (Quiz du Hilm & Savoir)'}
-                    </span>
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  onClick={handleRetryCombat}
-                  style={{
-                    backgroundColor: '#ebdfc8',
-                    color: '#3a2312'
-                  }}
-                  className="w-full py-3 px-4 rounded-2xl text-[#3a2312] font-black text-xs sm:text-sm font-cinzel border-2 border-[#3a2312] shadow-[0_2px_0_#3a2312] active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 hover:bg-[#e0cfb4]"
-                >
-                  <RotateCcw className="w-4 h-4 text-[#3a2312]" />
-                  <span>{language === 'ar' ? 'إعادة المواجهة فوراً' : language === 'en' ? 'Retry Combat Immediately' : 'Réessayer le combat immédiatement'}</span>
-                </button>
-              </div>
-            </div>
-          ) : isVictory ? (
+          {isVictory ? (
             /* VICTORY SCREEN */
             <div className="flex-1 flex flex-col items-center justify-center text-center gap-3 py-4 animate-in fade-in zoom-in-95 duration-300">
               <div className="w-16 h-16 rounded-2xl bg-amber-400/30 border-2 border-amber-500 flex items-center justify-center shadow-lg animate-bounce">
